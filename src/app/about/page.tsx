@@ -395,7 +395,7 @@ export default function AboutPage() {
       {/* 7. FINAL — Full-bleed Naked Carbon image */}
       <section className="relative w-full min-h-[540px] sm:min-h-[640px] bg-alkota-carbon text-alkota-white flex flex-col justify-between p-8 sm:p-12 md:p-16 border-b border-white/10 tech-grid-dark overflow-hidden">
         <Image
-          src={ALKOTA_STORY_MEDIA.project01NakedCarbonStudio.src}
+          src={ALKOTA_STORY_MEDIA.standaloneBlackBike.src}
           alt="Project 01 Naked Carbon full bleed"
           fill
           sizes="100vw"
