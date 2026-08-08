@@ -11,18 +11,18 @@ export default function HeroFullBleed() {
   return (
     <section className="relative w-full min-h-[92vh] md:min-h-screen bg-alkota-carbon text-alkota-white flex flex-col justify-between pt-28 pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Photographic Alpine Showroom Background featuring canonical Project 01 Glacier White */}
-      <div className="absolute inset-0 z-0 opacity-40 md:opacity-55 transition-opacity duration-700">
+      <div className="absolute inset-0 z-0 opacity-65 md:opacity-85 transition-opacity duration-700">
         <Image
           src={brandAssets.project01WhiteHero}
           alt="ALKOTA Project 01 Glacier White full-suspension mountain bike with tan-wall Maxxis tyres in alpine showroom"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center md:object-right scale-[1.01] transition-transform duration-1000 ease-out"
+          className="object-cover object-center scale-[1.01] transition-transform duration-1000 ease-out"
         />
         {/* Gradients for typography legibility and seamless background blend */}
-        <div className="absolute inset-0 bg-gradient-to-r from-alkota-carbon via-alkota-carbon/80 to-transparent w-full md:w-3/4" />
-        <div className="absolute inset-0 bg-gradient-to-t from-alkota-carbon via-transparent to-alkota-carbon/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-alkota-carbon via-alkota-carbon/90 to-alkota-carbon/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-alkota-carbon via-transparent to-alkota-carbon/70" />
       </div>
 
       {/* Top Status Technical Annotation Bar */}
