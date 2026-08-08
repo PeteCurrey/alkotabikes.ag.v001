@@ -13,12 +13,12 @@ interface LogoProps {
 
 export default function Logo({
   variant = "header",
-  theme = "auto",
+  theme = "light",
   className = "",
 }: LogoProps) {
-  // Determine which image path to use based on variant and theme
+  const isLight = theme === "light" || theme === "auto";
+
   if (variant === "monogram") {
-    const isLight = theme === "light";
     const logoSrc = isLight ? brandAssets.logoMarkLight : brandAssets.logoMarkDark;
     
     return (
@@ -32,7 +32,7 @@ export default function Logo({
           alt="ALKOTA Monogram"
           width={34}
           height={34}
-          className="w-auto h-7 md:h-8 object-contain"
+          className="w-auto h-7 md:h-8 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           priority
         />
       </Link>
@@ -60,33 +60,8 @@ export default function Logo({
     );
   }
 
-  if (variant === "hero") {
-    return (
-      <div className={`inline-block ${className}`}>
-        <div className="w-[260px] sm:w-[320px] md:w-[420px] relative">
-          <Image
-            src={theme === "light" ? brandAssets.logoPrimaryLight : brandAssets.logoPrimaryDark}
-            alt="ALKOTA Performance Engineering"
-            width={420}
-            height={80}
-            className="w-full h-auto object-contain dark:hidden"
-            priority
-          />
-          <Image
-            src={brandAssets.logoPrimaryLight}
-            alt="ALKOTA Performance Engineering"
-            width={420}
-            height={80}
-            className="w-full h-auto object-contain hidden dark:block"
-            priority
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // Default: Header / Primary
-  const isLightHeader = theme === "light";
+  // Default: Header / Hero / Primary
+  const logoSrc = isLight ? brandAssets.logoPrimaryLight : brandAssets.logoPrimaryDark;
 
   return (
     <Link
@@ -94,22 +69,13 @@ export default function Logo({
       aria-label="ALKOTA Performance Engineering home"
       className={`inline-block group ${className}`}
     >
-      <div className="w-[170px] sm:w-[190px] md:w-[210px] relative">
-        {/* Render Primary Logo artwork at exact automotive width proportions */}
+      <div className="w-[175px] sm:w-[195px] md:w-[215px] relative">
         <Image
-          src={isLightHeader ? brandAssets.logoPrimaryLight : brandAssets.logoPrimaryDark}
+          src={logoSrc}
           alt="ALKOTA Performance Engineering"
-          width={210}
-          height={40}
-          className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 dark:hidden"
-          priority
-        />
-        <Image
-          src={brandAssets.logoPrimaryLight}
-          alt="ALKOTA Performance Engineering"
-          width={210}
-          height={40}
-          className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 hidden dark:block"
+          width={215}
+          height={41}
+          className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]"
           priority
         />
       </div>

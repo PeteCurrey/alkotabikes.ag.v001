@@ -12,7 +12,6 @@ export default function Header() {
   const pathname = usePathname();
 
   const isConfigurator = pathname === "/configure";
-  const isDarkHeroPage = pathname === "/" || pathname.startsWith("/bikes") || pathname.startsWith("/engineering");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,19 +39,19 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled || isConfigurator
-          ? "bg-alkota-carbon/90 backdrop-blur-md border-b border-white/10 text-alkota-white py-3.5 shadow-xl"
-          : "bg-transparent text-alkota-black dark:text-alkota-white py-5"
+          ? "bg-alkota-carbon/95 backdrop-blur-md border-b border-white/10 text-alkota-white py-3.5 shadow-2xl"
+          : "bg-gradient-to-b from-black/90 via-black/50 to-transparent text-alkota-white py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Desktop Brand Logo (Horizontal Lockup) */}
         <div className="hidden md:block">
-          <Logo variant="header" theme={scrolled || isDarkHeroPage ? "light" : "auto"} />
+          <Logo variant="header" theme="light" />
         </div>
 
         {/* Mobile Monogram (28-34px) */}
         <div className="md:hidden">
-          <Logo variant="monogram" theme={scrolled || isDarkHeroPage ? "light" : "auto"} />
+          <Logo variant="monogram" theme="light" />
         </div>
 
         {/* Desktop Navigation */}
@@ -66,10 +65,8 @@ export default function Header() {
                 href={link.href}
                 className={`font-mono text-xs tracking-widest uppercase transition-colors relative py-1 ${
                   isActive
-                    ? "text-alkota-signal font-semibold"
-                    : scrolled || isConfigurator || isDarkHeroPage
-                    ? "text-alkota-snow hover:text-white"
-                    : "text-alkota-graphite hover:text-alkota-black dark:text-alkota-slate dark:hover:text-white"
+                    ? "text-alkota-signal font-bold"
+                    : "text-alkota-snow hover:text-white"
                 }`}
               >
                 {link.label}
@@ -85,7 +82,7 @@ export default function Header() {
         <div className="hidden md:flex items-center space-x-4">
           <Link
             href="/configure"
-            className="group relative inline-flex items-center gap-2 px-4 py-2 border border-alkota-signal text-alkota-signal hover:bg-alkota-signal hover:text-alkota-black transition-all duration-200 font-mono text-xs tracking-wider uppercase font-semibold"
+            className="group relative inline-flex items-center gap-2 px-4 py-2 border border-alkota-signal text-alkota-signal hover:bg-alkota-signal hover:text-alkota-black transition-all duration-200 font-mono text-xs tracking-wider uppercase font-semibold bg-black/40 backdrop-blur-sm"
           >
             <Settings className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform duration-300" />
             <span>CONFIGURE</span>
