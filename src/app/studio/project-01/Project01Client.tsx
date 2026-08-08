@@ -68,31 +68,54 @@ export default function Project01Client() {
         ))}
       </div>
       {tab === 'SPECIFICATION' && (
-        <div className="bg-[#131313] border border-white/10">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">FIELD</th>
-                <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">VALUE</th>
-                <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">STATUS</th>
-                <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">NOTES</th>
-              </tr>
-            </thead>
-            <tbody>
-              {['frontTravel', 'rearTravel', 'primaryWheelFormat', 'frameMaterialIntent', 'suspensionArchitecture'].map(key => {
-                const spec = (PROJECT_01_SPECIFICATION as any)[key];
-                if (!spec) return null;
-                return (
-                  <tr key={key} className="border-b border-white/5 hover:bg-white/5 cursor-pointer" onClick={() => setShowConfirm(true)}>
-                    <td className="px-4 py-3 font-mono text-[9px] text-[#1a73e8] font-bold">{key}</td>
-                    <td className="px-4 py-3 font-mono text-[9px] text-white">{spec.value}</td>
-                    <td className="px-4 py-3"><StatusBadge status={spec.status} /></td>
-                    <td className="px-4 py-3 font-mono text-[9px] text-white">{spec.notes}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="space-y-4">
+          <div className="bg-yellow-500/5 border border-yellow-500/20 p-4 font-mono text-[9px] text-yellow-300 uppercase space-y-1">
+            <div className="font-bold flex items-center gap-2">
+              <span>⚠ ENGINEERING PROVENANCE & RELEASE GATE ACTIVE</span>
+            </div>
+            <p className="text-[#647789]">
+              Specifications marked VALIDATED, LOCKED, or PRODUCTION_RELEASED require attached source/evidence reference and explicit Alkota Engineering approval before publication. Any parameter missing an evidence link is flagged EVIDENCE REQUIRED.
+            </p>
+          </div>
+          <div className="bg-[#131313] border border-white/10">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">FIELD</th>
+                  <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">VALUE</th>
+                  <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">STATUS</th>
+                  <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">PROVENANCE</th>
+                  <th className="px-4 py-3 font-mono text-[9px] text-[#647789]">NOTES</th>
+                </tr>
+              </thead>
+              <tbody>
+                {['frontTravel', 'rearTravel', 'primaryWheelFormat', 'frameMaterialIntent', 'suspensionArchitecture'].map(key => {
+                  const spec = (PROJECT_01_SPECIFICATION as any)[key];
+                  if (!spec) return null;
+                  const hasEvidence = Boolean(spec.evidenceReference || spec.sourceDocument);
+                  return (
+                    <tr key={key} className="border-b border-white/5 hover:bg-white/5 cursor-pointer" onClick={() => setShowConfirm(true)}>
+                      <td className="px-4 py-3 font-mono text-[9px] text-[#1a73e8] font-bold">{key}</td>
+                      <td className="px-4 py-3 font-mono text-[9px] text-white">{spec.value}</td>
+                      <td className="px-4 py-3"><StatusBadge status={spec.status} /></td>
+                      <td className="px-4 py-3">
+                        {hasEvidence ? (
+                          <span className="font-mono text-[7px] uppercase tracking-widest px-1.5 py-0.5 border font-bold bg-green-500/10 text-green-400 border-green-500/20">
+                            EVIDENCE VERIFIED
+                          </span>
+                        ) : (
+                          <span className="font-mono text-[7px] uppercase tracking-widest px-1.5 py-0.5 border font-bold bg-yellow-500/10 text-yellow-400 border-yellow-500/20">
+                            ⚠ EVIDENCE REQUIRED
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 font-mono text-[9px] text-white">{spec.notes}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
       {tab === 'COMPONENTS' && (
