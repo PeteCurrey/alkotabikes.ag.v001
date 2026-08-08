@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+:root {
+  --font-space-grotesk: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-ibm-plex-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --alkota-white: #F4F6F7;
+  --alkota-snow: #ECEFF1;
+  --alkota-slate: #737C84;
+  --alkota-graphite: #282D31;
+  --alkota-carbon: #0B0D0F;
+  --alkota-black: #050607;
+  --alkota-ice: #A8C6D8;
+  --alkota-signal: #C8FF00;
+}
+
+@layer base {
+  * {
+    border-color: rgba(115, 124, 132, 0.2);
+  }
+
+  body {
+    background-color: var(--alkota-white);
+    color: var(--alkota-black);
+    font-family: var(--font-inter);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    selection-background-color: var(--alkota-signal);
+    selection-color: var(--alkota-black);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-space-grotesk);
+    letter-spacing: -0.02em;
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-ibm-plex-mono);
+  }
+}
+
+/* Custom Utilities for ALKOTA Engineering Aesthetic */
+.tech-grid-dark {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.tech-grid-light {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+.bg-glass-dark {
+  background: rgba(11, 13, 15, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bg-glass-light {
+  background: rgba(244, 246, 247, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--alkota-carbon);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--alkota-graphite);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--alkota-slate);
+}
+
+/* Focus Ring Styling for Accessibility */
+:focus-visible {
+  outline: 2px solid var(--alkota-signal);
+  outline-offset: 2px;
+}
