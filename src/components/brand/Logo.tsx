@@ -28,7 +28,7 @@ export default function Logo({
           alt="ALKOTA Monogram"
           width={30}
           height={30}
-          className="w-auto h-6 md:h-6.5 object-contain transition-all duration-200 opacity-90 hover:opacity-100 brightness-[0.92] hover:brightness-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
+          className="w-auto h-6 md:h-6.5 object-contain brightness-0 invert opacity-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
           priority
         />
       </Link>
@@ -48,7 +48,7 @@ export default function Logo({
             alt="ALKOTA Performance Engineering"
             width={220}
             height={40}
-            className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 brightness-200 contrast-125"
+            className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 brightness-0 invert opacity-100"
             priority
           />
         </div>
@@ -69,7 +69,7 @@ export default function Logo({
           alt="ALKOTA Performance Engineering"
           width={175}
           height={34}
-          className="w-full h-auto object-contain transition-all duration-200 opacity-90 group-hover:opacity-100 brightness-[0.92] group-hover:brightness-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
+          className="w-full h-auto object-contain brightness-0 invert opacity-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] transition-opacity group-hover:opacity-90"
           priority
         />
       </div>
