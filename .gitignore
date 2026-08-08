@@ -11,7 +11,8 @@ node_modules/
 /build
 
 # Media raw source files
-Media/
+/Media/
+!src/content/media/
 
 # Debug
 npm-debug.log*
