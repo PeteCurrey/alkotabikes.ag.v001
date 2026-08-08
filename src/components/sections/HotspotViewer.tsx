@@ -112,7 +112,7 @@ export default function HotspotViewer() {
             </div>
 
             {/* Desktop Full-Bike Interactive Stage */}
-            <div className="relative my-auto flex items-center justify-center py-6 min-h-[380px] sm:min-h-[460px] md:min-h-[520px]">
+            <div className="relative my-auto w-full aspect-[16/9] max-h-[580px] flex items-center justify-center overflow-hidden">
               <Image
                 src={brandAssets.project01WhiteHero}
                 alt="ALKOTA Project 01 full-suspension mountain bike interactive chassis"

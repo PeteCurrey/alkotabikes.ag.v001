@@ -1,11 +1,36 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ArrowRight, Settings } from "lucide-react";
+import { brandAssets } from "@/lib/assets";
 
 export default function ConfiguratorPreviewSection() {
+  const [previewFinish, setPreviewFinish] = useState<"GLACIER" | "CARBON">("CARBON");
+
+  const finishData = {
+    CARBON: {
+      label: "NAKED CARBON",
+      subtitle: "Raw Composite Structure",
+      src: brandAssets.project01CarbonHero,
+      alt: "ALKOTA Project 01 Naked Carbon finish",
+      borderColor: "border-alkota-signal",
+      tagColor: "text-alkota-signal",
+    },
+    GLACIER: {
+      label: "GLACIER WHITE",
+      subtitle: "Alpine Precision Finish",
+      src: brandAssets.project01WhiteHero,
+      alt: "ALKOTA Project 01 Glacier White finish",
+      borderColor: "border-white/60",
+      tagColor: "text-alkota-white",
+    },
+  };
+
+  const active = finishData[previewFinish];
+
   return (
     <section className="w-full bg-alkota-carbon text-alkota-white py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 tech-grid-dark">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -28,20 +53,40 @@ export default function ConfiguratorPreviewSection() {
         </div>
 
         {/* Studio Preview Card */}
-        <div className="bg-alkota-black border border-white/10 p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Visual Silhouette Left */}
-          <div className="lg:col-span-7 flex flex-col justify-center items-center py-12 bg-alkota-carbon border border-white/10 relative overflow-hidden">
-            <div className="font-mono text-[10px] text-alkota-slate uppercase absolute top-4 left-4">
-              STUDIO PREVIEW
+        <div className="bg-alkota-black border border-white/10 p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-2xl">
+          {/* Visual Stage with finish toggle */}
+          <div className="lg:col-span-7 flex flex-col space-y-4">
+            {/* Finish toggle tabs */}
+            <div className="flex items-center gap-2 font-mono text-xs">
+              {(["CARBON", "GLACIER"] as const).map((fin) => (
+                <button
+                  key={fin}
+                  onClick={() => setPreviewFinish(fin)}
+                  className={`px-4 py-2 border uppercase font-bold transition-all ${
+                    previewFinish === fin
+                      ? "border-alkota-signal bg-alkota-signal/15 text-alkota-white"
+                      : "border-white/10 text-alkota-slate hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  {finishData[fin].label}
+                </button>
+              ))}
             </div>
 
-            <svg viewBox="0 0 800 400" className="w-full max-w-xl h-auto drop-shadow-2xl">
-              <circle cx="180" cy="280" r="100" stroke="#737C84" strokeWidth="6" fill="none" />
-              <circle cx="620" cy="280" r="100" stroke="#737C84" strokeWidth="6" fill="none" />
-              <polygon points="560,110 380,140 340,290 380,140" fill="none" stroke="#F4F6F7" strokeWidth="18" strokeLinejoin="round" />
-              <line x1="560" y1="110" x2="340" y2="290" stroke="#F4F6F7" strokeWidth="22" strokeLinecap="round" />
-              <line x1="340" y1="290" x2="180" y2="280" stroke="#737C84" strokeWidth="12" strokeLinecap="round" />
-            </svg>
+            {/* Bike Image */}
+            <div className={`relative w-full h-[300px] sm:h-[380px] md:h-[420px] bg-black/50 border ${active.borderColor} flex items-center justify-center overflow-hidden transition-all duration-300`}>
+              <Image
+                src={active.src}
+                alt={active.alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-contain object-center transition-all duration-500 scale-[0.98] hover:scale-100"
+              />
+              <div className="absolute top-4 left-4 font-mono text-[10px] bg-black/70 px-2.5 py-1 text-alkota-signal border border-white/10 uppercase tracking-widest">
+                {active.label} • STUDIO PREVIEW
+              </div>
+            </div>
           </div>
 
           {/* Right Build Summary */}
@@ -53,33 +98,41 @@ export default function ConfiguratorPreviewSection() {
 
             <div className="space-y-3">
               <div className="flex justify-between text-alkota-slate">
-                <span>FRAME SIZE:</span>
-                <span className="text-alkota-white">LARGE (L)</span>
+                <span>FINISH:</span>
+                <span className={`font-bold ${active.tagColor}`}>{active.label}</span>
+              </div>
+              <div className="flex justify-between text-alkota-slate">
+                <span>FRAME SIZES:</span>
+                <span className="text-alkota-white">M · L · XL</span>
               </div>
               <div className="flex justify-between text-alkota-slate">
                 <span>WHEEL FORMAT:</span>
-                <span className="text-alkota-white">MX (29 / 27.5)</span>
-              </div>
-              <div className="flex justify-between text-alkota-slate">
-                <span>FINISH:</span>
-                <span className="text-alkota-white">GRAPHITE ANODIZED</span>
+                <span className="text-alkota-white">MX / 29 COMPATIBLE</span>
               </div>
               <div className="flex justify-between text-alkota-slate">
                 <span>SUSPENSION:</span>
-                <span className="text-alkota-white">DEVELOPMENT SPEC</span>
+                <span className="text-alkota-white">170mm / 160mm</span>
               </div>
               <div className="flex justify-between text-alkota-slate">
-                <span>ESTIMATED WEIGHT:</span>
-                <span className="text-alkota-signal font-bold">— KG</span>
+                <span>CHASSIS:</span>
+                <span className="text-alkota-white">UD CARBON MONOCOQUE</span>
               </div>
               <div className="flex justify-between text-alkota-slate">
-                <span>ESTIMATED PRICE:</span>
-                <span className="text-alkota-signal font-bold">£—</span>
+                <span>PRODUCTION PRICE:</span>
+                <span className="text-alkota-signal font-bold">TBC — CONTACT</span>
               </div>
             </div>
 
+            <Link
+              href="/configure"
+              className="w-full py-3 bg-alkota-signal text-alkota-black font-bold uppercase hover:bg-white transition-colors flex items-center justify-center gap-2 text-xs mt-4"
+            >
+              <span>BUILD YOUR SPEC</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
             <div className="pt-4 border-t border-white/10 text-[10px] text-alkota-slate leading-normal">
-              * Production specification and pricing to be confirmed upon final engineering validation.
+              * Production specification and pricing confirmed upon final engineering validation. Contact us to register interest.
             </div>
           </div>
         </div>

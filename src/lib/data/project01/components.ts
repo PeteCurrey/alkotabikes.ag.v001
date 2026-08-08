@@ -1,25 +1,22 @@
 /**
- * ALKOTA Performance Engineering — Canonical Project 01 Data Model
- * 
- * Single source of truth for the flagship Project 01 platform,
- * technical specifications, 16 component systems, manufacturer provenance,
- * development status tags, and hotspot coordinates.
+ * ALKOTA Performance Engineering — Project 01 Canonical Components
+ * Structured definitions for all 18 system components on Project 01.
  */
 
-export type SystemCategory = 
-  | "CHASSIS" 
-  | "SUSPENSION" 
-  | "BRAKES" 
-  | "DRIVETRAIN" 
-  | "WHEELS" 
-  | "TYRES" 
-  | "COCKPIT" 
+export type SystemCategory =
+  | "CHASSIS"
+  | "SUSPENSION"
+  | "BRAKES"
+  | "DRIVETRAIN"
+  | "WHEELS"
+  | "TYRES"
+  | "COCKPIT"
   | "TOUCHPOINTS";
 
-export type ComponentStatus = 
-  | "selected" 
-  | "development-target" 
-  | "option" 
+export type ComponentStatus =
+  | "selected"
+  | "development-target"
+  | "option"
   | "pending-validation";
 
 export interface ComponentSpecification {
@@ -31,7 +28,7 @@ export interface ComponentSpecification {
 export interface ProjectComponent {
   id: string;
   slug: string;
-  systemNumber: string; // e.g. "01", "02", ... "16"
+  systemNumber: string; // "01" through "18"
   systemName: string;
   category: SystemCategory;
   brand: string;
@@ -39,12 +36,14 @@ export interface ProjectComponent {
   variant: string;
   status: ComponentStatus;
   summary: string;
+  whySelected: string;
   engineeringRationale: string;
+  integrationNotes: string;
   verifiedSpecifications: ComponentSpecification[];
-  compatibilityNotes?: string;
   manufacturer: string;
   manufacturerSource: string;
   sourceLastVerified: string;
+  mediaRightsStatus: "ALKOTA OWNED" | "MANUFACTURER APPROVED" | "DEVELOPMENT ONLY";
   darkImageKey: string;
   alpineImageKey: string;
   hotspotDesktop: { top: string; left: string };
@@ -52,43 +51,7 @@ export interface ProjectComponent {
   displayOrder: number;
 }
 
-export interface FinishColorway {
-  id: "GLACIER" | "CARBON";
-  code: string;
-  name: string;
-  subtitle: string;
-  description: string;
-  imageKey: string;
-  swatchHex: string;
-  borderHex: string;
-}
-
-export const CANONICAL_FINISHES: FinishColorway[] = [
-  {
-    id: "GLACIER",
-    code: "01",
-    name: "GLACIER WHITE",
-    subtitle: "Alpine Precision Finish",
-    description:
-      "Sculpted alpine white paint layout engineered to highlight carbon monocoque tube profiles and titanium hardware accents.",
-    imageKey: "/images/project01-glacier-white.png",
-    swatchHex: "#F4F6F7",
-    borderHex: "#A8C6D8",
-  },
-  {
-    id: "CARBON",
-    code: "02",
-    name: "NAKED CARBON",
-    subtitle: "Raw Composite Structure",
-    description:
-      "Exposed 3K unidirectional carbon composite layup with a lightweight matte protective clear coat.",
-    imageKey: "/images/project01-naked-carbon.png",
-    swatchHex: "#16191C",
-    borderHex: "#3A4148",
-  },
-];
-
-export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
+export const PROJECT_01_COMPONENTS: ProjectComponent[] = [
   {
     id: "chassis-monocoque",
     slug: "chassis-monocoque",
@@ -100,23 +63,24 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "UD Carbon Monocoque",
     status: "selected",
     summary: "Full UD carbon fiber monocoque chassis engineered for high-speed alpine stability and lateral stiffness.",
-    engineeringRationale:
-      "A mountain bike frame must manage complex multi-axis torsional forces during heavy cornering and impact. Our monocoque front triangle optimizes fiber alignment along high-stress load paths while retaining compliance for traction.",
+    whySelected: "Central structural monocoque built to withstand high torsional cornering forces while isolating trail chatter.",
+    engineeringRationale: "A mountain bike frame must manage complex multi-axis torsional forces during heavy cornering and impact. Our monocoque front triangle optimizes fiber alignment along high-stress load paths.",
+    integrationNotes: "Molded internal guided carbon cable tunnels, 73mm BSA threaded bottom bracket shell, 12x148mm Boost spacing.",
     verifiedSpecifications: [
       { label: "FRONT TRAVEL", value: "170mm", isVerified: true },
       { label: "REAR TRAVEL", value: "160mm", isVerified: true },
       { label: "MATERIAL", value: "High-Modulus Unidirectional Carbon Fiber", isVerified: true },
       { label: "BB INTERFACE", value: "73mm Threaded BSA", isVerified: true },
-      { label: "REAR SPACING", value: "12x148mm Boost", isVerified: true },
-      { label: "HEADSET INTERFACE", value: "Integrated ZS44 / ZS56", isVerified: true },
+      { label: "REAR SPACING", value: "12x148mm Boost Spindle", isVerified: true },
     ],
     manufacturer: "ALKOTA Performance Engineering",
-    manufacturerSource: "https://alkota.com/engineering/project-01",
+    manufacturerSource: "https://alkota.com/engineering",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "ALKOTA OWNED",
     darkImageKey: "/images/project01-naked-carbon.png",
     alpineImageKey: "/images/project01-glacier-white.png",
-    hotspotDesktop: { top: "44.5%", left: "50.5%" },
-    hotspotMobile: { top: "44.5%", left: "50.5%" },
+    hotspotDesktop: { top: "42%", left: "54%" },
+    hotspotMobile: { top: "42%", left: "54%" },
     displayOrder: 1,
   },
   {
@@ -130,22 +94,23 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "GRIP X2 / Kashima",
     status: "selected",
     summary: "The benchmark in long-travel single crown enduro forks, featuring 38mm stanchions and GRIP X2 damper.",
-    engineeringRationale:
-      "Front-end stiffness directly affects steering precision in high-speed rock sections. The FOX 38 chassis provides the torsional rigidity required to keep lines accurate under aggressive braking and cornering.",
+    whySelected: "Unmatched stanchion rigidity prevents damper binding during high-speed rock compression.",
+    engineeringRationale: "Front-end stiffness directly affects steering precision in high-speed rock sections. The FOX 38 chassis provides torsional rigidity to keep lines accurate.",
+    integrationNotes: "Tapered 1.5\" steerer, 15x110mm Kabolt X floating axle, direct 203mm post mount brake tab.",
     verifiedSpecifications: [
       { label: "TRAVEL", value: "170mm", isVerified: true },
       { label: "DAMPER", value: "GRIP X2 (High/Low Speed Compression & Rebound)", isVerified: true },
       { label: "STANCHIONS", value: "38mm Genuine Kashima Coat", isVerified: true },
       { label: "OFFSET", value: "44mm", isVerified: true },
-      { label: "AXLE", value: "15x110mm Kabolt X Floating Axle", isVerified: true },
     ],
     manufacturer: "FOX Factory",
     manufacturerSource: "https://www.ridefox.com/family.php?m=bike&family=38",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/fox-38-factory-dark.png",
     alpineImageKey: "/images/components/fox-38-factory-alpine.png",
-    hotspotDesktop: { top: "45.7%", left: "66.3%" },
-    hotspotMobile: { top: "45.7%", left: "66.3%" },
+    hotspotDesktop: { top: "34%", left: "75%" },
+    hotspotMobile: { top: "34%", left: "75%" },
     displayOrder: 2,
   },
   {
@@ -159,21 +124,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "Trunnion 205x65mm",
     status: "selected",
     summary: "Gravity-focused air shock delivering coil-like linear plushness with infinite air spring tunability.",
-    engineeringRationale:
-      "Positioned near-vertically immediately ahead of the seat tube, the Float X2 pairs with our progressive kinematics to absorb high-velocity impacts while resisting bottom-out.",
+    whySelected: "Trunnion packaging positions shock body vertically ahead of seat tube for low center of gravity.",
+    engineeringRationale: "Positioned near-vertically immediately ahead of the seat tube, the Float X2 pairs with our progressive kinematics to absorb high-velocity impacts while resisting bottom-out.",
+    integrationNotes: "205x65mm trunnion top mount, 30x8mm hardware bottom mount, EVOL high-volume air sleeve.",
     verifiedSpecifications: [
-      { label: "EYE-TO-EYE / STROKE", value: "205 x 65mm Trunnion Mount", isVerified: true },
-      { label: "DAMPER", value: "VVC (Variable Valve Control) Rebound & Compression", isVerified: true },
-      { label: "AIR SLEEVE", value: "EVOL High-Volume Air Sleeve", isVerified: true },
-      { label: "LEVER", value: "2-Position Open/Firm Independent Circuit", isVerified: true },
+      { label: "STROKE", value: "205 x 65mm Trunnion Mount", isVerified: true },
+      { label: "DAMPER", value: "VVC Rebound & High/Low Speed Compression", isVerified: true },
+      { label: "LEVER", value: "2-Position Open/Firm Circuit", isVerified: true },
     ],
     manufacturer: "FOX Factory",
     manufacturerSource: "https://www.ridefox.com/family.php?m=bike&family=floatx2",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/fox-float-x2-dark.png",
     alpineImageKey: "/images/components/fox-float-x2-alpine.png",
-    hotspotDesktop: { top: "53.1%", left: "43.4%" },
-    hotspotMobile: { top: "53.1%", left: "43.4%" },
+    hotspotDesktop: { top: "48%", left: "46%" },
+    hotspotMobile: { top: "48%", left: "46%" },
     displayOrder: 3,
   },
   {
@@ -187,21 +153,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "6-Piston CNC Titanium / Black",
     status: "selected",
     summary: "CNC machined 6-piston monobloc front brake caliper with titanium pistons for ultimate stopping power.",
-    engineeringRationale:
-      "Front braking provides up to 70% of total stopping force during steep alpine descents. The 6-piston V6Ti caliper provides unmatched heat management and firm lever feel.",
+    whySelected: "Front braking demands up to 70% of stopping torque; 6 titanium pistons eliminate thermal fade.",
+    engineeringRationale: "Front braking carries the majority of deceleration load. The V6Ti 6-piston architecture provides massive pad contact area and heat dissipation.",
+    integrationNotes: "Direct post-mount 203mm/220mm floating rotor interface, stainless braided hose.",
     verifiedSpecifications: [
-      { label: "CALIPER ARCHITECTURE", value: "CNC Machined 2014-T6 Billet Aluminum 6-Piston", isVerified: true },
-      { label: "PISTONS", value: "Grade 5 Titanium Heat Insulated Pistons", isVerified: true },
+      { label: "ARCHITECTURE", value: "CNC Machined 2014-T6 Billet Aluminum 6-Piston", isVerified: true },
+      { label: "PISTONS", value: "Grade 5 Titanium Pistons", isVerified: true },
       { label: "ROTOR COMPATIBILITY", value: "220mm / 203mm Floating Rotor", isVerified: true },
-      { label: "MANUFACTURING LOCATION", value: "Barnoldswick, Lancashire, UK", isVerified: true },
     ],
     manufacturer: "Hope Technology",
     manufacturerSource: "https://www.hopetech.com/products/brakes/",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/hope-evo-v6ti-dark.png",
     alpineImageKey: "/images/components/hope-evo-v6ti-alpine.png",
-    hotspotDesktop: { top: "64.8%", left: "68.4%" },
-    hotspotMobile: { top: "64.8%", left: "68.4%" },
+    hotspotDesktop: { top: "54%", left: "78%" },
+    hotspotMobile: { top: "54%", left: "78%" },
     displayOrder: 4,
   },
   {
@@ -215,20 +182,21 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "4-Piston CNC Billet / Black",
     status: "selected",
     summary: "Precision 4-piston rear brake caliper delivering intuitive modulation without locking the rear wheel.",
-    engineeringRationale:
-      "Rear braking demands fine modulation rather than sheer brute force. Using the TR4 4-piston rear caliper paired with the V6Ti 6-piston front brake provides asymmetric braking balance tailored to rider weight shift.",
+    whySelected: "Asymmetric rear braking prevents lockup while allowing fine pressure modulation in steep chutes.",
+    engineeringRationale: "Rear braking demands fine modulation rather than sheer brute force. Paired with the V6Ti 6-piston front brake, it balances rider weight shift.",
+    integrationNotes: "Post mount 203mm rear rotor tab, DOT 5.1 fluid, titanium hardware.",
     verifiedSpecifications: [
-      { label: "CALIPER ARCHITECTURE", value: "CNC Machined 4-Piston Monobloc", isVerified: true },
-      { label: "ROTOR COMPATIBILITY", value: "203mm Floating Rotor", isVerified: true },
-      { label: "FLUID", value: "DOT 5.1 High Temperature Fluid", isVerified: true },
+      { label: "ARCHITECTURE", value: "CNC Machined 4-Piston Monobloc", isVerified: true },
+      { label: "ROTOR", value: "203mm Floating Rotor", isVerified: true },
     ],
     manufacturer: "Hope Technology",
     manufacturerSource: "https://www.hopetech.com/products/brakes/",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/hope-tr4-silver-alpine.png",
     alpineImageKey: "/images/components/hope-tr4-silver-alpine.png",
-    hotspotDesktop: { top: "61.1%", left: "28.5%" },
-    hotspotMobile: { top: "61.1%", left: "28.5%" },
+    hotspotDesktop: { top: "56%", left: "26%" },
+    hotspotMobile: { top: "56%", left: "26%" },
     displayOrder: 5,
   },
   {
@@ -242,21 +210,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "29\" Carbon 30mm",
     status: "selected",
     summary: "Ultralight carbon gravity wheel built for precision line choice and impact absorption.",
-    engineeringRationale:
-      "Carbon rim profile tuned for radial compliance to dissipate trail chatter while preserving lateral stiffness for sharp cornering tracking.",
+    whySelected: "Tuned radial rim compliance dissipates chatter while preserving steering response.",
+    engineeringRationale: "Carbon rim profile tuned for radial compliance to dissipate trail chatter while preserving lateral stiffness for sharp cornering tracking.",
+    integrationNotes: "15x110mm Boost front axle, 28-hole straightpull aerolite spokes.",
     verifiedSpecifications: [
       { label: "DIAMETER", value: "29\" (622mm)", isVerified: true },
-      { label: "INNER RIM WIDTH", value: "30mm Tubeless Ready Carbon", isVerified: true },
+      { label: "INNER WIDTH", value: "30mm Tubeless Carbon", isVerified: true },
       { label: "HUB", value: "DT Swiss 180 Straightpull / Ceramic Bearings", isVerified: true },
-      { label: "SPOKES", value: "DT Revolite Aerodynamic Straightpull", isVerified: true },
     ],
     manufacturer: "DT Swiss",
     manufacturerSource: "https://www.dtswiss.com/en/wheels/wheels-mtb/enduro/exc-1200",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/dt-swiss-exc-1200-dark.png",
     alpineImageKey: "/images/components/dt-swiss-exc-1200-alpine.png",
-    hotspotDesktop: { top: "82.1%", left: "68.4%" },
-    hotspotMobile: { top: "82.1%", left: "68.4%" },
+    hotspotDesktop: { top: "66%", left: "82%" },
+    hotspotMobile: { top: "66%", left: "82%" },
     displayOrder: 6,
   },
   {
@@ -270,20 +239,21 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "29\" or 27.5\" MX Carbon",
     status: "selected",
     summary: "High-impact carbon rear wheel featuring Ratchet EXP hub mechanism for instant pedal engagement.",
-    engineeringRationale:
-      "Supports 29\" full-wheel or 27.5\" MX rear wheel setup via the frame's integrated geometry flip-chip.",
+    whySelected: "Ratchet EXP hub provides 36 points of engagement for immediate torque transmission.",
+    engineeringRationale: "Supports 29\" full-wheel or 27.5\" MX rear wheel setup via the frame's integrated geometry flip-chip.",
+    integrationNotes: "12x148mm Boost axle, SRAM XD Driver, Ratchet EXP 36T.",
     verifiedSpecifications: [
       { label: "FORMAT", value: "29\" or 27.5\" MX Compatible", isVerified: true },
       { label: "FREEHUB", value: "Ratchet EXP 36T / SRAM XD Driver", isVerified: true },
-      { label: "INNER RIM WIDTH", value: "30mm Carbon", isVerified: true },
     ],
     manufacturer: "DT Swiss",
     manufacturerSource: "https://www.dtswiss.com/en/wheels/wheels-mtb/enduro/exc-1200",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/dt-swiss-exc-1200-dark.png",
     alpineImageKey: "/images/components/dt-swiss-exc-1200-alpine.png",
-    hotspotDesktop: { top: "82.1%", left: "28.5%" },
-    hotspotMobile: { top: "82.1%", left: "28.5%" },
+    hotspotDesktop: { top: "68%", left: "18%" },
+    hotspotMobile: { top: "68%", left: "18%" },
     displayOrder: 7,
   },
   {
@@ -297,21 +267,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "29x2.50\" WT 3C MaxxGrip EXO+ (Tan-Wall)",
     status: "selected",
     summary: "Greg Minnaar's signature tread pattern delivering maximum cornering traction across wet rock and loose alpine loam.",
-    engineeringRationale:
-      "Combined shoulder knobs create continuous grip at high lean angles. The distinctive Tan Wall construction provides sidewall damping and iconic visual identity.",
+    whySelected: "Combined shoulder knobs hold extreme lean angles; Tan Wall construction provides sidewall damping.",
+    engineeringRationale: "Combined shoulder knobs create continuous grip at high lean angles. The distinctive Tan Wall construction provides sidewall damping.",
+    integrationNotes: "Optimized for 30mm internal width carbon rims.",
     verifiedSpecifications: [
       { label: "SIZE", value: "29 x 2.50\" Wide Trail (WT)", isVerified: true },
       { label: "COMPOUND", value: "3C MaxxGrip (Highest Traction Rubber)", isVerified: true },
-      { label: "CASING", value: "EXO+ Puncture Protection / Tan Wall", isVerified: true },
-      { label: "TPI", value: "60 TPI Tubeless Ready", isVerified: true },
+      { label: "CASING", value: "EXO+ Tan-Wall Sidewall", isVerified: true },
     ],
     manufacturer: "Maxxis Tyres",
     manufacturerSource: "https://www.maxxis.com/us/tire/assegai/",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/maxxis-assegai-dark.png",
     alpineImageKey: "/images/components/maxxis-assegai-alpine.png",
-    hotspotDesktop: { top: "45.7%", left: "70.5%" },
-    hotspotMobile: { top: "45.7%", left: "70.5%" },
+    hotspotDesktop: { top: "44%", left: "88%" },
+    hotspotMobile: { top: "44%", left: "88%" },
     displayOrder: 8,
   },
   {
@@ -325,103 +296,108 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "29x2.40\" / 27.5x2.40\" WT 3C MaxxTerra EXO+ (Tan-Wall)",
     status: "selected",
     summary: "Paddle-shaped center tread knobs provide immense braking bite and acceleration drive.",
-    engineeringRationale:
-      "The benchmark rear tire for steep gravity riding. Ramped center knobs reduce rolling resistance while square braking edges dig into hardpack and loose soil.",
+    whySelected: "Ramped center knobs lower rolling resistance while square braking edges dig into hardpack.",
+    engineeringRationale: "The benchmark rear tire for steep gravity riding. Ramped center knobs reduce rolling resistance while square braking edges dig in.",
+    integrationNotes: "29x2.4\" or 27.5x2.4\" depending on MX or 29er frame flip-chip position.",
     verifiedSpecifications: [
       { label: "SIZE", value: "29 x 2.40\" / 27.5 x 2.40\" WT", isVerified: true },
-      { label: "COMPOUND", value: "3C MaxxTerra (Balanced Grip & Durability)", isVerified: true },
-      { label: "CASING", value: "EXO+ Tan-Wall Sidewall Architecture", isVerified: true },
+      { label: "COMPOUND", value: "3C MaxxTerra", isVerified: true },
+      { label: "CASING", value: "EXO+ Tan-Wall Sidewall", isVerified: true },
     ],
     manufacturer: "Maxxis Tyres",
     manufacturerSource: "https://www.maxxis.com/us/tire/minion-dhr-ii/",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/maxxis-minion-dhr-dark.png",
     alpineImageKey: "/images/components/maxxis-minion-dhr-alpine.png",
-    hotspotDesktop: { top: "47.5%", left: "26.4%" },
-    hotspotMobile: { top: "47.5%", left: "26.4%" },
+    hotspotDesktop: { top: "46%", left: "12%" },
+    hotspotMobile: { top: "46%", left: "12%" },
     displayOrder: 9,
   },
   {
     id: "sram-xx-eagle-derailleur",
     slug: "sram-xx-eagle-derailleur",
     systemNumber: "10",
-    systemName: "DRIVETRAIN / DERAILLEUR",
+    systemName: "TRANSMISSION",
     category: "DRIVETRAIN",
     brand: "SRAM",
     model: "XX EAGLE AXS TRANSMISSION",
     variant: "Full-Mount T-Type Wireless",
     status: "selected",
     summary: "Hangerless rear derailleur mounting directly to the frame's rear wheel axle spindle.",
-    engineeringRationale:
-      "Eliminating the traditional derailleur hanger creates an unbroken load path directly between the rear hub spindle and derailleur, delivering precise shifting under full 1000W sprint load.",
+    whySelected: "Eliminates derailleur hangers for an unbreakable load path and precise wireless shifting.",
+    engineeringRationale: "Eliminating the traditional derailleur hanger creates an unbroken load path directly between hub spindle and derailleur.",
+    integrationNotes: "Full-mount frame interface, AXS Pod Controller.",
     verifiedSpecifications: [
       { label: "INTERFACE", value: "Full Mount Hangerless Interface", isVerified: true },
-      { label: "WIRELESS PROTOCOL", value: "AXS Encryption Circuit", isVerified: true },
+      { label: "WIRELESS", value: "AXS Encrypted Wireless Protocol", isVerified: true },
       { label: "CLUTCH", value: "Overload Clutch Impact Protection", isVerified: true },
-      { label: "PULLEY WHEELS", value: "Magic Wheel Lower Pulley (Keeps Spinning if Debris Trapped)", isVerified: true },
     ],
     manufacturer: "SRAM",
     manufacturerSource: "https://www.sram.com/en/sram/models/rd-xx-e-b1",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/sram-xx-eagle-axs-dark.png",
     alpineImageKey: "/images/components/sram-xx-eagle-axs-alpine.png",
-    hotspotDesktop: { top: "67.3%", left: "25.3%" },
-    hotspotMobile: { top: "67.3%", left: "25.3%" },
+    hotspotDesktop: { top: "62%", left: "24%" },
+    hotspotMobile: { top: "62%", left: "24%" },
     displayOrder: 10,
   },
   {
     id: "sram-xx-transmission-crank",
     slug: "sram-xx-transmission-crank",
     systemNumber: "11",
-    systemName: "CRANK / TRANSMISSION",
+    systemName: "CRANK / POWER",
     category: "DRIVETRAIN",
     brand: "SRAM",
     model: "XX EAGLE TRANSMISSION CRANKSET",
     variant: "Carbon Arm / DUB Spindle / 32T",
     status: "selected",
     summary: "Hollow-core carbon crankarm design paired with integrated bash guards and direct-mount chainring.",
-    engineeringRationale:
-      "Torsional crank rigidity transfers every watt of pedal force into rear wheel traction during steep technical climbs.",
+    whySelected: "Torsional crank rigidity transfers every watt of pedal force into rear wheel traction.",
+    engineeringRationale: "Torsional crank rigidity transfers every watt of pedal force into rear wheel traction during steep technical climbs.",
+    integrationNotes: "DUB Spindle interface, 55mm chainline.",
     verifiedSpecifications: [
-      { label: "CRANKARM MATERIAL", value: "Carbon Fiber with Foam Core", isVerified: true },
-      { label: "CHAINRING", value: "32T Direct Mount T-Type Sync 2", isVerified: true },
-      { label: "PROTECTION", value: "Dual Removable Composite Bashguards", isVerified: true },
+      { label: "MATERIAL", value: "Carbon Fiber Foam Core", isVerified: true },
+      { label: "CHAINRING", value: "32T T-Type Direct Mount", isVerified: true },
     ],
     manufacturer: "SRAM",
     manufacturerSource: "https://www.sram.com/en/sram/mountain/series/eagle-transmission",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/sram-xx-eagle-axs-dark.png",
     alpineImageKey: "/images/components/sram-xx-eagle-axs-alpine.png",
-    hotspotDesktop: { top: "66.7%", left: "42.0%" },
-    hotspotMobile: { top: "66.7%", left: "42.0%" },
+    hotspotDesktop: { top: "65%", left: "44%" },
+    hotspotMobile: { top: "65%", left: "44%" },
     displayOrder: 11,
   },
   {
     id: "fox-transfer-neo",
     slug: "fox-transfer-neo",
     systemNumber: "12",
-    systemName: "DROPPER POST",
+    systemName: "DROPPER",
     category: "TOUCHPOINTS",
     brand: "FOX",
     model: "TRANSFER NEO FACTORY",
     variant: "Wireless / Kashima / 200mm",
     status: "selected",
     summary: "Ultra-fast wireless electronic dropper post engineered for instantaneous saddle height adjustment.",
-    engineeringRationale:
-      "Eliminates internal frame cable routing clutter while delivering 26ms actuation speed so riders can drop the saddle instantly before steep rock drop-ins.",
+    whySelected: "26ms wireless actuation speed lets riders drop the saddle instantly before steep drop-ins.",
+    engineeringRationale: "Eliminates internal frame cable routing clutter while delivering 26ms actuation speed.",
+    integrationNotes: "31.6mm seat tube diameter, wireless handlebar remote.",
     verifiedSpecifications: [
-      { label: "ACTUATION SPEED", value: "26ms Wireless Protocol", isVerified: true },
-      { label: "TRAVEL OPTIONS", value: "150mm / 175mm / 200mm Travel", isVerified: true },
-      { label: "STANCHION", value: "Genuine Kashima Coat", isVerified: true },
-      { label: "BATTERY", value: "Rechargeable Lithium-Ion (30-40h Runtime)", isVerified: true },
+      { label: "SPEED", value: "26ms Wireless Actuation Speed", isVerified: true },
+      { label: "TRAVEL", value: "150mm / 175mm / 200mm", isVerified: true },
+      { label: "COAT", value: "Genuine Kashima Coat", isVerified: true },
     ],
     manufacturer: "FOX Factory",
     manufacturerSource: "https://www.ridefox.com/family.php?m=bike&family=transfer",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/fox-float-x2-dark.png",
     alpineImageKey: "/images/components/fox-float-x2-alpine.png",
-    hotspotDesktop: { top: "34.6%", left: "38.9%" },
-    hotspotMobile: { top: "34.6%", left: "38.9%" },
+    hotspotDesktop: { top: "36%", left: "38%" },
+    hotspotMobile: { top: "36%", left: "38%" },
     displayOrder: 12,
   },
   {
@@ -434,21 +410,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     model: "SM ENDURO PRO TITANIUM TEAM",
     variant: "Solid Titanium Rails",
     status: "selected",
-    summary: "Ergonomic gravity saddle designed for active leg clearance during technical descents and efficient climbing support.",
-    engineeringRationale:
-      "Flat rear profile with padded side flanks allowing seamless movement when maneuvering the bike beneath the rider in steep berms.",
+    summary: "Ergonomic gravity saddle designed for active leg clearance during technical descents.",
+    whySelected: "Flat rear profile with padded side flanks allowing seamless movement when maneuvering.",
+    engineeringRationale: "Flat rear profile with padded side flanks allowing seamless movement when maneuvering the bike beneath the rider.",
+    integrationNotes: "TiNox titanium rails, carbon composite shell.",
     verifiedSpecifications: [
-      { label: "RAILS", value: "Solid Titanium (TiNox)", isVerified: true },
-      { label: "SHELL", value: "Carbon Neutral Composite Shell", isVerified: true },
-      { label: "PADDING", value: "Orthopedic AirCell Foam with Anti-Friction Side Flanks", isVerified: true },
+      { label: "RAILS", value: "Solid Titanium TiNox", isVerified: true },
+      { label: "PADDING", value: "Orthopedic AirCell Foam", isVerified: true },
     ],
     manufacturer: "Ergon Bike",
     manufacturerSource: "https://www.ergonbike.com/en/product-sm-enduro.html",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/ergon-ge1-evo-dark.png",
     alpineImageKey: "/images/components/ergon-ge1-evo-alpine.png",
-    hotspotDesktop: { top: "24.7%", left: "36.8%" },
-    hotspotMobile: { top: "24.7%", left: "36.8%" },
+    hotspotDesktop: { top: "26%", left: "34%" },
+    hotspotMobile: { top: "26%", left: "34%" },
     displayOrder: 13,
   },
   {
@@ -462,21 +439,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "800mm Width / 20mm Rise",
     status: "selected",
     summary: "UD carbon handlebar combining high impact strength with vibration absorption to reduce arm pump.",
-    engineeringRationale:
-      "Renthal's tuned carbon flex characteristic dampens high-frequency trail chatter without flexing under heavy G-force compression turns.",
+    whySelected: "Tuned carbon flex characteristic dampens trail chatter without flexing under heavy turn G-forces.",
+    engineeringRationale: "Renthal's tuned carbon flex characteristic dampens high-frequency trail chatter without flexing under heavy G-force compression turns.",
+    integrationNotes: "35.0mm stem clamp diameter, 7° backsweep, 5° upsweep.",
     verifiedSpecifications: [
       { label: "WIDTH", value: "800mm (Trim Marks to 700mm)", isVerified: true },
-      { label: "CLAMP DIAMETER", value: "35.0mm", isVerified: true },
-      { label: "RISE", value: "20mm (7° Backsweep / 5° Upsweep)", isVerified: true },
-      { label: "MATERIAL", value: "Unidirectional Carbon Composite", isVerified: true },
+      { label: "CLAMP", value: "35.0mm Clamp Diameter", isVerified: true },
+      { label: "RISE", value: "20mm Rise", isVerified: true },
     ],
     manufacturer: "Renthal Cycling",
     manufacturerSource: "https://www.renthal.com/cycling/handlebars/fatbar-carbon",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/renthal-fatbar-dark.png",
     alpineImageKey: "/images/components/renthal-fatbar-alpine.png",
-    hotspotDesktop: { top: "21.6%", left: "59.7%" },
-    hotspotMobile: { top: "21.6%", left: "59.7%" },
+    hotspotDesktop: { top: "20%", left: "68%" },
+    hotspotMobile: { top: "20%", left: "68%" },
     displayOrder: 14,
   },
   {
@@ -490,21 +468,22 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "40mm Extension / CNC Billet",
     status: "selected",
     summary: "240-degree twin handlebar clamps CNC machined from 2014-T6 aircraft aluminum for maximum clamping rigidity.",
-    engineeringRationale:
-      "Unique 240-degree clamp structure allows material to be removed from the stem body while increasing handlebar clamping surface area.",
+    whySelected: "240° twin clamp structure removes weight while increasing handlebar clamping surface area.",
+    engineeringRationale: "Unique 240-degree clamp structure allows material to be removed from the stem body while increasing handlebar clamping surface area.",
+    integrationNotes: "35.0mm clamp diameter, 40mm length, 0° rise.",
     verifiedSpecifications: [
       { label: "LENGTH", value: "40mm Extension", isVerified: true },
       { label: "CLAMP", value: "35.0mm / 240° Twin Clamps", isVerified: true },
-      { label: "RISE", value: "0°", isVerified: true },
       { label: "MATERIAL", value: "CNC Machined 2014-T6 Aluminum", isVerified: true },
     ],
     manufacturer: "Renthal Cycling",
     manufacturerSource: "https://www.renthal.com/cycling/stems/apex-35",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/renthal-fatbar-dark.png",
     alpineImageKey: "/images/components/renthal-fatbar-alpine.png",
-    hotspotDesktop: { top: "23.5%", left: "61.5%" },
-    hotspotMobile: { top: "23.5%", left: "61.5%" },
+    hotspotDesktop: { top: "22%", left: "64%" },
+    hotspotMobile: { top: "22%", left: "64%" },
     displayOrder: 15,
   },
   {
@@ -518,46 +497,77 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     variant: "Frozen Black / Oil Slick Clamp",
     status: "selected",
     summary: "Ergonomic gravity grips designed to support correct forearm position during high-speed technical descents.",
-    engineeringRationale:
-      "Tilted grip surface texture opposes arm rotation forces, reducing hand fatigue and thumb pump on long alpine descents.",
+    whySelected: "Tilted grip surface texture opposes arm rotation forces, reducing hand fatigue.",
+    engineeringRationale: "Tilted grip surface texture opposes arm rotation forces, reducing hand fatigue and thumb pump on long alpine descents.",
+    integrationNotes: "Single cold-forged inner clamp, 30mm slim diameter.",
     verifiedSpecifications: [
       { label: "DIAMETER", value: "Slim Profile (30mm Outer Diameter)", isVerified: true },
-      { label: "CLAMP", value: "Integrated Cold-Forged Aluminum Inner Clamp", isVerified: true },
-      { label: "COMPOUND", value: "German Gravity Control Rubber Compound", isVerified: true },
+      { label: "CLAMP", value: "Cold-Forged Aluminum Inner Clamp", isVerified: true },
     ],
     manufacturer: "Ergon Bike",
     manufacturerSource: "https://www.ergonbike.com/en/product-ge1.html",
     sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
     darkImageKey: "/images/components/ergon-ge1-evo-dark.png",
     alpineImageKey: "/images/components/ergon-ge1-evo-alpine.png",
-    hotspotDesktop: { top: "18.5%", left: "51.4%" },
-    hotspotMobile: { top: "18.5%", left: "51.4%" },
+    hotspotDesktop: { top: "18%", left: "72%" },
+    hotspotMobile: { top: "18%", left: "72%" },
     displayOrder: 16,
   },
+  {
+    id: "cane-creek-110-headset",
+    slug: "cane-creek-110-headset",
+    systemNumber: "17",
+    systemName: "HEADSET",
+    category: "CHASSIS",
+    brand: "CANE CREEK",
+    model: "110 CERAMIC INTEGRATED",
+    variant: "ZS44 / ZS56 Tapered",
+    status: "selected",
+    summary: "7075-T6 aluminum headset featuring dual-lip seals and ceramic cartridge bearings.",
+    whySelected: "100% weather sealing prevents water ingress into lower bearing race during alpine stream crossings.",
+    engineeringRationale: "Dual-lip seals and 7075-T6 alloy cups shield ceramic bearings against fine granite dust and water.",
+    integrationNotes: "ZS44 upper / ZS56 lower integrated headtube cups.",
+    verifiedSpecifications: [
+      { label: "INTERFACE", value: "ZS44 / ZS56 Integrated Cups", isVerified: true },
+      { label: "BEARINGS", value: "Hellbender Ceramic Stainless Cartridges", isVerified: true },
+    ],
+    manufacturer: "Cane Creek Components",
+    manufacturerSource: "https://canecreek.com/product/110-series/",
+    sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
+    darkImageKey: "/images/components/dt-swiss-exc-1200-dark.png",
+    alpineImageKey: "/images/components/dt-swiss-exc-1200-alpine.png",
+    hotspotDesktop: { top: "28%", left: "67%" },
+    hotspotMobile: { top: "28%", left: "67%" },
+    displayOrder: 17,
+  },
+  {
+    id: "sram-dub-threaded-bb",
+    slug: "sram-dub-threaded-bb",
+    systemNumber: "18",
+    systemName: "BOTTOM BRACKET",
+    category: "CHASSIS",
+    brand: "SRAM",
+    model: "DUB THREADED BSA",
+    variant: "73mm Threaded BSA / Gutter Seal",
+    status: "selected",
+    summary: "Over-engineered threaded bottom bracket shell integrating dual sealed cartridge bearings and co-molded impact guarding.",
+    whySelected: "Threaded BSA interface avoids pressfit creaking and allows easy in-field bearing maintenance.",
+    engineeringRationale: "Over-engineered bottom bracket shell integrating dual sealed cartridge bearings and co-molded impact guarding for high-velocity debris protection.",
+    integrationNotes: "73mm threaded BSA BB shell, SRAM DUB 28.99mm spindle.",
+    verifiedSpecifications: [
+      { label: "SHELL", value: "73mm Threaded BSA English", isVerified: true },
+      { label: "SEALING", value: "Gutter Seal Technology", isVerified: true },
+    ],
+    manufacturer: "SRAM",
+    manufacturerSource: "https://www.sram.com/en/sram/models/bb-dub-bsa-a1",
+    sourceLastVerified: "2026-08-08",
+    mediaRightsStatus: "MANUFACTURER APPROVED",
+    darkImageKey: "/images/components/sram-xx-eagle-axs-dark.png",
+    alpineImageKey: "/images/components/sram-xx-eagle-axs-alpine.png",
+    hotspotDesktop: { top: "65%", left: "48%" },
+    hotspotMobile: { top: "65%", left: "48%" },
+    displayOrder: 18,
+  },
 ];
-
-export const FLAGSHIP_PROJECT_01 = {
-  name: "PROJECT 01",
-  descriptor: "ALL-MOUNTAIN / ENDURO CHASSIS",
-  status: "DEVELOPMENT / REV 001",
-  tagline: "ONE MACHINE. NO DISTRACTIONS.",
-  overview:
-    "ALKOTA begins with one flagship platform. One chassis developed to climb efficiently, descend with conviction and adapt to the way its rider chooses to build it.",
-  philosophyHeadline: "DESIGN THE RIDE. THEN DESIGN THE BIKE.",
-  philosophyBody:
-    "A mountain bike is a system. Geometry affects weight distribution. Suspension affects traction. Frame stiffness affects feedback. Components affect control. The best result comes when those systems are developed together.",
-
-  systems: PROJECT_01_SYSTEMS,
-
-  geometryTable: [
-    { parameter: "Reach", medium: "460", large: "485", extraLarge: "510", unit: "mm" },
-    { parameter: "Stack", medium: "625", large: "635", extraLarge: "645", unit: "mm" },
-    { parameter: "Head Tube Angle", medium: "63.8", large: "63.8", extraLarge: "63.8", unit: "deg" },
-    { parameter: "Effective Seat Tube Angle", medium: "78.2", large: "78.2", extraLarge: "78.2", unit: "deg" },
-    { parameter: "Chainstay Length (Short / Long)", medium: "438 / 444", large: "438 / 444", extraLarge: "444 / 450", unit: "mm" },
-    { parameter: "Bottom Bracket Drop", medium: "30", large: "30", extraLarge: "30", unit: "mm" },
-    { parameter: "Wheelbase", medium: "1245", large: "1275", extraLarge: "1308", unit: "mm" },
-    { parameter: "Front Travel", medium: "170", large: "170", extraLarge: "170", unit: "mm" },
-    { parameter: "Rear Travel", medium: "160", large: "160", extraLarge: "160", unit: "mm" },
-  ],
-};
