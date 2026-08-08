@@ -9,7 +9,7 @@ import { brandAssets } from "@/lib/assets";
 
 export default function HeroFullBleed() {
   return (
-    <section className="relative w-full min-h-[92vh] md:min-h-screen bg-alkota-carbon text-alkota-white flex flex-col justify-between pt-28 pb-10 px-4 sm:px-6 lg:px-8 tech-grid-dark overflow-hidden">
+    <section className="relative w-full min-h-[92vh] md:min-h-screen bg-alkota-carbon text-alkota-white flex flex-col justify-between pt-28 pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Photographic Alpine Showroom Background featuring canonical Project 01 Glacier White */}
       <div className="absolute inset-0 z-0 opacity-40 md:opacity-55 transition-opacity duration-700">
         <Image
@@ -71,13 +71,7 @@ export default function HeroFullBleed() {
       </div>
 
       {/* Bottom Technical Bar & Scroll Indicator */}
-      <div className="max-w-7xl mx-auto w-full flex items-center justify-between border-t border-white/10 pt-4 z-10 font-mono text-xs text-alkota-slate">
-        <div className="flex items-center space-x-6">
-          <span>CHASSIS: UD CARBON</span>
-          <span className="hidden md:inline">TYRES: MAXXIS TAN-WALL</span>
-          <span className="hidden lg:inline">FORMAT: MX / 29</span>
-        </div>
-
+      <div className="max-w-7xl mx-auto w-full flex items-center justify-end border-t border-white/10 pt-4 z-10 font-mono text-xs text-alkota-slate">
         <div className="flex items-center space-x-2 text-[10px] uppercase tracking-wider">
           <span>SCROLL TO DISCOVER</span>
           <ChevronDown className="w-4 h-4 text-alkota-signal animate-bounce" />
