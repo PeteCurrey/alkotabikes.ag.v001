@@ -530,7 +530,7 @@ export default function MaterialsPage() {
 
           <Link
             href="/about/testing"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-alkota-signal text-alkota-black font-mono text-xs font-bold tracking-wider uppercase hover:bg-white transition-colors shadow-2xl"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-alkota-signal text-alkota-white font-mono text-xs font-bold tracking-wider uppercase hover:bg-white hover:text-alkota-black transition-colors shadow-2xl"
           >
             <span>TESTING + VALIDATION</span>
             <ArrowRight className="w-4 h-4" />

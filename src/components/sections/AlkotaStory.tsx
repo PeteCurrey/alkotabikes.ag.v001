@@ -32,7 +32,7 @@ export default function AlkotaStory() {
           <div className="pt-4 flex flex-wrap gap-4 font-mono text-xs">
             <Link
               href="/about/story"
-              className="px-6 py-3.5 bg-alkota-signal text-alkota-black font-bold uppercase hover:bg-white transition-colors flex items-center gap-2 shadow-lg"
+              className="px-6 py-3.5 bg-alkota-signal text-alkota-white font-bold uppercase hover:bg-white hover:text-alkota-black transition-colors flex items-center gap-2 shadow-lg"
             >
               <span>OUR STORY</span>
               <ArrowRight className="w-4 h-4" />

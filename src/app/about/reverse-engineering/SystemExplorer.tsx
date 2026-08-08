@@ -67,14 +67,14 @@ export default function SystemExplorer() {
               onClick={() => setActive(isOpen ? null : layer.id)}
               className={`w-full flex items-center justify-between px-6 py-5 font-mono text-xs font-bold uppercase tracking-widest transition-all group ${
                 isOpen
-                  ? "bg-alkota-signal text-alkota-black"
+                  ? "bg-alkota-signal text-alkota-white"
                   : "bg-alkota-black text-alkota-white hover:bg-white/5"
               }`}
             >
               <div className="flex items-center gap-4">
                 <span
                   className={`text-[10px] font-bold tabular-nums ${
-                    isOpen ? "text-alkota-black/60" : "text-alkota-signal"
+                    isOpen ? "text-alkota-white/80" : "text-alkota-signal"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}

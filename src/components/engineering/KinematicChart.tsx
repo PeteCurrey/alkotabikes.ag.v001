@@ -135,7 +135,7 @@ export default function KinematicChart({ type }: KinematicChartProps) {
 
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#C8FF00" />
+              <stop offset="0%" stopColor="#647789" />
               <stop offset="100%" stopColor="transparent" />
             </linearGradient>
           </defs>
@@ -143,7 +143,7 @@ export default function KinematicChart({ type }: KinematicChartProps) {
           {/* Polyline */}
           <polyline
             fill="none"
-            stroke="#C8FF00"
+            stroke="#647789"
             strokeWidth="2.5"
             points={pointsString}
           />
@@ -160,7 +160,7 @@ export default function KinematicChart({ type }: KinematicChartProps) {
                   cx={cx}
                   cy={cy}
                   r={isHovered ? "6" : "4"}
-                  fill={isHovered ? "#FFFFFF" : "#C8FF00"}
+                  fill={isHovered ? "#FFFFFF" : "#647789"}
                   stroke="#0B0D0F"
                   strokeWidth="2"
                   onMouseEnter={() => setHoverIndex(idx)}
@@ -170,7 +170,7 @@ export default function KinematicChart({ type }: KinematicChartProps) {
                   <text
                     x={cx}
                     y={cy - 12}
-                    fill="#C8FF00"
+                    fill="#647789"
                     fontSize="10"
                     fontFamily="monospace"
                     textAnchor="middle"

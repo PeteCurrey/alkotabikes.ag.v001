@@ -94,11 +94,11 @@ export default function StoryNavigation() {
                 href={ch.href}
                 className={`px-3 py-1.5 whitespace-nowrap uppercase transition-all flex items-center gap-2 border text-[11px] ${
                   isActive
-                    ? "border-alkota-signal bg-alkota-signal text-alkota-black font-bold shadow-md"
+                    ? "border-alkota-signal bg-alkota-signal text-alkota-white font-bold shadow-md"
                     : "border-transparent text-alkota-slate hover:text-white hover:border-white/20"
                 }`}
               >
-                <span className={isActive ? "text-alkota-black" : "text-alkota-signal font-bold"}>
+                <span className={isActive ? "text-alkota-white" : "text-alkota-signal font-bold"}>
                   {ch.number}
                 </span>
                 <span>{ch.shortTitle}</span>

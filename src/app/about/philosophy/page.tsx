@@ -297,7 +297,7 @@ export default function EngineeringPhilosophyPage() {
           <div className="pt-8">
             <Link
               href="/bikes/project-01"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-alkota-signal text-alkota-black font-mono text-xs font-bold tracking-widest uppercase hover:bg-white transition-colors shadow-2xl"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-alkota-signal text-alkota-white font-mono text-xs font-bold tracking-widest uppercase hover:bg-white hover:text-alkota-black transition-colors shadow-2xl"
             >
               <span>EXPLORE PROJECT 01</span>
               <ArrowRight className="w-4 h-4" />

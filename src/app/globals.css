@@ -16,7 +16,7 @@
   --alkota-carbon: #0B0D0F;
   --alkota-black: #050607;
   --alkota-ice: #A8C6D8;
-  --alkota-signal: #C8FF00;
+  --alkota-signal: #647789;
 }
 
 @layer base {
@@ -32,7 +32,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     selection-background-color: var(--alkota-signal);
-    selection-color: var(--alkota-black);
+    selection-color: var(--alkota-white);
   }
 
   h1, h2, h3, h4, h5, h6 {

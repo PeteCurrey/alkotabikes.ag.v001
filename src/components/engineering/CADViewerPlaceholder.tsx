@@ -47,7 +47,7 @@ export default function CADViewerPlaceholder() {
           <polygon
             points="650,100 400,140 360,300 400,140"
             fill={wireframe ? "none" : "rgba(40,45,49,0.5)"}
-            stroke={activeLayer === "FRONT" ? "#C8FF00" : "#737C84"}
+            stroke={activeLayer === "FRONT" ? "#647789" : "#737C84"}
             strokeWidth={activeLayer === "FRONT" ? "2.5" : "1.5"}
             strokeDasharray={wireframe ? "6 3" : undefined}
           />
@@ -56,7 +56,7 @@ export default function CADViewerPlaceholder() {
             y1="100"
             x2="360"
             y2="300"
-            stroke={activeLayer === "FRONT" ? "#C8FF00" : "#737C84"}
+            stroke={activeLayer === "FRONT" ? "#647789" : "#737C84"}
             strokeWidth={activeLayer === "FRONT" ? "2.5" : "1.5"}
           />
 
@@ -66,7 +66,7 @@ export default function CADViewerPlaceholder() {
             y1="300"
             x2="150"
             y2="290"
-            stroke={activeLayer === "REAR" ? "#C8FF00" : "#737C84"}
+            stroke={activeLayer === "REAR" ? "#647789" : "#737C84"}
             strokeWidth={activeLayer === "REAR" ? "2.5" : "1.5"}
             strokeDasharray={wireframe ? "4 4" : undefined}
           />
@@ -75,15 +75,15 @@ export default function CADViewerPlaceholder() {
             y1="140"
             x2="150"
             y2="290"
-            stroke={activeLayer === "REAR" ? "#C8FF00" : "#737C84"}
+            stroke={activeLayer === "REAR" ? "#647789" : "#737C84"}
             strokeWidth={activeLayer === "REAR" ? "2.5" : "1.5"}
           />
 
           {/* Linkage Node Highlights */}
-          <circle cx="650" cy="100" r="6" fill="#C8FF00" />
-          <circle cx="400" cy="140" r="6" fill="#C8FF00" />
-          <circle cx="360" cy="300" r="8" fill="#C8FF00" />
-          <circle cx="150" cy="290" r="6" fill="#C8FF00" />
+          <circle cx="650" cy="100" r="6" fill="#647789" />
+          <circle cx="400" cy="140" r="6" fill="#647789" />
+          <circle cx="360" cy="300" r="8" fill="#647789" />
+          <circle cx="150" cy="290" r="6" fill="#647789" />
 
           {/* Crosshair Coordinates */}
           <text x="660" y="95" fill="#737C84" fontSize="10" fontFamily="monospace">

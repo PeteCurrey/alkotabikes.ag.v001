@@ -20,7 +20,7 @@ export default function Environment() {
       />
       <directionalLight position={[-5, 5, -5]} intensity={0.4} />
       <pointLight position={[0, 4, 0]} intensity={0.8} color="#A8C6D8" />
-      <pointLight position={[0, -2, 0]} intensity={0.3} color="#C8FF00" />
+      <pointLight position={[0, -2, 0]} intensity={0.3} color="#647789" />
 
       {/* Ground Contact Shadows */}
       <ContactShadows

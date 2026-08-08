@@ -66,9 +66,9 @@ export default function ProductPhilosophy() {
                   stroke="#737C84"
                   strokeWidth="16"
                 />
-                <circle cx="50" cy="250" r="20" fill="#C8FF00" />
+                <circle cx="50" cy="250" r="20" fill="#647789" />
                 <circle cx="350" cy="50" r="16" fill="#88929A" />
-                <text x="80" y="240" fill="#C8FF00" fontSize="10" fontFamily="monospace">
+                <text x="80" y="240" fill="#647789" fontSize="10" fontFamily="monospace">
                   BB NODE / BSA 73MM
                 </text>
               </svg>

@@ -16,7 +16,7 @@ export default function DesignSystemPage() {
     { name: "--alkota-carbon", hex: "#0B0D0F", class: "bg-alkota-carbon text-white" },
     { name: "--alkota-black", hex: "#050607", class: "bg-alkota-black text-white" },
     { name: "--alkota-ice", hex: "#A8C6D8", class: "bg-alkota-ice text-alkota-black" },
-    { name: "--alkota-signal", hex: "#C8FF00", class: "bg-alkota-signal text-alkota-black" },
+    { name: "--alkota-signal", hex: "#647789", class: "bg-alkota-signal text-alkota-black" },
   ];
 
   return (
