@@ -14,6 +14,7 @@ import {
   Flame,
   Building2,
   ShoppingBag,
+  DollarSign,
   UserCheck,
   Globe,
   Settings,
@@ -33,6 +34,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: "DASHBOARD", href: "/studio", icon: LayoutDashboard },
   { label: "PROJECT 01", href: "/studio/project-01", icon: Cpu },
+  { label: "COMMERCIAL", href: "/studio/commercial", icon: DollarSign, badge: "C00" },
   { label: "JOURNAL", href: "/studio/journal", icon: BookOpen },
   { label: "DESIGN ARCHIVE", href: "/studio/design", icon: Archive },
   { label: "MEDIA", href: "/studio/media", icon: Image },

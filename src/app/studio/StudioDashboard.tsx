@@ -16,6 +16,7 @@ import {
   ShoppingBag,
   Building2,
   Flame,
+  DollarSign,
 } from "lucide-react";
 import { PROJECT_01_SPECIFICATION } from "@/content/project01/specification";
 import { PROJECT01_COMPONENTS, type Project01Component } from "@/content/project01/components";
@@ -262,6 +263,13 @@ export default function StudioDashboard() {
             label="PROJECT 01"
             desc="Specification, components, geometry, build matrix"
             href="/studio/project-01"
+          />
+          <SectionCard
+            icon={DollarSign}
+            label="COMMERCIAL CONTROL"
+            desc="Pricing status, regional specs, deposit terms & dealer margin structure"
+            href="/studio/commercial"
+            badge="C00 BASELINE"
           />
           <SectionCard
             icon={BookOpen}

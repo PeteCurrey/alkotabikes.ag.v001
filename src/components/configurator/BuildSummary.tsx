@@ -7,6 +7,7 @@ import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import SpecificationStatus from "@/components/ui/SpecificationStatus";
 import { PROJECT01_MEDIA } from "@/content/project01/media";
 import { PROJECT01_COMPONENTS } from "@/content/project01/components";
+import { getPublicPriceDisplay } from "@/content/project01/commercial";
 import { BuildConfig, PROJECT01_PRICING_VISIBLE } from "./BuildStage";
 import { createCertificateData, generateCertificateHTML } from "@/lib/certificate/pdfEngine";
 import {
@@ -226,7 +227,7 @@ export default function BuildSummary({
             <div className="p-3 bg-alkota-carbon border border-white/10 flex justify-between items-center">
               <span className="text-alkota-slate uppercase">PRICING STATUS:</span>
               <span className="text-white font-bold uppercase">
-                {PROJECT01_PRICING_VISIBLE ? "£8,450 BASE ESTIMATE" : "FINAL PRICING TO BE CONFIRMED"}
+                {getPublicPriceDisplay().text}
               </span>
             </div>
           </div>
