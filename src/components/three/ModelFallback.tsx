@@ -24,7 +24,7 @@ export default function ModelFallback({
   const imageSrc = isCarbon ? brandAssets.project01CarbonHero : brandAssets.project01WhiteHero;
 
   const fallbackHotspots = [
-    { id: "fork", title: "FOX 38 Factory GRIP2", x: "74%", y: "45%", desc: "170mm travel, Kashima coating, tuned for high-velocity chatter." },
+    { id: "fork", title: "FOX 38 Factory GRIP2", x: "74%", y: "45%", desc: "160mm travel, Kashima coating, tuned for high-velocity chatter." },
     { id: "frame", title: "UD Carbon Monocoque", x: "48%", y: "42%", desc: "High-modulus carbon layup schedule providing progressive flex compliance." },
     { id: "shock", title: "FOX Float X2 Factory", x: "40%", y: "50%", desc: "Near-vertical shock mounting with 28% end-stroke progression." },
     { id: "wheels", title: "MAXXIS Tan-Wall Tyres", x: "24%", y: "62%", desc: "Assegai 2.5\" Front / Minion DHR II 2.4\" Rear on Reserve 30|HD Carbon rims." },

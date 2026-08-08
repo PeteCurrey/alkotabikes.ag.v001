@@ -67,8 +67,8 @@ export const PROJECT_01_COMPONENTS: ProjectComponent[] = [
     engineeringRationale: "A mountain bike frame must manage complex multi-axis torsional forces during heavy cornering and impact. Our monocoque front triangle optimizes fiber alignment along high-stress load paths.",
     integrationNotes: "Molded internal guided carbon cable tunnels, 73mm BSA threaded bottom bracket shell, 12x148mm Boost spacing.",
     verifiedSpecifications: [
-      { label: "FRONT TRAVEL", value: "170mm", isVerified: true },
-      { label: "REAR TRAVEL", value: "160mm", isVerified: true },
+      { label: "FRONT TRAVEL", value: "160mm", isVerified: false },
+      { label: "REAR TRAVEL", value: "150mm", isVerified: false },
       { label: "MATERIAL", value: "High-Modulus Unidirectional Carbon Fiber", isVerified: true },
       { label: "BB INTERFACE", value: "73mm Threaded BSA", isVerified: true },
       { label: "REAR SPACING", value: "12x148mm Boost Spindle", isVerified: true },
@@ -98,7 +98,7 @@ export const PROJECT_01_COMPONENTS: ProjectComponent[] = [
     engineeringRationale: "Front-end stiffness directly affects steering precision in high-speed rock sections. The FOX 38 chassis provides torsional rigidity to keep lines accurate.",
     integrationNotes: "Tapered 1.5\" steerer, 15x110mm Kabolt X floating axle, direct 203mm post mount brake tab.",
     verifiedSpecifications: [
-      { label: "TRAVEL", value: "170mm", isVerified: true },
+      { label: "TRAVEL", value: "160mm", isVerified: false },
       { label: "DAMPER", value: "GRIP X2 (High/Low Speed Compression & Rebound)", isVerified: true },
       { label: "STANCHIONS", value: "38mm Genuine Kashima Coat", isVerified: true },
       { label: "OFFSET", value: "44mm", isVerified: true },

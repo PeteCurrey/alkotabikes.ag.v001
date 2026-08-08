@@ -49,7 +49,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
     priority: 1,
     focalPoint: "center 20%",
     alt: "Pete Currey, founder of ALKOTA Performance Engineering, in alpine environment",
-    caption: "Pete Currey — Founder & Principal Engineer, ALKOTA Performance Engineering",
+    caption: "Pete Currey — Founder, ALKOTA Performance Engineering",
   },
   peteWorkshopLab: {
     id: "pete-workshop-lab",

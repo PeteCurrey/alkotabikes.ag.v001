@@ -41,7 +41,7 @@ export default function BikesLandingPage() {
                 PROJECT 01
               </h2>
               <p className="font-mono text-xs text-alkota-slate uppercase">
-                170MM FRONT / 160MM REAR • MX & 29 COMPATIBLE
+                160MM FRONT / 150MM REAR · 29 PRIMARY PLATFORM
               </p>
             </div>
 
@@ -97,9 +97,9 @@ export default function BikesLandingPage() {
           <div className="border-t border-white/10 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">
             {[
               { label: "CHASSIS", value: "UD CARBON MONOCOQUE" },
-              { label: "REAR TRAVEL", value: "160MM" },
-              { label: "FRONT TRAVEL", value: "170MM" },
-              { label: "WHEEL FORMAT", value: "MX / 29ER" },
+              { label: "REAR TRAVEL", value: "150MM" },
+              { label: "FRONT TRAVEL", value: "160MM" },
+              { label: "WHEEL FORMAT", value: "29 / 29" },
             ].map(({ label, value }) => (
               <div key={label} className="space-y-1">
                 <span className="text-alkota-slate uppercase text-[10px] block">{label}</span>

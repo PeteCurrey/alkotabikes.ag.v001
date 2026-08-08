@@ -6,6 +6,9 @@ import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
+import DesignArtifact from "@/components/editorial/DesignArtifact";
+import { DESIGN_JOURNEY } from "@/content/media/designJourney";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
@@ -206,6 +209,9 @@ export default function MaterialsPage() {
             </div>
           </div>
 
+            </div>
+          </div>
+
           <div className="space-y-4">
             <Img
               src={ALKOTA_STORY_MEDIA.carbonLayupDevelopment.src}
@@ -213,13 +219,20 @@ export default function MaterialsPage() {
               label="PLY DIRECTION · ANISOTROPIC STIFFNESS · LAYUP SEQUENCE"
               height="h-[360px]"
             />
-            <Img
-              src={ALKOTA_STORY_MEDIA.technicalCadMaterial.src}
-              alt="Technical CAD material section"
-              label="SECTION ANALYSIS · WALL THICKNESS · LOAD PATH"
-              height="h-[200px]"
-            />
+            {DESIGN_JOURNEY[8] && (
+              <DesignArtifact asset={DESIGN_JOURNEY[8]} theme="blueprint" showCaption />
+            )}
           </div>
+        </div>
+
+        <div className="pt-10 max-w-7xl mx-auto">
+          <DevelopmentLedger
+            question="Why monocoque front triangle construction over bonded tube-to-tube?"
+            decision="High-modulus UD carbon monocoque for the main chassis."
+            why="Monocoque construction eliminates heavy bonded joints at critical high-stress junctions (headtube and bottom bracket) allowing continuous fibers along primary torsional load paths."
+            status="R00 ENGINEERING BASELINE"
+            statusVariant="baseline"
+          />
         </div>
       </VisualWorldSection>
 

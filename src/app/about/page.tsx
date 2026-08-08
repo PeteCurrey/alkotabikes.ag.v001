@@ -294,7 +294,7 @@ export default function AboutPage() {
             </div>
             <div className="font-mono text-[10px] text-alkota-signal uppercase tracking-wider font-semibold border border-alkota-signal/40 p-2.5 bg-black/40">
               <div>PRE-PRODUCTION DEVELOPMENT</div>
-              <div>FINAL PRODUCTION SPECIFICATION SUBJECT TO VALIDATION</div>
+              <div>R00 ENGINEERING BASELINE · SUBJECT TO PROTOTYPE VALIDATION</div>
             </div>
           </div>
 

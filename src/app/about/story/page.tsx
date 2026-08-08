@@ -6,6 +6,8 @@ import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
+import FounderNote from "@/components/editorial/FounderNote";
+import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
@@ -174,6 +176,10 @@ export default function OurStoryPage() {
                 <p>LOOK CLOSELY,</p>
                 <p>UNDERSTAND THE PROBLEM,</p>
                 <p>THEN MAKE IT BETTER.</p>
+              </div>
+
+              <div className="pt-4 border-t border-black/10">
+                <FounderNote note="01" />
               </div>
             </div>
           </div>
@@ -349,6 +355,10 @@ export default function OurStoryPage() {
                 <p>"IF WE STARTED WITH EVERYTHING WE HAD LEARNED,</p>
                 <p>HOW WOULD WE BUILD A BICYCLE COMPANY PROPERLY?"</p>
               </div>
+
+              <div className="pt-4 border-t border-white/10">
+                <FounderNote note="02" />
+              </div>
             </div>
           </div>
         </div>
@@ -414,6 +424,16 @@ export default function OurStoryPage() {
               <p className="font-mono text-xs font-bold text-alkota-white uppercase tracking-wider pt-4">
                 THIS BECAME PROJECT 01.
               </p>
+
+              <div className="pt-8">
+                <DevelopmentLedger
+                  question="Why build one single platform rather than a full product range?"
+                  decision="Develop Project 01 as a single full-suspension carbon chassis."
+                  why="Spreading engineering bandwidth across ten frame platforms compromises every detail. Developing one machine allows every layup schedule, pivot location and clearance tolerance to be refined without compromise."
+                  status="R00 ENGINEERING BASELINE"
+                  statusVariant="baseline"
+                />
+              </div>
             </div>
           </div>
         </div>

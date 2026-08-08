@@ -6,6 +6,8 @@ import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+import FounderNote from "@/components/editorial/FounderNote";
+import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight, CheckCircle2, RefreshCw } from "lucide-react";
 
@@ -356,6 +358,17 @@ export default function TestingPage() {
           </div>
           <div className="inline-flex font-mono text-[10px] uppercase tracking-widest text-alkota-signal border border-alkota-signal/40 px-4 py-2 bg-alkota-signal/5">
             DEVELOPMENT INTENT · SUBJECT TO PHYSICAL VALIDATION
+          </div>
+
+          <div className="pt-8 text-left max-w-2xl mx-auto space-y-8">
+            <FounderNote note="04" />
+            <DevelopmentLedger
+              question="What is Alkota's policy on performance claims during pre-production?"
+              decision="No fake numbers, invented lab hours or assumed race results."
+              why="Engineering targets remain clearly labeled as engineering targets until physical prototype testing converts them into verified evidence."
+              status="PLANNED VALIDATION"
+              statusVariant="planned"
+            />
           </div>
         </div>
       </section>

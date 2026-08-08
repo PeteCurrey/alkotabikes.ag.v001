@@ -32,8 +32,8 @@ export const ENGINEERING_PILLARS: EngineeringPillar[] = [
       "Suspension is not simply a travel number. It is the dynamic interaction between leverage ratios, pedal anti-squat, braking anti-rise, and rearward axle trajectory.",
     route: "/engineering/kinematics",
     metrics: [
-      { label: "FRONT TRAVEL", value: "170 MM" },
-      { label: "REAR TRAVEL", value: "160 MM" },
+      { label: "FRONT TRAVEL", value: "160 MM" },
+      { label: "REAR TRAVEL", value: "150 MM" },
       { label: "KINEMATIC MODEL", value: "PROGRESSIVE LINKAGE (SIMULATION TARGET)" },
     ],
   },

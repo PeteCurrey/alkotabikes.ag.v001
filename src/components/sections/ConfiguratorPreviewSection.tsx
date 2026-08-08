@@ -107,11 +107,11 @@ export default function ConfiguratorPreviewSection() {
               </div>
               <div className="flex justify-between text-alkota-slate">
                 <span>WHEEL FORMAT:</span>
-                <span className="text-alkota-white">MX / 29 COMPATIBLE</span>
+                <span className="text-alkota-white">29 / 29 PRIMARY</span>
               </div>
               <div className="flex justify-between text-alkota-slate">
                 <span>SUSPENSION:</span>
-                <span className="text-alkota-white">170mm / 160mm</span>
+                <span className="text-alkota-white">160mm / 150mm</span>
               </div>
               <div className="flex justify-between text-alkota-slate">
                 <span>CHASSIS:</span>
@@ -132,7 +132,7 @@ export default function ConfiguratorPreviewSection() {
             </Link>
 
             <div className="pt-4 border-t border-white/10 text-[10px] text-alkota-slate leading-normal">
-              * Production specification and pricing confirmed upon final engineering validation. Contact us to register interest.
+              R00 engineering baseline. Specification subject to prototype validation. Contact us to register interest.
             </div>
           </div>
         </div>

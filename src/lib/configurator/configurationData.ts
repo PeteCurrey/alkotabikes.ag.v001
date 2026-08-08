@@ -3,7 +3,7 @@ import { BikeConfiguration, ComponentOption } from "./types";
 export const FORK_OPTIONS: ComponentOption[] = [
   {
     id: "fork-factory-38",
-    name: "GRIP2 Factory 170mm",
+    name: "GRIP2 Factory 160mm",
     manufacturer: "DEVELOPMENT SPEC",
     model: "38 Factory Kashima",
     description: "High/low speed compression and rebound adjustment for aggressive enduro charging.",
@@ -12,7 +12,7 @@ export const FORK_OPTIONS: ComponentOption[] = [
   },
   {
     id: "fork-ultimate-zeb",
-    name: "Charger 3.1 Ultimate 170mm",
+    name: "Charger 3.1 Ultimate 160mm",
     manufacturer: "DEVELOPMENT SPEC",
     model: "ZEB Ultimate Heavy Air",
     description: "ButterCup vibration damping with independent high/low compression valves.",

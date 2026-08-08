@@ -6,6 +6,8 @@ import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+import FounderNote from "@/components/editorial/FounderNote";
+import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 import SystemExplorer from "./SystemExplorer";
@@ -164,6 +166,9 @@ export default function ReverseEngineeringPage() {
               <p className="text-sm text-alkota-snow/85 font-light leading-relaxed">
                 We use comparison to establish context.
               </p>
+              <div className="pt-4 border-t border-white/10">
+                <FounderNote note="03" />
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -451,6 +456,16 @@ export default function ReverseEngineeringPage() {
                 ))}
               </div>
             </div>
+          </div>
+
+          <div className="pt-6">
+            <DevelopmentLedger
+              question="How much travel does Project 01 actually need?"
+              decision="160 mm front / 150 mm rear is the current development target."
+              why="Enough support and control for aggressive natural terrain without turning the platform into an oversized enduro sled."
+              status="R00 ENGINEERING BASELINE"
+              statusVariant="baseline"
+            />
           </div>
         </div>
       </section>

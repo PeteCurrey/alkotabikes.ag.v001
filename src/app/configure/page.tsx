@@ -97,7 +97,7 @@ export default function ConfiguratorPage() {
               </div>
               <div className="bg-alkota-carbon p-3 border border-white/10">
                 <span className="text-alkota-slate text-[10px] uppercase block">TARGET WEIGHT:</span>
-                <span className="text-alkota-white font-bold">Final production weight pending validation</span>
+                <span className="text-alkota-white font-bold">Target weight subject to build validation</span>
               </div>
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function ConfiguratorPage() {
                 <div className="space-y-3 font-mono text-xs">
                   <div className="p-4 bg-alkota-carbon border border-white/15 space-y-2">
                     <span className="text-alkota-signal text-[10px] uppercase font-bold block">FRONT SUSPENSION:</span>
-                    <p className="font-display text-lg text-white font-bold">FOX 38 FACTORY (170MM)</p>
+                    <p className="font-display text-lg text-white font-bold">FOX 38 FACTORY (160MM)</p>
                     <p className="text-alkota-slate text-[11px]">GRIP X2 Damper / Genuine Kashima Coat / 44mm Offset</p>
                   </div>
 

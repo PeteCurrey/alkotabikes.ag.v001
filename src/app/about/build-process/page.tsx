@@ -6,6 +6,10 @@ import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+import RoadToProduction from "@/components/editorial/RoadToProduction";
+import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
+import DesignArtifact from "@/components/editorial/DesignArtifact";
+import { DESIGN_JOURNEY } from "@/content/media/designJourney";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 import ProcessNav from "./ProcessNav";
@@ -217,6 +221,14 @@ export default function BuildProcessPage() {
                         <div key={line}>{line}</div>
                       ))}
                     </div>
+
+                    {/* Design Artifact insert */}
+                    <div className="pt-4">
+                      {DESIGN_JOURNEY[0] && (
+                        <DesignArtifact asset={DESIGN_JOURNEY[0]} theme="blueprint" showCaption />
+                      )}
+                    </div>
+                    
                     <p className="font-mono text-xs font-bold text-alkota-white uppercase tracking-wider">
                       THAT BEHAVIOURAL BRIEF BECOMES THE FILTER FOR EVERYTHING THAT FOLLOWS.
                     </p>
@@ -672,7 +684,22 @@ export default function BuildProcessPage() {
                     </p>
                   </div>
                 </div>
+
+                <div className="pt-8">
+                  <DevelopmentLedger
+                    question="How does prototype iteration work on Project 01?"
+                    decision="Controlled revision cycles with clear engineering metrics for every change."
+                    why="A change is only accepted if it improves measurable telemetry or verified rider confidence without compromising structural margins."
+                    status="CURRENT PROGRAMME"
+                    statusVariant="baseline"
+                  />
+                </div>
               </div>
+            </section>
+
+            {/* Road to production timeline section */}
+            <section className="py-16 border-t border-white/10">
+              <RoadToProduction />
             </section>
 
           </div>

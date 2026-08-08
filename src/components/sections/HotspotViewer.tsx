@@ -264,7 +264,7 @@ export default function HotspotViewer() {
                     {/* Factual Specifications List */}
                     <div className="border-t border-white/10 pt-3">
                       <span className="font-mono text-[10px] text-alkota-slate uppercase tracking-wider block mb-2 font-bold">
-                        VERIFIED PRODUCTION SPECIFICATIONS
+                        R00 ENGINEERING BASELINE
                       </span>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
                         {selectedSystem.verifiedSpecifications.map((spec) => (
