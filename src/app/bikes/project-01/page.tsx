@@ -200,6 +200,13 @@ export default function Project01Page() {
 
           <div className="flex flex-wrap gap-3 pt-2 border-t border-white/10">
             <Link
+              href="/project-01/design-archive"
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-alkota-signal/40 text-alkota-signal font-mono font-bold text-[10px] tracking-wider uppercase hover:bg-alkota-signal/10 transition-all"
+            >
+              <span>SEE HOW PROJECT 01 TOOK SHAPE</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
               href="/journal/project-01"
               className="inline-flex items-center gap-2 px-4 py-2.5 border border-white/20 text-alkota-snow font-mono font-bold text-[10px] tracking-wider uppercase hover:border-alkota-signal hover:text-alkota-signal transition-all"
             >

@@ -668,13 +668,22 @@ export default function OurStoryPage() {
           <p className="font-sans text-sm text-alkota-snow/80 max-w-md font-light leading-relaxed">
             How Alkota works backwards from the rider experience — through dynamics, geometry, structure, materials and components — to build a machine that behaves as required.
           </p>
-          <Link
-            href="/about/reverse-engineering"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-alkota-signal text-alkota-white font-mono text-xs font-bold tracking-wider uppercase hover:bg-white hover:text-alkota-black transition-colors shadow-2xl"
-          >
-            <span>REVERSE ENGINEERING THE RIDE</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex flex-wrap gap-4 pt-2">
+            <Link
+              href="/project-01/design-archive"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-alkota-signal text-alkota-signal font-mono text-xs font-bold tracking-wider uppercase hover:bg-alkota-signal hover:text-alkota-black transition-colors shadow-2xl"
+            >
+              <span>THE DRAWINGS BEHIND THE MACHINE</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/about/reverse-engineering"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-alkota-signal text-alkota-white font-mono text-xs font-bold tracking-wider uppercase hover:bg-white hover:text-alkota-black transition-colors shadow-2xl"
+            >
+              <span>REVERSE ENGINEERING THE RIDE</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 

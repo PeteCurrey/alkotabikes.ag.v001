@@ -223,10 +223,17 @@ export default function BuildProcessPage() {
                     </div>
 
                     {/* Design Artifact insert */}
-                    <div className="pt-4">
+                    <div className="pt-4 space-y-2">
                       {DESIGN_JOURNEY[0] && (
                         <DesignArtifact asset={DESIGN_JOURNEY[0]} theme="blueprint" showCaption />
                       )}
+                      <Link
+                        href="/project-01/design-archive/alk-sketch-001"
+                        className="inline-flex items-center gap-1.5 font-mono text-[9px] text-alkota-signal hover:text-white uppercase font-bold transition-colors"
+                      >
+                        <span>VIEW ORIGINAL DEVELOPMENT ARTIFACT</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
                     </div>
                     
                     <p className="font-mono text-xs font-bold text-alkota-white uppercase tracking-wider">
