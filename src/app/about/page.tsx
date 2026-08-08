@@ -7,17 +7,70 @@ import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
-import { ArrowRight, Settings, ShieldCheck, Compass, Layers, Activity } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Alkota | Performance Engineering for Mountain Bikes",
-  description: "Alkota is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+  description:
+    "Alkota is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
   openGraph: {
     title: "About Alkota | Performance Engineering for Mountain Bikes",
-    description: "Alkota is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+    description:
+      "Alkota is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
     images: [ALKOTA_STORY_MEDIA.peteGlacierWhite.src],
   },
 };
+
+const CHAPTER_EXPLORER_TILES = [
+  {
+    num: "01",
+    title: "OUR STORY",
+    descriptor: "From fifteen-year-old bike-shop employee to Project 01.",
+    href: "/about/story",
+    img: ALKOTA_STORY_MEDIA.peteRidingHistory.src,
+    alt: "Pete Currey riding history",
+  },
+  {
+    num: "02",
+    title: "REVERSE ENGINEERING",
+    descriptor: "Understand the ride before designing the machine.",
+    href: "/about/reverse-engineering",
+    img: ALKOTA_STORY_MEDIA.reverseEngineeringTelemetry.src,
+    alt: "Reverse engineering telemetry",
+  },
+  {
+    num: "03",
+    title: "BUILD PROCESS",
+    descriptor: "From requirements and geometry to hardware.",
+    href: "/about/build-process",
+    img: ALKOTA_STORY_MEDIA.workshopChassisAssembly.src,
+    alt: "Build process chassis assembly",
+  },
+  {
+    num: "04",
+    title: "MATERIALS",
+    descriptor: "Inside the carbon structure.",
+    href: "/about/materials",
+    img: ALKOTA_STORY_MEDIA.carbonLayupDevelopment.src,
+    alt: "Carbon fiber structure layup",
+  },
+  {
+    num: "05",
+    title: "TESTING",
+    descriptor: "Where targets become evidence.",
+    href: "/about/testing",
+    img: ALKOTA_STORY_MEDIA.hauteSavoieAlpineTest.src,
+    alt: "Testing and validation",
+  },
+  {
+    num: "06",
+    title: "ENGINEERING PHILOSOPHY",
+    descriptor: "The rules behind every decision.",
+    href: "/about/philosophy",
+    img: ALKOTA_STORY_MEDIA.completeMachineIntegration.src,
+    alt: "Engineering philosophy complete machine",
+  },
+];
 
 export default function AboutPage() {
   const principles = [
@@ -392,7 +445,65 @@ export default function AboutPage() {
         </div>
       </VisualWorldSection>
 
-      {/* 7. FINAL — Full-bleed Naked Carbon image */}
+      {/* 7. CINEMATIC CHAPTER EXPLORER — "GO DEEPER." */}
+      <section id="go-deeper" className="w-full py-20 sm:py-28 bg-alkota-black border-t border-white/10 tech-grid-dark">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 space-y-12">
+          <div className="space-y-4 border-b border-white/10 pb-8">
+            <TechnicalAnnotation label="EDITORIAL EXPLORER" value="6 CHAPTERS" variant="signal" />
+            <h2 className="font-display font-medium text-4xl sm:text-6xl md:text-7xl uppercase tracking-tight text-alkota-white leading-[0.9]">
+              GO DEEPER.
+            </h2>
+            <p className="font-sans text-sm text-alkota-snow/80 max-w-md font-light leading-relaxed">
+              Explore the full Alkota engineering and story ecosystem.
+            </p>
+          </div>
+
+          {/* Large Cinematic Image Tiles */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {CHAPTER_EXPLORER_TILES.map((tile) => (
+              <Link
+                key={tile.num}
+                href={tile.href}
+                className="group relative w-full h-[380px] sm:h-[440px] bg-alkota-carbon border border-white/10 overflow-hidden flex flex-col justify-end p-6 hover:border-alkota-signal transition-all shadow-2xl"
+              >
+                {/* Background Image with Scale Hover Effect */}
+                <Image
+                  src={tile.img}
+                  alt={tile.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover object-center opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700"
+                />
+
+                {/* Dark Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-alkota-black via-alkota-black/60 to-transparent group-hover:via-alkota-black/40 transition-colors duration-500" />
+
+                {/* Content Overlay */}
+                <div className="relative z-10 space-y-3">
+                  <div className="flex items-center justify-between font-mono text-xs text-alkota-signal font-bold">
+                    <span>CHAPTER {tile.num}</span>
+                    <ArrowRight className="w-4 h-4 text-alkota-signal transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+
+                  <h3 className="font-display text-2xl font-bold uppercase text-alkota-white group-hover:text-alkota-signal transition-colors tracking-tight leading-tight">
+                    {tile.title}
+                  </h3>
+
+                  <p className="font-sans text-xs text-alkota-snow/90 font-light leading-relaxed opacity-90 group-hover:opacity-100 transition-opacity">
+                    {tile.descriptor}
+                  </p>
+
+                  <div className="pt-2 font-mono text-[9px] uppercase tracking-widest text-alkota-signal opacity-0 group-hover:opacity-100 transition-opacity">
+                    READ CHAPTER →
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FINAL — Full-bleed Naked Carbon image */}
       <section className="relative w-full min-h-[540px] sm:min-h-[640px] bg-alkota-carbon text-alkota-white flex flex-col justify-between p-8 sm:p-12 md:p-16 border-b border-white/10 tech-grid-dark overflow-hidden">
         <Image
           src={ALKOTA_STORY_MEDIA.standaloneBlackBike.src}
