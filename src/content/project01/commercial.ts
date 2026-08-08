@@ -32,7 +32,17 @@ export type PriceStatus =
 
 export type PricingVisibility = "HIDDEN" | "INTERNAL_ONLY" | "INDICATIVE_PUBLIC" | "PUBLISHED_PUBLIC";
 
-export type DepositType = "FIXED_AMOUNT font" | "PERCENTAGE" | "TOKEN";
+export type DepositType = "FIXED_AMOUNT" | "PERCENTAGE" | "TOKEN";
+
+/**
+ * Dealer order types. Speculative wholesale stock ordering is not yet enabled.
+ * STOCK orders require explicit approval per partner agreement.
+ */
+export type DealerOrderType =
+  | "CUSTOMER_ORDER"
+  | "DEMO"
+  | "STOCK"           // Not yet enabled — DEALER_STOCK_ORDERING_ENABLED = false
+  | "WARRANTY_REPLACEMENT";
 
 export type DepositRefundability = "FULLY_REFUNDABLE" | "NON_REFUNDABLE" | "CONDITIONAL";
 
@@ -120,7 +130,7 @@ export const PROJECT_01_COMMERCIAL: Project01Commercial = {
   reservationEnabled: false,
   reservationMode: "DISABLED",
   reservationDeposit: 500, // Proposed deposit, not active
-  depositType: "FIXED_AMOUNT font",
+  depositType: "FIXED_AMOUNT",
   depositRefundability: "FULLY_REFUNDABLE",
   productionYear: 2028,
   estimatedProductionWindow: "Q2 2028",
@@ -330,7 +340,15 @@ export function getPublicPriceDisplay(region: RegionId = "UK"): {
   };
 }
 
-/** Strictly internal function — Studio only */
-export function getInternalDealerCommercials(): DealerCommercialFields[] {
+/**
+ * Strictly internal function — Studio and authenticated dealer API only.
+ * Optional regionId filter for dealer-scoped API routes.
+ */
+export function getInternalDealerCommercials(
+  regionId?: string
+): DealerCommercialFields[] {
+  if (regionId) {
+    return DEALER_COMMERCIALS_INTERNAL.filter((d) => d.regionId === regionId);
+  }
   return DEALER_COMMERCIALS_INTERNAL;
 }

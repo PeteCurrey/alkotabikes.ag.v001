@@ -22,6 +22,8 @@ import {
   Menu,
   X,
   ChevronRight,
+  ClipboardList,
+  Factory,
 } from "lucide-react";
 
 interface NavItem {
@@ -39,6 +41,8 @@ const NAV_ITEMS: NavItem[] = [
   { label: "DESIGN ARCHIVE", href: "/studio/design", icon: Archive },
   { label: "MEDIA", href: "/studio/media", icon: Image },
   { label: "REGISTRATIONS", href: "/studio/registrations", icon: Users },
+  { label: "RESERVATIONS", href: "/studio/reservations", icon: ClipboardList },
+  { label: "PRODUCTION", href: "/studio/production", icon: Factory },
   { label: "BUILDS + FIT", href: "/studio/builds", icon: Wrench },
   { label: "RACING", href: "/studio/racing", icon: Flame },
   { label: "PARTNERS", href: "/studio/partners", icon: Building2 },
