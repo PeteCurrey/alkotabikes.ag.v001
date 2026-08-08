@@ -14,7 +14,7 @@ export const brandAssets = {
   logoMarkLight: "/brand/alkota-monogram-light.png",
 
   // Canonical Project 01 Hero Imagery (Glacier White & Naked Carbon)
-  project01WhiteHero: "/images/project01-glacier-white.png",
+  project01WhiteHero: "/images/project01-glacier-white-hero.jpg",
   project01CarbonHero: "/images/project01-naked-carbon.png",
 
   // Environment & Engineering Photography

@@ -18,7 +18,7 @@ export default function HeroFullBleed() {
           fill
           priority
           sizes="100vw"
-          className="object-contain md:object-cover object-center md:object-right-bottom scale-[1.01] transition-transform duration-1000 ease-out"
+          className="object-cover object-center md:object-right scale-[1.01] transition-transform duration-1000 ease-out"
         />
         {/* Gradients for typography legibility and seamless background blend */}
         <div className="absolute inset-0 bg-gradient-to-r from-alkota-carbon via-alkota-carbon/80 to-transparent w-full md:w-3/4" />
