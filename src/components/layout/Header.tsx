@@ -15,7 +15,7 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 15) {
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -39,23 +39,23 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled || isConfigurator
-          ? "bg-alkota-carbon/95 backdrop-blur-md border-b border-white/10 text-alkota-white py-3.5 shadow-2xl"
-          : "bg-gradient-to-b from-black/90 via-black/50 to-transparent text-alkota-white py-5"
+          ? "bg-alkota-carbon/90 backdrop-blur-md border-b border-white/10 text-alkota-white py-2 shadow-2xl"
+          : "bg-gradient-to-b from-black/85 via-black/45 to-transparent text-alkota-white py-2.5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Desktop Brand Logo (Horizontal Lockup) */}
+        {/* Desktop Brand Logo */}
         <div className="hidden md:block">
           <Logo variant="header" theme="light" />
         </div>
 
-        {/* Mobile Monogram (28-34px) */}
+        {/* Mobile Monogram */}
         <div className="md:hidden">
           <Logo variant="monogram" theme="light" />
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => {
             const isActive =
               pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
@@ -63,7 +63,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-mono text-xs tracking-widest uppercase transition-colors relative py-1 ${
+                className={`font-mono text-[11px] tracking-widest uppercase transition-colors relative py-0.5 ${
                   isActive
                     ? "text-alkota-signal font-bold"
                     : "text-alkota-snow hover:text-white"
@@ -79,12 +79,12 @@ export default function Header() {
         </nav>
 
         {/* Header Right Action */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-3">
           <Link
             href="/configure"
-            className="group relative inline-flex items-center gap-2 px-4 py-2 border border-alkota-signal text-alkota-signal hover:bg-alkota-signal hover:text-alkota-black transition-all duration-200 font-mono text-xs tracking-wider uppercase font-semibold bg-black/40 backdrop-blur-sm"
+            className="group relative inline-flex items-center gap-1.5 px-3 py-1.5 border border-alkota-signal text-alkota-signal hover:bg-alkota-signal hover:text-alkota-black transition-all duration-200 font-mono text-[11px] tracking-wider uppercase font-semibold bg-black/40 backdrop-blur-sm"
           >
-            <Settings className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform duration-300" />
+            <Settings className="w-3 h-3 group-hover:rotate-45 transition-transform duration-300" />
             <span>CONFIGURE</span>
           </Link>
         </div>
@@ -92,22 +92,21 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-alkota-white focus:outline-none"
+          className="md:hidden p-1.5 text-alkota-white focus:outline-none"
           aria-label="Toggle Navigation Menu"
         >
           {mobileMenuOpen ? (
-            <X className="w-6 h-6 text-alkota-signal" />
+            <X className="w-5 h-5 text-alkota-signal" />
           ) : (
-            <Menu className="w-6 h-6" />
+            <Menu className="w-5 h-5" />
           )}
         </button>
       </div>
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[60px] bg-alkota-carbon text-alkota-white z-40 flex flex-col justify-between p-6 border-t border-white/10 animate-fadeIn">
+        <div className="md:hidden fixed inset-0 top-[48px] bg-alkota-carbon text-alkota-white z-40 flex flex-col justify-between p-6 border-t border-white/10 animate-fadeIn">
           <div className="space-y-6 pt-2">
-            {/* Top of mobile drawer displays full horizontal logo */}
             <div className="border-b border-white/10 pb-4">
               <Logo variant="header" theme="light" />
             </div>
@@ -121,10 +120,10 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-display font-bold text-2xl tracking-tight text-alkota-white hover:text-alkota-signal transition-colors flex items-center justify-between"
+                  className="font-display font-bold text-xl tracking-tight text-alkota-white hover:text-alkota-signal transition-colors flex items-center justify-between"
                 >
                   <span>{link.label}</span>
-                  <ArrowRight className="w-5 h-5 text-alkota-slate" />
+                  <ArrowRight className="w-4 h-4 text-alkota-slate" />
                 </Link>
               ))}
             </div>
@@ -134,7 +133,7 @@ export default function Header() {
             <Link
               href="/configure"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full inline-flex items-center justify-center gap-2 py-3 bg-alkota-signal text-alkota-black font-mono font-bold text-sm tracking-wider uppercase"
+              className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-alkota-signal text-alkota-black font-mono font-bold text-xs tracking-wider uppercase"
             >
               <Settings className="w-4 h-4" />
               <span>LAUNCH CONFIGURATOR</span>

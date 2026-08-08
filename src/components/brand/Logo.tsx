@@ -16,11 +16,7 @@ export default function Logo({
   theme = "light",
   className = "",
 }: LogoProps) {
-  const isLight = theme === "light" || theme === "auto";
-
   if (variant === "monogram") {
-    const logoSrc = isLight ? brandAssets.logoMarkLight : brandAssets.logoMarkDark;
-    
     return (
       <Link
         href="/"
@@ -28,11 +24,11 @@ export default function Logo({
         className={`inline-block transition-opacity hover:opacity-90 ${className}`}
       >
         <Image
-          src={logoSrc}
+          src={brandAssets.logoMarkLight}
           alt="ALKOTA Monogram"
-          width={34}
-          height={34}
-          className="w-auto h-7 md:h-8 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+          width={30}
+          height={30}
+          className="w-auto h-6 md:h-6.5 object-contain brightness-200 contrast-125 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]"
           priority
         />
       </Link>
@@ -46,13 +42,13 @@ export default function Logo({
         aria-label="ALKOTA Performance Engineering home"
         className={`inline-block group ${className}`}
       >
-        <div className="w-[200px] sm:w-[220px] md:w-[240px] relative">
+        <div className="w-[180px] sm:w-[200px] relative">
           <Image
             src={brandAssets.logoPrimaryLight}
             alt="ALKOTA Performance Engineering"
-            width={260}
-            height={48}
-            className="w-full h-auto object-contain transition-opacity group-hover:opacity-90"
+            width={220}
+            height={40}
+            className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 brightness-200 contrast-125"
             priority
           />
         </div>
@@ -61,21 +57,19 @@ export default function Logo({
   }
 
   // Default: Header / Hero / Primary
-  const logoSrc = isLight ? brandAssets.logoPrimaryLight : brandAssets.logoPrimaryDark;
-
   return (
     <Link
       href="/"
       aria-label="ALKOTA Performance Engineering home"
       className={`inline-block group ${className}`}
     >
-      <div className="w-[175px] sm:w-[195px] md:w-[215px] relative">
+      <div className="w-[145px] sm:w-[160px] md:w-[175px] relative">
         <Image
-          src={logoSrc}
+          src={brandAssets.logoPrimaryLight}
           alt="ALKOTA Performance Engineering"
-          width={215}
-          height={41}
-          className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)]"
+          width={175}
+          height={34}
+          className="w-full h-auto object-contain transition-opacity group-hover:opacity-90 brightness-200 contrast-125 drop-shadow-[0_1px_4px_rgba(0,0,0,0.95)]"
           priority
         />
       </div>
