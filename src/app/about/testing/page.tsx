@@ -73,7 +73,7 @@ const VALIDATION_CARDS = [
     num: "08",
     label: "RIDE",
     copy: "Does the behaviour on terrain match the engineering intent?",
-    world: "HAUTE-SAVOIE",
+    world: "PLANNED ALPINE TARGET",
   },
 ];
 
@@ -84,7 +84,7 @@ const LOOP_STEPS = [
   { step: "SIMULATE", desc: "CAD, FEA & Kinematic Modelling" },
   { step: "BUILD", desc: "Physical Prototype Assembly" },
   { step: "MEASURE", desc: "Hydraulic Bench & Telemetry" },
-  { step: "RIDE", desc: "Alpine Field Testing at 2,400m" },
+  { step: "RIDE", desc: "Alpine Field Validation (Planned)" },
   { step: "LEARN", desc: "Data & Feedback Synthesis" },
   { step: "CHANGE", desc: "Chassis & Spec Refinement" },
 ];
@@ -149,7 +149,7 @@ export default function TestingPage() {
                   className="object-cover object-center hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute bottom-2 left-2 font-mono text-[9px] bg-black/80 px-2 py-1 text-alkota-signal uppercase border border-white/10">
-                  REAL TERRAIN · HAUTE-SAVOIE 2,400M
+                  TARGET TERRAIN · ALPINE FIELD VALIDATION
                 </div>
               </div>
             </div>
@@ -295,7 +295,7 @@ export default function TestingPage() {
       <VisualWorldSection world="TERRAIN_HUMAN" id="terrain-testing">
         <div className="space-y-12">
           <div className="space-y-3 border-b border-white/10 pb-8">
-            <TechnicalAnnotation label="FIELD VALIDATION" value="HAUTE-SAVOIE" variant="signal" />
+            <TechnicalAnnotation label="FIELD VALIDATION" value="PLANNED ALPINE TARGET" variant="signal" />
             <h2 className="font-display font-medium text-4xl sm:text-6xl md:text-7xl uppercase tracking-tight text-alkota-white leading-[0.9]">
               THEN REMOVE<br />
               <span className="text-alkota-signal">THE CONTROL.</span>
@@ -311,7 +311,7 @@ export default function TestingPage() {
               className="object-cover object-center hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute bottom-4 left-4 font-mono text-[10px] bg-black/80 px-3 py-1.5 text-alkota-signal uppercase border border-white/10">
-              HAUTE-SAVOIE ALPINE DESCENT · 2,400M ELEVATION · LOOSE ROCK TRAIL
+              ALPINE DESCENT · PLANNED HIGH-ALTITUDE VALIDATION TERRAIN
             </div>
           </div>
 

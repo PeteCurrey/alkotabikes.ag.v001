@@ -53,18 +53,18 @@ export default function HeroFullBleed() {
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
           <Link
-            href="/bikes/project-01"
-            className="px-8 py-4 bg-alkota-white text-alkota-black hover:bg-alkota-signal font-mono text-xs font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-3 shadow-lg"
+            href="/order"
+            className="px-8 py-4 bg-alkota-signal text-alkota-black hover:bg-white font-mono text-xs font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-3 shadow-lg"
           >
-            <span>EXPLORE PROJECT 01</span>
+            <span>JOIN PROJECT 01</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
 
           <Link
-            href="/engineering"
+            href="/bikes/project-01"
             className="px-8 py-4 border border-white/20 hover:border-alkota-signal text-alkota-white hover:text-alkota-signal font-mono text-xs font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-3 bg-alkota-black/40 backdrop-blur-sm"
           >
-            <span>ENGINEERING</span>
+            <span>EXPLORE PROJECT 01</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

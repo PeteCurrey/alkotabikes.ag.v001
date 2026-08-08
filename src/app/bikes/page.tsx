@@ -131,13 +131,13 @@ export default function BikesLandingPage() {
               },
               {
                 icon: ShieldCheck,
-                title: "VALIDATED ON ALPINE TERRAIN",
-                desc: "Prototype development and testing at 2,400m elevation under real race conditions.",
+                title: "TARGETED ALPINE TERRAIN",
+                desc: "Prototype development and physical validation across high-altitude alpine terrain.",
               },
               {
                 icon: Settings,
                 title: "CONFIGURABLE PLATFORM",
-                desc: "Size M, L, XL. MX or full 29er wheel format. Two launch finishes.",
+                desc: "Size M, L, XL. Primary 29/29 wheel architecture with secondary MX study. Two launch finishes.",
               },
               {
                 icon: ArrowRight,

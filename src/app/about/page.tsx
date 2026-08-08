@@ -352,7 +352,7 @@ export default function AboutPage() {
         <div className="space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
             <div className="space-y-3">
-              <TechnicalAnnotation label="FIELD TEST R&D" value="HAUTE-SAVOIE" variant="signal" />
+              <TechnicalAnnotation label="FIELD TEST R&D" value="PLANNED FIELD VALIDATION · ALPS" variant="signal" />
               <h2 className="font-display font-medium text-4xl sm:text-6xl uppercase tracking-tight text-alkota-white leading-[0.9]">
                 THE TRAIL REMAINS<br />
                 <span className="text-alkota-signal">THE FINAL TEST BENCH.</span>

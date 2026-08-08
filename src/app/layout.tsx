@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { CartProvider } from "@/lib/store/cartContext";
 
 export const metadata: Metadata = {
   title: "ALKOTA | Performance Engineering",
@@ -44,9 +45,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-alkota-white text-alkota-black min-h-screen flex flex-col antialiased">
-        <Header />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main className="flex-1 w-full">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

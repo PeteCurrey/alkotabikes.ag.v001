@@ -8,7 +8,9 @@ import { FLAGSHIP_BIKE, FINISH_COLORWAYS } from "@/lib/data/bikesData";
 import HotspotViewer from "@/components/sections/HotspotViewer";
 import ConfiguratorPreviewSection from "@/components/sections/ConfiguratorPreviewSection";
 import ComponentExcellence from "@/components/sections/ComponentExcellence";
-import { ArrowRight, Settings, CheckCircle2, ShieldCheck } from "lucide-react";
+import NextStepBanner from "@/components/layout/NextStepBanner";
+import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
+import { ArrowRight, Settings, CheckCircle2, ShieldCheck, BookOpen } from "lucide-react";
 import { brandAssets } from "@/lib/assets";
 
 
@@ -22,6 +24,8 @@ export default function Project01Page() {
   return (
     <div className="w-full bg-alkota-carbon text-alkota-white pt-28 pb-24 px-4 sm:px-6 lg:px-8 tech-grid-dark space-y-16 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-16">
+        {/* Development Status Ticker */}
+        <DevelopmentStatusTicker variant="banner" className="-mx-4 sm:-mx-6 lg:-mx-8 mb-0" />
         {/* Page Hero Header */}
         <div className="border-b border-white/10 pb-8 space-y-4">
           <TechnicalAnnotation label="FLAGSHIP CHASSIS" value="PROJECT 01" variant="signal" />
@@ -166,9 +170,73 @@ export default function Project01Page() {
           </div>
         </div>
 
+        {/* Development Status Panel */}
+        <div className="bg-alkota-black border border-alkota-signal/50 p-6 md:p-8 space-y-6 font-mono text-xs shadow-2xl">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+            <div className="flex items-center gap-3">
+              <span className="font-bold text-alkota-signal text-base">DEVELOPMENT STATUS</span>
+              <span className="text-alkota-slate">·</span>
+              <span className="text-alkota-white font-bold">PROJECT 01 CONTROL PANEL</span>
+            </div>
+            <span className="px-2.5 py-1 border border-alkota-signal/40 text-alkota-signal text-[10px] font-bold uppercase tracking-widest bg-alkota-signal/10">
+              PRE-PRODUCTION DEVELOPMENT
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-alkota-carbon p-4 border border-white/10 space-y-1">
+              <span className="text-alkota-slate uppercase text-[9px] block">CURRENT REVISION</span>
+              <span className="text-alkota-white font-bold text-lg block">R00 BASELINE</span>
+            </div>
+            <div className="bg-alkota-carbon p-4 border border-white/10 space-y-1">
+              <span className="text-alkota-slate uppercase text-[9px] block">CURRENT PHASE</span>
+              <span className="text-alkota-signal font-bold text-lg block">ENGINEERING DEVELOPMENT</span>
+            </div>
+            <div className="bg-alkota-carbon p-4 border border-white/10 space-y-1">
+              <span className="text-alkota-slate uppercase text-[9px] block">NEXT MILESTONE</span>
+              <span className="text-alkota-white font-bold text-lg block">PROTOTYPE DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3 pt-2 border-t border-white/10">
+            <Link
+              href="/journal/project-01"
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-white/20 text-alkota-snow font-mono font-bold text-[10px] tracking-wider uppercase hover:border-alkota-signal hover:text-alkota-signal transition-all"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>DEVELOPMENT JOURNAL</span>
+            </Link>
+            <Link
+              href="/road-to-2028"
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-white/20 text-alkota-snow font-mono font-bold text-[10px] tracking-wider uppercase hover:border-alkota-signal hover:text-alkota-signal transition-all"
+            >
+              <span>ROAD TO 2028</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              href="/order"
+              className="ml-auto px-6 py-2.5 bg-alkota-signal text-alkota-black font-bold text-[10px] uppercase tracking-wider hover:bg-white transition-colors flex items-center gap-2 flex-shrink-0"
+            >
+              <span>JOIN PROJECT 01</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
         {/* Inline Configurator Call to Action */}
         <ConfiguratorPreviewSection />
+
+        {/* Page Ending Next Step */}
+        <NextStepBanner
+          stepNumber="NEXT STEP"
+          nextTitle="HOW TO ORDER PROJECT 01"
+          nextSubtitle="Understand pre-orders, build priority, specification confirmation, and how to join the development register."
+          href="/order"
+          label="PRE-ORDER JOURNEY"
+          ctaText="HOW TO ORDER"
+        />
       </div>
     </div>
   );
 }
+

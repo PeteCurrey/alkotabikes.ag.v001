@@ -10,14 +10,18 @@ import MaterialSequence from "@/components/sections/MaterialSequence";
 import AlkotaStory from "@/components/sections/AlkotaStory";
 import FromTheNotebook from "@/components/sections/FromTheNotebook";
 import JournalPreviewSection from "@/components/sections/JournalPreviewSection";
-import RoadToProduction from "@/components/editorial/RoadToProduction";
+import RoadTo2028Strip from "@/components/editorial/RoadTo2028Strip";
 import FinalStatementSection from "@/components/sections/FinalStatementSection";
+import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
 
 export default function HomePage() {
   return (
     <div className="w-full space-y-0">
       {/* Section 01 - Cinematic Hero */}
       <HeroFullBleed />
+
+      {/* Global Development Ticker Banner */}
+      <DevelopmentStatusTicker variant="banner" />
 
       {/* Section 02 - The Object (Hotspot Viewer) */}
       <HotspotViewer />
@@ -53,9 +57,9 @@ export default function HomePage() {
       <JournalPreviewSection />
 
       {/* Section 13 - Programme Timeline */}
-      <section className="w-full bg-alkota-carbon border-t border-white/10 py-20 md:py-28 px-4 sm:px-6 lg:px-8">
+      <section className="w-full bg-alkota-carbon border-t border-white/10 py-16 md:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <RoadToProduction />
+          <RoadTo2028Strip />
         </div>
       </section>
 

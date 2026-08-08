@@ -637,7 +637,7 @@ export default function OurStoryPage() {
               <StoryImage
                 src={ALKOTA_STORY_MEDIA.hauteSavoieAlpineTest.src}
                 alt="Haute-Savoie alpine field test"
-                label="HAUTE-SAVOIE · FIELD TESTING · 2,400M ELEVATION"
+                label="ALPINE ENVIRONMENT · PLANNED FIELD VALIDATION TERRAIN"
                 height="h-[260px]"
               />
             </div>

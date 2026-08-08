@@ -622,7 +622,7 @@ export default function BuildProcessPage() {
                   <Img
                     src={ALKOTA_STORY_MEDIA.hauteSavoieAlpineTest.src}
                     alt="Haute-Savoie alpine field validation"
-                    label="HAUTE-SAVOIE · FIELD VALIDATION · 2,400M"
+                    label="ALPINE ENVIRONMENT · PLANNED FIELD VALIDATION TERRAIN"
                     height="h-[220px]"
                   />
                 </div>

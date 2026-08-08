@@ -24,6 +24,7 @@ export default function Footer() {
         { label: "Project 01", href: "/bikes/project-01" },
         { label: "Platform Overview", href: "/bikes" },
         { label: "Configurator", href: "/configure" },
+        { label: "How to Order", href: "/order" },
       ],
     },
     {
@@ -37,21 +38,34 @@ export default function Footer() {
       ],
     },
     {
+      title: "STORE",
+      links: [
+        { label: "Alkota Supply", href: "/store" },
+        { label: "Cart", href: "/cart" },
+      ],
+    },
+    {
       title: "COMPANY",
       links: [
+        { label: "Road to 2028", href: "/road-to-2028" },
         { label: "Philosophy & Origin", href: "/about" },
+        { label: "Alkota Racing 2027", href: "/racing" },
+        { label: "Racing Dispatch", href: "/racing/dispatch" },
+        { label: "Project 01 Journal", href: "/journal/project-01" },
         { label: "Field Notes Journal", href: "/journal" },
-        { label: "Performance Centers", href: "/dealers" },
+        { label: "Partner Network", href: "/dealers" },
         { label: "Contact", href: "/contact" },
       ],
     },
     {
       title: "OWNERSHIP",
       links: [
+        { label: "My Alkota", href: "/my-alkota" },
         { label: "Support Portal", href: "/support" },
         { label: "Owner Documentation", href: "/support/owners" },
         { label: "Technical Guides", href: "/support/technical" },
         { label: "Warranty Policy", href: "/support/warranty" },
+        { label: "Partner Portal", href: "/partners" },
       ],
     },
     {
@@ -111,7 +125,7 @@ export default function Footer() {
         </div>
 
         {/* Navigation Links Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           {navGroups.map((group) => (
             <div key={group.title} className="space-y-4">
               <h4 className="font-mono text-xs tracking-widest text-alkota-slate uppercase">

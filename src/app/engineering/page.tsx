@@ -1,16 +1,20 @@
 import React from "react";
 import Link from "next/link";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+import { EngineeringSubNav } from "@/components/layout/SubNav";
 import CADViewerPlaceholder from "@/components/engineering/CADViewerPlaceholder";
 import KinematicChart from "@/components/engineering/KinematicChart";
 import WorkshopFeature from "@/components/sections/WorkshopFeature";
+import NextStepBanner from "@/components/layout/NextStepBanner";
 import { ENGINEERING_PILLARS } from "@/lib/data/engineeringData";
 import { ArrowRight } from "lucide-react";
 
 export default function EngineeringHubPage() {
   return (
-    <div className="w-full bg-alkota-carbon text-alkota-white pt-28 pb-24 px-4 sm:px-6 lg:px-8 tech-grid-dark space-y-16 min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-16">
+    <div className="w-full bg-alkota-carbon text-alkota-white pt-24 pb-24 space-y-16 min-h-screen tech-grid-dark">
+      <EngineeringSubNav />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
         {/* Engineering Hero */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
           <div className="space-y-3 max-w-3xl">
@@ -74,7 +78,18 @@ export default function EngineeringHubPage() {
         <div className="pt-6">
           <KinematicChart type="leverage" />
         </div>
+
+        {/* Page Ending Next Step */}
+        <NextStepBanner
+          stepNumber="NEXT"
+          nextTitle="PROJECT 01 FLAGSHIP PLATFORM"
+          nextSubtitle="Discover how our engineering methodology materialises in the Project 01 160mm/150mm all-mountain carbon chassis."
+          href="/bikes/project-01"
+          label="FLAGSHIP CHASSIS"
+          ctaText="EXPLORE PROJECT 01"
+        />
       </div>
     </div>
   );
 }
+
