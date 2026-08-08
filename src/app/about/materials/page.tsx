@@ -209,9 +209,6 @@ export default function MaterialsPage() {
             </div>
           </div>
 
-            </div>
-          </div>
-
           <div className="space-y-4">
             <Img
               src={ALKOTA_STORY_MEDIA.carbonLayupDevelopment.src}
