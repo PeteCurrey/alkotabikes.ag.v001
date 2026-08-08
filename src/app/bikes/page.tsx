@@ -1,66 +1,87 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { FLAGSHIP_BIKE } from "@/lib/data/bikesData";
-import { ArrowRight, Settings } from "lucide-react";
+import { FLAGSHIP_PROJECT_01, CANONICAL_FINISHES } from "@/lib/data/project01";
+import { brandAssets } from "@/lib/assets";
+import { ArrowRight, Settings, ShieldCheck, Layers } from "lucide-react";
 
-export default function BikesPage() {
+export default function BikesLandingPage() {
   return (
-    <div className="w-full bg-alkota-white text-alkota-black pt-28 pb-24 px-4 sm:px-6 lg:px-8 space-y-16 min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-12">
-        <div className="border-b border-black/10 pb-8 space-y-3">
-          <TechnicalAnnotation label="BICYCLE PLATFORMS" value="PROJECT 01" variant="slate" />
-          <h1 className="font-display font-extrabold text-5xl sm:text-7xl uppercase tracking-tight text-alkota-black leading-[0.9]">
+    <div className="w-full bg-alkota-carbon text-alkota-white pt-28 pb-24 px-4 sm:px-6 lg:px-8 tech-grid-dark min-h-screen space-y-16">
+      <div className="max-w-7xl mx-auto space-y-16">
+        {/* Header */}
+        <div className="border-b border-white/10 pb-8 space-y-4">
+          <TechnicalAnnotation label="FLAGSHIP PLATFORM" value="ONE MACHINE" variant="signal" />
+          <h1 className="font-display font-medium text-5xl sm:text-7xl lg:text-8xl uppercase tracking-tight text-alkota-white leading-[0.9]">
             ONE PLATFORM.<br />
-            <span className="text-alkota-slate">UNCOMPROMISING PURPOSE.</span>
+            <span className="text-alkota-signal">PROJECT 01.</span>
           </h1>
-          <p className="font-sans text-base text-alkota-graphite max-w-2xl font-light leading-relaxed">
-            We do not manufacture a catalog full of minor variations. We engineer one flagship all-mountain chassis platform.
+          <p className="font-mono text-xs sm:text-sm text-alkota-signal uppercase tracking-wider">
+            ALL-MOUNTAIN / ENDURO CHASSIS • DEVELOPMENT REV 001
+          </p>
+          <p className="font-sans text-base sm:text-lg text-alkota-snow max-w-2xl font-light leading-relaxed">
+            ALKOTA does not build dozens of models. We develop one machine—a single, uncompromising full-suspension carbon chassis engineered to excel across alpine terrain.
           </p>
         </div>
 
-        {/* Project 01 Card */}
-        <div className="bg-alkota-carbon text-alkota-white p-8 md:p-12 border border-white/10 tech-grid-dark grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <TechnicalAnnotation label="FLAGSHIP CHASSIS" value="PROJECT 01" variant="signal" />
-            <h2 className="font-display text-4xl sm:text-5xl font-bold uppercase tracking-tight text-alkota-white">
-              {FLAGSHIP_BIKE.name}
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-alkota-snow font-light leading-relaxed">
-              {FLAGSHIP_BIKE.overview}
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 font-mono text-xs text-alkota-slate border-t border-white/10 pt-4">
-              <div>TRAVEL: <strong className="text-alkota-white">170MM / 160MM</strong></div>
-              <div>FORMAT: <strong className="text-alkota-white">MX / 29</strong></div>
-              <div>MATERIAL: <strong className="text-alkota-white">UD CARBON</strong></div>
-              <div>STATUS: <strong className="text-alkota-signal">DEVELOPMENT SPEC</strong></div>
+        {/* Hero Showcase Card */}
+        <div className="bg-alkota-black border border-white/10 p-6 md:p-12 space-y-8 shadow-2xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
+            <div>
+              <span className="font-mono text-[10px] text-alkota-signal uppercase tracking-widest font-bold">
+                FLAGSHIP CHASSIS
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl font-semibold text-alkota-white uppercase">
+                PROJECT 01
+              </h2>
+              <p className="font-mono text-xs text-alkota-slate uppercase">
+                170MM FRONT / 160MM REAR • MX & 29 COMPATIBLE
+              </p>
             </div>
 
-            <div className="flex flex-wrap gap-4 pt-2">
+            <div className="flex items-center space-x-4 font-mono text-xs">
               <Link
                 href="/bikes/project-01"
-                className="px-6 py-3 bg-alkota-white text-alkota-black hover:bg-alkota-signal font-mono text-xs font-bold tracking-wider uppercase transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-alkota-signal text-alkota-black font-bold uppercase hover:bg-white transition-colors flex items-center gap-2"
               >
                 <span>EXPLORE PROJECT 01</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/configure"
-                className="px-6 py-3 border border-white/20 hover:border-alkota-signal text-alkota-white font-mono text-xs font-bold tracking-wider uppercase transition-colors flex items-center gap-2"
+                className="px-6 py-3 border border-white/20 text-alkota-white font-bold uppercase hover:border-alkota-signal hover:text-alkota-signal transition-colors flex items-center gap-2"
               >
-                <Settings className="w-4 h-4 text-alkota-signal" />
+                <Settings className="w-4 h-4" />
                 <span>CONFIGURE</span>
               </Link>
             </div>
           </div>
 
-          <div className="lg:col-span-5 flex items-center justify-center p-8 bg-alkota-black border border-white/10">
-            <svg viewBox="0 0 600 350" className="w-full h-auto">
-              <circle cx="150" cy="240" r="80" stroke="#737C84" strokeWidth="4" fill="none" />
-              <circle cx="450" cy="240" r="80" stroke="#737C84" strokeWidth="4" fill="none" />
-              <polygon points="400,100 280,120 250,250 280,120" fill="none" stroke="#F4F6F7" strokeWidth="14" strokeLinejoin="round" />
-            </svg>
+          {/* Large Hero Image */}
+          <div className="relative w-full h-[360px] sm:h-[480px] md:h-[540px] flex items-center justify-center p-6 bg-black/40 border border-white/10">
+            <Image
+              src={brandAssets.project01WhiteHero}
+              alt="ALKOTA Project 01 full-suspension mountain bike Glacier White finish"
+              fill
+              priority
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="object-contain object-center"
+            />
+          </div>
+
+          {/* Launch Finishes Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/10 font-sans">
+            {CANONICAL_FINISHES.map((finish) => (
+              <div key={finish.id} className="bg-alkota-carbon p-6 border border-white/10 space-y-3">
+                <div className="flex items-center justify-between font-mono text-xs">
+                  <span className="text-alkota-signal font-bold uppercase">FINISH {finish.code}</span>
+                  <span className="text-alkota-slate uppercase">{finish.subtitle}</span>
+                </div>
+                <h3 className="font-display text-xl font-bold text-alkota-white uppercase">{finish.name}</h3>
+                <p className="text-alkota-snow/80 text-xs leading-relaxed font-light">{finish.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

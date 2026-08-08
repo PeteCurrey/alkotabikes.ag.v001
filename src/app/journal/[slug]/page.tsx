@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ARTICLES } from "@/lib/data/journalData";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -25,7 +25,7 @@ export default async function ArticlePage({ params }: PageProps) {
           className="inline-flex items-center gap-2 font-mono text-xs text-alkota-slate hover:text-alkota-black uppercase transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>BACK TO FIELD NOTES</span>
+          <span>BACK TO ENGINEERING JOURNAL</span>
         </Link>
 
         <div className="space-y-4 border-b border-black/10 pb-8">
@@ -34,7 +34,7 @@ export default async function ArticlePage({ params }: PageProps) {
             <span className="font-mono text-xs text-alkota-slate">{article.readTime}</span>
           </div>
 
-          <h1 className="font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tight text-alkota-black leading-[0.95]">
+          <h1 className="font-display font-medium text-4xl sm:text-6xl uppercase tracking-tight text-alkota-black leading-[0.95]">
             {article.title}
           </h1>
 
@@ -49,6 +49,27 @@ export default async function ArticlePage({ params }: PageProps) {
             <p key={index}>{paragraph}</p>
           ))}
         </div>
+
+        {/* Primary Sources & Provenance */}
+        {article.primarySources && article.primarySources.length > 0 && (
+          <div className="pt-8 border-t border-black/10 space-y-3 font-mono text-xs">
+            <span className="text-alkota-slate uppercase text-[10px] block font-bold">PRIMARY TECHNICAL SOURCES & PROVENANCE:</span>
+            <div className="space-y-2">
+              {article.primarySources.map((src) => (
+                <a
+                  key={src.url}
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-alkota-black font-bold hover:underline"
+                >
+                  <span>{src.title}</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-alkota-slate" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

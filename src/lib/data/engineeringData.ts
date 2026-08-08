@@ -5,7 +5,7 @@ export interface EngineeringPillar {
   subtitle: string;
   description: string;
   route: string;
-  metrics: { label: string; value: string }[];
+  metrics: { label: string; value: string; statusTag?: string }[];
 }
 
 export const ENGINEERING_PILLARS: EngineeringPillar[] = [
@@ -18,9 +18,9 @@ export const ENGINEERING_PILLARS: EngineeringPillar[] = [
       "A mountain bike frame must manage complex torsional and axial forces while isolating the rider from unwanted harshness. We map structural wall thickness specifically to load pathways.",
     route: "/engineering/chassis",
     metrics: [
-      { label: "FRAME MATERIAL", value: "UD CARBON" },
-      { label: "BB INTERFACE", value: "THREADED BSA" },
-      { label: "BEARING SEALS", value: "ENDURO MAX DUAL" },
+      { label: "FRAME MATERIAL", value: "UD CARBON MONOCOQUE" },
+      { label: "BB INTERFACE", value: "THREADED 73MM BSA" },
+      { label: "PIVOT HARDWARE", value: "ENDURO MAX DUAL SEALED" },
     ],
   },
   {
@@ -32,9 +32,9 @@ export const ENGINEERING_PILLARS: EngineeringPillar[] = [
       "Suspension is not simply a travel number. It is the dynamic interaction between leverage ratios, pedal anti-squat, braking anti-rise, and rearward axle trajectory.",
     route: "/engineering/kinematics",
     metrics: [
-      { label: "REAR WHEEL TRAVEL", value: "160 MM" },
-      { label: "PROGRESSION RATE", value: "28.4%" },
-      { label: "PEDAL ANTI-SQUAT", value: "112% AT SAG" },
+      { label: "FRONT TRAVEL", value: "170 MM" },
+      { label: "REAR TRAVEL", value: "160 MM" },
+      { label: "KINEMATIC MODEL", value: "PROGRESSIVE LINKAGE (SIMULATION TARGET)" },
     ],
   },
   {
@@ -46,9 +46,9 @@ export const ENGINEERING_PILLARS: EngineeringPillar[] = [
       "We do not use carbon fiber for decorative vanity. Metal components are forged and 5-axis CNC machined where high thread shear strength or impact resistance is non-negotiable.",
     route: "/engineering/materials",
     metrics: [
-      { label: "COMPOSITE GRADE", value: "HIGH MODULUS UD" },
-      { label: "HARDWARE ALLOY", value: "AL7075-T6" },
-      { label: "BEARING BOLTS", value: "GRADE 5 TITANIUM" },
+      { label: "COMPOSITE LAYUP", value: "HIGH-MODULUS UD CARBON" },
+      { label: "HARDWARE ALLOY", value: "AL7075-T6 CNC BILLET" },
+      { label: "PIVOT HARDWARE", value: "GRADE 5 TITANIUM" },
     ],
   },
   {
@@ -60,9 +60,9 @@ export const ENGINEERING_PILLARS: EngineeringPillar[] = [
       "Finite Element Analysis (FEA) guides the design, but laboratory fatigue rigs and telemetry-instrumented mountain testing reveal the true physical behavior of the chassis.",
     route: "/engineering/testing",
     metrics: [
-      { label: "FATIGUE CYCLES", value: "1,000,000+ (ISO+)" },
-      { label: "TELEMETRY CHANNELS", value: "12 CHANNELS" },
-      { label: "STATUS", value: "VALIDATION IN PROGRESS" },
+      { label: "LAB TEST PROGRAMME", value: "ISO+ FATIGUE PROGRAMME (PENDING PROTOCOL)" },
+      { label: "FIELD TELEMETRY", value: "SENSOR INSTRUMENTATION (DEVELOPMENT TARGET)" },
+      { label: "DEVELOPMENT STATUS", value: "REV 001 CHASSIS VALIDATION" },
     ],
   },
 ];
@@ -82,7 +82,7 @@ export const DEMO_KINEMATIC_DATA = {
   antiSquat: [
     { travel: 0, antiSquat: 135 },
     { travel: 20, antiSquat: 124 },
-    { travel: 40, antiSquat: 112 }, // SAG point around 30% / 48mm
+    { travel: 40, antiSquat: 112 },
     { travel: 60, antiSquat: 101 },
     { travel: 80, antiSquat: 88 },
     { travel: 100, antiSquat: 74 },
@@ -107,6 +107,6 @@ export const PROCESS_STAGES = [
   { step: "04", title: "PROTOTYPE", desc: "Lay up carbon molds & 5-axis CNC aluminium linkages." },
   { step: "05", title: "TEST", desc: "Rigorous ISO+ lab stress tests & sensor telemetry." },
   { step: "06", title: "REFINE", desc: "Iterate carbon layup schedule & link dimensions." },
-  { step: "07", title: "RIDE", desc: "High-velocity validation in alpine mountain environments." },
-  { step: "08", title: "REPEAT", desc: "Continuous improvement until performance is undeniable." },
+  { step: "07", title: "VALIDATE", desc: "Field testing and iteration in real mountain terrain." },
+  { step: "08", title: "APPROVE", desc: "Final production sign-off before manufacturing." },
 ];

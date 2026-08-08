@@ -3,20 +3,19 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { COMPONENT_EXCELLENCE, ComponentDetail } from "@/lib/data/bikesData";
-import { componentAssets } from "@/lib/assets";
+import { PROJECT_01_SYSTEMS, ProjectComponent } from "@/lib/data/project01";
 import { Layers, Sun, Moon, Check } from "lucide-react";
 
 export default function ComponentExcellence() {
   const [viewMode, setViewMode] = useState<"DARK" | "ALPINE">("DARK");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
-  const [activeComponent, setActiveComponent] = useState<ComponentDetail>(COMPONENT_EXCELLENCE[0]);
+  const [activeComponent, setActiveComponent] = useState<ProjectComponent>(PROJECT_01_SYSTEMS[0]);
 
   const categories = ["ALL", "SUSPENSION", "BRAKES", "DRIVETRAIN", "WHEELS", "TYRES", "COCKPIT", "TOUCHPOINTS"];
 
   const filteredComponents = selectedCategory === "ALL"
-    ? COMPONENT_EXCELLENCE
-    : COMPONENT_EXCELLENCE.filter((c) => c.category === selectedCategory);
+    ? PROJECT_01_SYSTEMS
+    : PROJECT_01_SYSTEMS.filter((c) => c.category === selectedCategory);
 
   return (
     <section className="w-full bg-alkota-carbon text-alkota-white py-24 px-4 sm:px-6 lg:px-8 tech-grid-dark border-b border-white/10">
@@ -88,10 +87,10 @@ export default function ComponentExcellence() {
             <Image
               src={
                 viewMode === "DARK"
-                  ? componentAssets[activeComponent.darkImageKey as keyof typeof componentAssets]
-                  : componentAssets[activeComponent.alpineImageKey as keyof typeof componentAssets]
+                  ? activeComponent.darkImageKey
+                  : activeComponent.alpineImageKey
               }
-              alt={activeComponent.name}
+              alt={`${activeComponent.brand} ${activeComponent.model}`}
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 60vw"
@@ -106,18 +105,18 @@ export default function ComponentExcellence() {
           <div className="lg:col-span-5 space-y-6 font-sans">
             <div className="space-y-2 border-b border-white/10 pb-4">
               <span className="font-mono text-xs text-alkota-signal uppercase tracking-wider font-bold">
-                {activeComponent.subtitle}
+                {activeComponent.brand} {activeComponent.systemName}
               </span>
               <h3 className="font-display text-2xl sm:text-3xl font-semibold text-alkota-white uppercase">
-                {activeComponent.name}
+                {activeComponent.brand} {activeComponent.model}
               </h3>
               <p className="font-mono text-xs text-alkota-slate uppercase border-l-2 border-alkota-signal pl-2 py-0.5">
-                {activeComponent.specs}
+                {activeComponent.variant}
               </p>
             </div>
 
             <p className="text-alkota-snow/90 text-sm leading-relaxed font-light">
-              {activeComponent.description}
+              {activeComponent.engineeringRationale}
             </p>
 
             <div className="pt-4 border-t border-white/10 flex items-center justify-between font-mono text-xs text-alkota-slate">
@@ -133,10 +132,7 @@ export default function ComponentExcellence() {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
           {filteredComponents.map((comp) => {
             const isSelected = activeComponent.id === comp.id;
-            const imgSrc =
-              viewMode === "DARK"
-                ? componentAssets[comp.darkImageKey as keyof typeof componentAssets]
-                : componentAssets[comp.alpineImageKey as keyof typeof componentAssets];
+            const imgSrc = viewMode === "DARK" ? comp.darkImageKey : comp.alpineImageKey;
 
             return (
               <button
@@ -151,7 +147,7 @@ export default function ComponentExcellence() {
                 <div className="relative w-full h-20 bg-alkota-carbon/40 flex items-center justify-center overflow-hidden">
                   <Image
                     src={imgSrc}
-                    alt={comp.name}
+                    alt={comp.model}
                     fill
                     sizes="160px"
                     className="object-contain object-center group-hover:scale-105 transition-transform"
@@ -160,7 +156,7 @@ export default function ComponentExcellence() {
 
                 <div className="w-full space-y-0.5 font-mono text-[10px] overflow-hidden">
                   <p className="text-alkota-white font-bold truncate group-hover:text-alkota-signal">
-                    {comp.name}
+                    {comp.brand} {comp.model}
                   </p>
                   <p className="text-alkota-slate truncate text-[9px] uppercase">
                     {comp.category}
@@ -169,29 +165,6 @@ export default function ComponentExcellence() {
               </button>
             );
           })}
-        </div>
-
-        {/* Master Hardware Overview Board */}
-        <div className="bg-alkota-black border border-white/10 p-6 md:p-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
-            <div>
-              <div className="text-alkota-signal font-mono text-[10px] uppercase">SYSTEM COMPONENT MATRIX</div>
-              <h3 className="font-display text-xl md:text-2xl font-semibold text-alkota-white">
-                PROJECT 01 INTEGRATED HARDWARE BOARD
-              </h3>
-            </div>
-            <TechnicalAnnotation label="FULL SPEC BOARD" value="REV 001" variant="signal" />
-          </div>
-
-          <div className="relative w-full h-[320px] sm:h-[450px] md:h-[580px] bg-black/60 border border-white/10 flex items-center justify-center p-4">
-            <Image
-              src={componentAssets.overviewGrid}
-              alt="ALKOTA Project 01 master component hardware board overview"
-              fill
-              sizes="(max-width: 1280px) 100vw, 1280px"
-              className="object-contain object-center"
-            />
-          </div>
         </div>
       </div>
     </section>

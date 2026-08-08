@@ -8,18 +8,24 @@ export interface Article {
   content: string[];
   author: string;
   status: "PUBLISHED" | "EDITORIAL PLAN";
+  relatedSystemId?: string;
+  primarySources?: { title: string; url: string }[];
 }
 
 export const ARTICLES: Article[] = [
   {
-    slug: "project-01-the-brief",
-    title: "PROJECT 01: THE BRIEF",
+    slug: "project-01-building-one-platform",
+    title: "PROJECT 01: BUILDING ONE PLATFORM",
     category: "CHASSIS DEVELOPMENT",
     date: "DEVELOPMENT DISPATCH / 001",
     readTime: "4 MIN READ",
     excerpt: "Why we started with one single flagship platform rather than a full product range, and what we demanded from its geometry.",
     author: "ENGINEERING TEAM",
     status: "PUBLISHED",
+    relatedSystemId: "chassis-monocoque",
+    primarySources: [
+      { title: "ALKOTA Project 01 Chassis Development", url: "https://alkota.com/engineering" }
+    ],
     content: [
       "When we initiated ALKOTA Performance Engineering, the standard industry model suggested launching five distinct frame models across different travel brackets. We rejected that premise.",
       "The brief for Project 01 was straightforward yet uncompromising: build one chassis capable of conquering steep alpine descents without penalizing the rider on technical multi-hour climbs.",
@@ -27,60 +33,97 @@ export const ARTICLES: Article[] = [
     ],
   },
   {
-    slug: "why-kinematics-matter",
-    title: "WHY KINEMATICS MATTER",
-    category: "SUSPENSION PHYSICS",
+    slug: "why-mixed-wheels",
+    title: "WHY MIXED WHEELS: 29 FRONT / 27.5 REAR",
+    category: "GEOMETRY & KINEMATICS",
     date: "DEVELOPMENT DISPATCH / 002",
-    readTime: "6 MIN READ",
-    excerpt: "Deconstructing leverage curves, anti-squat percentages, and why pedal kickback is often misunderstood by mountain bikers.",
+    readTime: "5 MIN READ",
+    excerpt: "Understanding the physics behind mixed-wheel (MX) setups: rollover momentum at the front versus chainstay agility and butt-clearance at the rear.",
     author: "KINEMATICS LAB",
     status: "PUBLISHED",
+    relatedSystemId: "dt-swiss-exc-1200-rear",
+    primarySources: [
+      { title: "DT Swiss EXC 1200 Technology", url: "https://www.dtswiss.com/en/wheels/wheels-mtb/enduro/exc-1200" }
+    ],
     content: [
-      "A suspension link is not just a lever that squashes an air shock; it is a dynamic mathematical force converter that governs tire traction, chassis attitude, and energy transfer.",
-      "Anti-squat dictates how pedaling forces counteract rider mass transfer during acceleration. Too much anti-squat creates unwanted pedal kickback over high-speed chatter; too little wastes rider energy in chassis bobbing.",
-      "In Project 01, we tuned a flat anti-squat curve around the 30% sag point, transitioning into neutral anti-rise under heavy rear braking.",
+      "The 29er front wheel is non-negotiable for high-speed alpine stability: its larger attack angle rolls over square-edged rocks and roots with far less momentum loss.",
+      "However, in steep alpine chutes and tight berm switchbacks, a 27.5\" rear wheel provides crucial butt-clearance for rider weight transfer and allows shorter chainstays for fast cornering turn-in.",
+      "Project 01 features a modular dropout flip-chip architecture, enabling riders to switch seamlessly between full 29er and MX configurations without compromising bottom bracket height or head tube angle.",
+    ],
+  },
+  {
+    slug: "asymmetric-braking-front-vs-rear",
+    title: "ASYMMETRIC BRAKING: HOPE V6Ti FRONT / TR4 REAR",
+    category: "HARDWARE PHILOSOPHY",
+    date: "DEVELOPMENT DISPATCH / 003",
+    readTime: "6 MIN READ",
+    excerpt: "Why matching front and rear brake calipers is a flaw in mountain bike engineering, and how asymmetric piston sizing optimizes weight shift dynamics.",
+    author: "HARDWARE DEPT",
+    status: "PUBLISHED",
+    relatedSystemId: "hope-evo-v6ti",
+    primarySources: [
+      { title: "Hope Technology Brake Engineering", url: "https://www.hopetech.com/products/brakes/" }
+    ],
+    content: [
+      "Front-wheel braking demands are fundamentally different from rear-wheel braking demands. During hard deceleration on a steep gradient, weight transfers forward, providing up to 70% of total stopping traction to the front tire.",
+      "To match this physical reality, Project 01 uses an asymmetric Hope brake specification: a 6-piston CNC machined Hope EVO V6Ti caliper with titanium pistons at the front for ultimate thermal dissipation, paired with a 4-piston Hope TR4 caliper at the rear for fine modulation.",
+      "This intentional asymmetry prevents premature rear-wheel lockup while granting full deceleration authority to the rider's index finger.",
+    ],
+  },
+  {
+    slug: "why-fox-38-and-float-x2",
+    title: "WHY FOX 38 + FLOAT X2 INTEGRATION",
+    category: "SUSPENSION INTEGRATION",
+    date: "DEVELOPMENT DISPATCH / 004",
+    readTime: "5 MIN READ",
+    excerpt: "Matching the stiffness of a 38mm stanchion fork with a high-volume trunnion air shock for consistent spring curves under heavy G-loads.",
+    author: "SUSPENSION TEAM",
+    status: "PUBLISHED",
+    relatedSystemId: "fox-38-factory",
+    primarySources: [
+      { title: "FOX Factory 38 Specification", url: "https://www.ridefox.com/family.php?m=bike&family=38" }
+    ],
+    content: [
+      "Long-travel enduro chassis demand front-to-rear chassis balance. A stiff carbon front triangle paired with a flexing fork creates high-frequency binding in the stanchions during hard cornering.",
+      "The 38mm chassis of the FOX 38 Factory fork provides the structural rigidity necessary to keep damper bushings operating smoothly under high flex loads.",
+      "At the rear, the FOX Float X2 Factory trunnion shock features an EVOL air sleeve and VVC dampers, mirroring the linear air spring progression of the front fork.",
+    ],
+  },
+  {
+    slug: "selecting-the-wheel-system",
+    title: "SELECTING THE WHEEL SYSTEM: DT SWISS EXC 1200",
+    category: "WHEEL ARCHITECTURE",
+    date: "DEVELOPMENT DISPATCH / 005",
+    readTime: "5 MIN READ",
+    excerpt: "Why ultra-stiff carbon rims cause fatigue, and how DT Swiss tuned radial compliance to absorb trail vibration while preserving cornering tracking.",
+    author: "COMPOSITES LAB",
+    status: "PUBLISHED",
+    relatedSystemId: "dt-swiss-exc-1200-front",
+    primarySources: [
+      { title: "DT Swiss EXC 1200 Classic Carbon", url: "https://www.dtswiss.com/en/wheels/wheels-mtb/enduro/exc-1200" }
+    ],
+    content: [
+      "Early carbon mountain bike wheels were engineered with extreme vertical stiffness, resulting in harsh ride characteristics and deflected lines over loose rock.",
+      "DT Swiss EXC 1200 carbon rims utilize a lower-profile rim height that allows controlled radial compliance over trail square-edges while retaining high lateral stiffness for steering response.",
+      "Paired with DT Swiss 180 straightpull hub bodies and Ratchet EXP 36T engagement, energy transfer is instantaneous upon pedaling out of corners.",
     ],
   },
   {
     slug: "designing-for-serviceability",
     title: "DESIGNING FOR SERVICEABILITY",
     category: "CHASSIS ENGINEERING",
-    date: "DEVELOPMENT DISPATCH / 003",
+    date: "DEVELOPMENT DISPATCH / 006",
     readTime: "5 MIN READ",
     excerpt: "Why mechanics hate modern internal cable routing, and how we solved clean cable packaging without needing headset entry ports.",
     author: "HARDWARE DEPT",
     status: "PUBLISHED",
+    relatedSystemId: "chassis-monocoque",
+    primarySources: [
+      { title: "ALKOTA Project Workspace", url: "https://alkota.com/support/technical" }
+    ],
     content: [
       "Bicycles exist to be ridden on harsh, wet, gritty terrain. When hardware requires three hours of workshop teardown just to replace a headset bearing or brake hose, engineering has failed.",
       "We spent months designing guided internal carbon tubes molded directly into the frame interior, ensuring cables pop out precisely at their target ports with zero noise, rattle, or fluid disconnection required.",
-    ],
-  },
-  {
-    slug: "from-cad-to-carbon",
-    title: "FROM CAD TO CARBON",
-    category: "MATERIALS & MANUFACTURING",
-    date: "DEVELOPMENT DISPATCH / 004",
-    readTime: "7 MIN READ",
-    excerpt: "Inside the composite layup process. How fiber orientation dictates torsional stiffness and impact damping in high-modulus frames.",
-    author: "COMPOSITES LAB",
-    status: "PUBLISHED",
-    content: [
-      "Carbon fiber is anisotropic: its mechanical strength exists along the axis of the fibers. This means the layup schedule is where true frame performance is born.",
-      "By placing 0-degree unidirectional plies along the downtube for longitudinal stiffness and 45-degree cross-plies around the bottom bracket for torsional rigidity, Project 01 achieves instant acceleration while absorbing high-frequency trail vibrations.",
-    ],
-  },
-  {
-    slug: "the-value-of-a-boring-bearing",
-    title: "THE VALUE OF A BORING BEARING",
-    category: "HARDWARE PHILOSOPHY",
-    date: "DEVELOPMENT DISPATCH / 005",
-    readTime: "4 MIN READ",
-    excerpt: "Exotic custom pivot hardware looks cool in photos. Standardized Enduro MAX bearings last 10x longer on real mountain trails.",
-    author: "WORKSHOP LAB",
-    status: "PUBLISHED",
-    content: [
-      "Proprietary, non-standard pivot bearings are a plague in high-end cycling. When a bearing fails mid-trip in the Alps, finding a replacement shouldn't require a 3-week factory backorder.",
-      "We deliberately engineered Project 01 pivot locations around standardized double-sealed Enduro MAX full-complement bearings that are globally available and built specifically for high static loads.",
     ],
   },
 ];

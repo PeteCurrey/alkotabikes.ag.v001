@@ -14,7 +14,7 @@ export default function EngineeringHubPage() {
         {/* Engineering Hero */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
           <div className="space-y-3 max-w-3xl">
-            <TechnicalAnnotation label="ALKOTA / ENGINEERING" variant="signal" />
+            <TechnicalAnnotation label="ALKOTA / CHASSIS DEVELOPMENT" variant="signal" />
             <h1 className="font-display font-medium text-5xl sm:text-7xl uppercase tracking-tight text-alkota-white leading-[0.9]">
               UNDERSTAND<br />
               <span className="text-alkota-slate">EVERY FORCE.</span>
@@ -25,8 +25,8 @@ export default function EngineeringHubPage() {
           </div>
 
           <div className="font-mono text-xs text-alkota-slate uppercase space-y-1">
-            <div>LAB / R&D FACILITY 01</div>
-            <div>STATUS: ACTIVE DEVELOPMENT</div>
+            <div>PROGRAMME: PROJECT WORKSPACE</div>
+            <div>STATUS: REV 001 DEVELOPMENT</div>
           </div>
         </div>
 
