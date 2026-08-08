@@ -7,8 +7,10 @@ import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { FLAGSHIP_BIKE, FINISH_COLORWAYS } from "@/lib/data/bikesData";
 import HotspotViewer from "@/components/sections/HotspotViewer";
 import ConfiguratorPreviewSection from "@/components/sections/ConfiguratorPreviewSection";
+import ComponentExcellence from "@/components/sections/ComponentExcellence";
 import { ArrowRight, Settings, CheckCircle2, ShieldCheck } from "lucide-react";
 import { brandAssets } from "@/lib/assets";
+
 
 export default function Project01Page() {
   const [selectedFinish, setSelectedFinish] = useState<"GLACIER" | "CARBON">("CARBON");
@@ -120,6 +122,10 @@ export default function Project01Page() {
             ))}
           </div>
         </div>
+
+        {/* Component Excellence Gallery & Hardware Anatomy */}
+        <ComponentExcellence />
+
 
         {/* Hotspots Interactive Inspection */}
         <HotspotViewer />

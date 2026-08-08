@@ -120,9 +120,11 @@ export const FLAGSHIP_BIKE = {
     { label: "REAR SHOCK", value: "FOX Float X2 Factory 205x65mm Trunnion" },
     { label: "FRONT TYRE", value: "MAXXIS Assegai 29x2.5\" WT 3C MaxxGrip EXO+ (Tan-Wall)" },
     { label: "REAR TYRE", value: "MAXXIS Minion DHR II 29x2.4\" / 27.5x2.4\" WT EXO+ (Tan-Wall)" },
-    { label: "DRIVETRAIN", value: "SRAM XX1 Eagle AXS / Hope EVO V6Ti Brakes" },
-    { label: "WHEELSET", value: "Reserve 30|HD Carbon Rim on Hope Pro 4 Hubs" },
-    { label: "COCKPIT", value: "Race Face ERA Carbon Bar 800mm & Turbine R Stem" },
+    { label: "BRAKES", value: "Hope EVO V6Ti Front (6-Piston) / TR4 Rear CNC Brakes" },
+    { label: "DRIVETRAIN", value: "SRAM XX Eagle AXS 12-Speed Wireless Transmission" },
+    { label: "WHEELSET", value: "DT Swiss EXC 1200 Carbon Wheelset (30mm Internal)" },
+    { label: "COCKPIT", value: "Renthal Fatbar Carbon 800mm & Apex CNC Stem" },
+    { label: "GRIPS", value: "Ergon GE1 Evo Ergonomic Gravity Grips" },
   ],
 
   geometryTable: [
@@ -137,3 +139,98 @@ export const FLAGSHIP_BIKE = {
     { parameter: "Rear Travel", medium: "160", large: "160", extraLarge: "160", unit: "mm" },
   ] as GeometryRow[],
 };
+
+export interface ComponentDetail {
+  id: string;
+  name: string;
+  subtitle: string;
+  category: "SUSPENSION" | "BRAKES" | "DRIVETRAIN" | "WHEELS" | "TYRES" | "COCKPIT" | "TOUCHPOINTS";
+  specs: string;
+  description: string;
+  darkImageKey: string;
+  alpineImageKey: string;
+}
+
+export const COMPONENT_EXCELLENCE: ComponentDetail[] = [
+  {
+    id: "fox-38-factory",
+    name: "FOX 38 FACTORY",
+    subtitle: "Front Suspension",
+    category: "SUSPENSION",
+    specs: "170mm Travel / GRIP2 Damper / Kashima Coat",
+    description: "The benchmark in downhill performance. Unrivalled stiffness, sensitivity and high/low-speed compression adjustability for aggressive alpine terrain.",
+    darkImageKey: "fox38Dark",
+    alpineImageKey: "fox38Alpine",
+  },
+  {
+    id: "fox-float-x2",
+    name: "FOX FLOAT X2 FACTORY",
+    subtitle: "Rear Shock",
+    category: "SUSPENSION",
+    specs: "205 x 65mm Trunnion / VVC Rebound / 2-Pos Lever",
+    description: "Designed for the hardest hits. Smooth, supportive and fully tunable air spring curve matched to the Project 01 progressive linkage.",
+    darkImageKey: "foxFloatX2Dark",
+    alpineImageKey: "foxFloatX2Alpine",
+  },
+  {
+    id: "sram-xx-eagle-axs",
+    name: "SRAM XX EAGLE AXS",
+    subtitle: "Transmission Drivetrain",
+    category: "DRIVETRAIN",
+    specs: "12-Speed Wireless / Hangerless Full Mount / T-Type",
+    description: "Hangerless interface mounts directly to the frame spindle for unbreakable strength and crisp shifting under maximum torque.",
+    darkImageKey: "sramXxEagleDark",
+    alpineImageKey: "sramXxEagleAlpine",
+  },
+  {
+    id: "hope-evo-v6ti",
+    name: "HOPE EVO V6Ti / TR4",
+    subtitle: "Hydraulic Disc Brakes",
+    category: "BRAKES",
+    specs: "Front: EVO V6Ti 6-Piston / Rear: TR4 CNC Machined",
+    description: "CNC machined in Barnoldswick, UK from 2014 T6 aircraft aluminum. Delivers unmatched power, thermal stability, and modulation control.",
+    darkImageKey: "hopeEvoDark",
+    alpineImageKey: "hopeEvoAlpine",
+  },
+  {
+    id: "dt-swiss-exc-1200",
+    name: "DT SWISS EXC 1200",
+    subtitle: "Carbon Wheelset",
+    category: "WHEELS",
+    specs: "UD Carbon Rim / 30mm Internal / Ratchet EXP Hubs",
+    description: "Ultralight, high-impact carbon rim profile tuned for cornering compliance and high-speed dampening without sacrificing acceleration.",
+    darkImageKey: "dtSwissExc1200Dark",
+    alpineImageKey: "dtSwissExc1200Alpine",
+  },
+  {
+    id: "maxxis-assegai-dhr",
+    name: "MAXXIS ASSEGAI / MINION DHR II",
+    subtitle: "Tan Wall Tyres",
+    category: "TYRES",
+    specs: "Front: Assegai 2.5\" WT 3C MaxxGrip / Rear: Minion DHR II 2.4\" WT",
+    description: "Maxxis' premier all-mountain rubber compound with distinctive Tan Wall sidewalls, delivering confidence in wet rock and loose alpine loam.",
+    darkImageKey: "maxxisAssegaiDark",
+    alpineImageKey: "maxxisAssegaiAlpine",
+  },
+  {
+    id: "renthal-fatbar-carbon",
+    name: "RENTHAL FATBAR CARBON",
+    subtitle: "Cockpit System",
+    category: "COCKPIT",
+    specs: "800mm Width / 35mm Clamp / Apex CNC Stem",
+    description: "Optimized carbon layup balances vibration dampening with steering precision for reduced arm pump on long alpine descents.",
+    darkImageKey: "renthalFatbarDark",
+    alpineImageKey: "renthalFatbarAlpine",
+  },
+  {
+    id: "ergon-ge1-evo",
+    name: "ERGON GE1 EVO",
+    subtitle: "Tactile Grips",
+    category: "TOUCHPOINTS",
+    specs: "Ergonomic Texture / Integrated Anodized Clamp",
+    description: "Designed for aggressive gravity riders. Supports correct upper arm and forearm position for maximum control on technical trails.",
+    darkImageKey: "ergonGe1Dark",
+    alpineImageKey: "ergonGe1Alpine",
+  },
+];
+
