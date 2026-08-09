@@ -44,8 +44,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "p01-naked-carbon": {
     id: "p01-naked-carbon",
-    filename: "project01-naked-carbon.png",
-    publicPath: "/images/project01-naked-carbon.png",
+    filename: "project01-naked-carbon-hero.jpg",
+    publicPath: "/images/project01-naked-carbon-hero.jpg",
     assetType: "PRODUCT_HERO",
     product: "PROJECT 01",
     brand: "ALKOTA",

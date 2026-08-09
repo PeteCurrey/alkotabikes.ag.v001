@@ -82,7 +82,7 @@ export const CANONICAL_FINISHES: FinishColorway[] = [
     subtitle: "Raw Composite Structure",
     description:
       "Exposed 3K unidirectional carbon composite layup with a lightweight matte protective clear coat.",
-    imageKey: "/images/project01-naked-carbon.png",
+    imageKey: "/images/project01-naked-carbon-hero.jpg",
     swatchHex: "#16191C",
     borderHex: "#3A4148",
   },
@@ -113,7 +113,7 @@ export const PROJECT_01_SYSTEMS: ProjectComponent[] = [
     manufacturer: "ALKOTA Performance Engineering",
     manufacturerSource: "https://alkota.com/engineering/project-01",
     sourceLastVerified: "2026-08-08",
-    darkImageKey: "/images/project01-naked-carbon.png",
+    darkImageKey: "/images/project01-naked-carbon-hero.jpg",
     alpineImageKey: "/images/project01-glacier-white.png",
     hotspotDesktop: { top: "44.5%", left: "50.5%" },
     hotspotMobile: { top: "44.5%", left: "50.5%" },

@@ -77,7 +77,7 @@ export const PROJECT_01_COMPONENTS: ProjectComponent[] = [
     manufacturerSource: "https://alkota.com/engineering",
     sourceLastVerified: "2026-08-08",
     mediaRightsStatus: "ALKOTA OWNED",
-    darkImageKey: "/images/project01-naked-carbon.png",
+    darkImageKey: "/images/project01-naked-carbon-hero.jpg",
     alpineImageKey: "/images/project01-glacier-white.png",
     hotspotDesktop: { top: "42%", left: "54%" },
     hotspotMobile: { top: "42%", left: "54%" },

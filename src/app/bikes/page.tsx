@@ -1,10 +1,27 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
+import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { FLAGSHIP_PROJECT_01, CANONICAL_FINISHES } from "@/lib/data/project01";
 import { brandAssets } from "@/lib/assets";
 import { ArrowRight, Settings, ShieldCheck, Layers } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Mountain Bike Platforms | Alkota Cycles",
+  description:
+    "Explore the Alkota Cycles mountain bike development platforms. Discover our engineering approach to chassis dynamics and baseline kinematics.",
+  alternates: {
+    canonical: `${siteUrl}/bikes`,
+  },
+  openGraph: {
+    title: "Mountain Bike Platforms | Alkota Cycles",
+    description:
+      "Explore the Alkota Cycles mountain bike development platforms. Discover our engineering approach to chassis dynamics and baseline kinematics.",
+    url: `${siteUrl}/bikes`,
+  },
+};
 
 const FINISH_IMAGES: Record<string, string> = {
   GLACIER: brandAssets.project01WhiteHero,

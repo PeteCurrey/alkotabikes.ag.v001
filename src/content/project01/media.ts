@@ -84,7 +84,7 @@ export const glacierWhite = {
 export const nakedCarbon = {
   /** Primary master — full side profile Naked Carbon */
   hero: {
-    src: "/images/project01-naked-carbon.png",
+    src: "/images/project01-naked-carbon-hero.jpg",
     alt: "Project 01 Naked Carbon — side profile master",
     status: "APPROVED_MASTER" as ImageStatus,
     view: "SIDE",
@@ -125,11 +125,16 @@ export const nakedCarbon = {
 // ──────────────────────────────────────────────────────
 
 export const environmentImages = {
-  /** Alpine testing context — mountain terrain */
+  /**
+   * Alpine testing context — ASSET PENDING
+   * Original file (project01-alpine-testing.png) was byte-identical to
+   * engineering-workshop.png and has been deleted (defect 4a, 2026-08-09).
+   * Genuine field imagery planned for 2027 prototype programme.
+   */
   alpineTesting: {
-    src: "/images/project01-alpine-testing.png",
-    alt: "Project 01 development — alpine terrain context",
-    status: "APPROVED_MASTER" as ImageStatus,
+    src: null,
+    alt: "Project 01 development — alpine terrain context (asset pending)",
+    status: "ASSET_PENDING" as ImageStatus,
     finish: "BOTH" as const,
   },
 

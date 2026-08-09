@@ -1,5 +1,22 @@
 import React from "react";
+import { Metadata } from "next";
+import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+
+export const metadata: Metadata = {
+  title: "Technical Specifications | Alkota Cycles",
+  description:
+    "Comprehensive technical specifications and frame standards by Alkota Cycles. Bearing sizes, shock hardware dimensions, and brake mount specs.",
+  alternates: {
+    canonical: `${siteUrl}/support/technical`,
+  },
+  openGraph: {
+    title: "Technical Specifications | Alkota Cycles",
+    description:
+      "Comprehensive technical specifications and frame standards by Alkota Cycles. Bearing sizes, shock hardware dimensions, and brake mount specs.",
+    url: `${siteUrl}/support/technical`,
+  },
+};
 
 export default function TechnicalSupportPage() {
   return (

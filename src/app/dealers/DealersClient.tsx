@@ -73,9 +73,9 @@ const PARTNER_PROGRAMME = [
     label: "EARLY CONVERSATION",
     description:
       "Alkota contacts shortlisted specialists for initial conversations about the product, the programme, and mutual fit.",
-    status: "OPEN NOW",
+    status: "CURRENT PHASE",
     statusVariant: "signal",
-    timing: "2024–2025",
+    timing: "CURRENT",
   },
   {
     phase: "02",
@@ -84,7 +84,7 @@ const PARTNER_PROGRAMME = [
       "A small initial group of partners are selected for the development phase — supporting registrants through build and fit.",
     status: "DEVELOPMENT PHASE",
     statusVariant: "slate",
-    timing: "2026–2027",
+    timing: "NEXT",
   },
   {
     phase: "03",
@@ -93,7 +93,7 @@ const PARTNER_PROGRAMME = [
       "Partners receive a pre-production development machine for ride programme, fit sessions and customer introduction.",
     status: "PLANNED",
     statusVariant: "slate",
-    timing: "2027",
+    timing: "PLANNED",
   },
   {
     phase: "04",
@@ -102,7 +102,7 @@ const PARTNER_PROGRAMME = [
       "Full Alkota Partner status. Stock allocation, certification, marketing support, and access to the partner portal.",
     status: "PRODUCTION LAUNCH",
     statusVariant: "slate",
-    timing: "2028",
+    timing: "2028 TARGET",
   },
 ];
 

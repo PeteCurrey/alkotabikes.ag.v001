@@ -1,7 +1,24 @@
 import React from "react";
 import Link from "next/link";
+import { Metadata } from "next";
+import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ArrowRight, BookOpen, ShieldCheck, Wrench, Lock } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Technical Support | Alkota Cycles",
+  description:
+    "Technical support and documentation hub by Alkota Cycles. Access user manuals, torque specifications, warranty policies, and service resources.",
+  alternates: {
+    canonical: `${siteUrl}/support`,
+  },
+  openGraph: {
+    title: "Technical Support | Alkota Cycles",
+    description:
+      "Technical support and documentation hub by Alkota Cycles. Access user manuals, torque specifications, warranty policies, and service resources.",
+    url: `${siteUrl}/support`,
+  },
+};
 
 export default function SupportHubPage() {
   const sections = [

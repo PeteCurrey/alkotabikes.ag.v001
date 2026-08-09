@@ -30,7 +30,7 @@ export const CANONICAL_FINISHES: FinishColorway[] = [
     name: "NAKED CARBON",
     subtitle: "Raw Composite Structure",
     description: "Exposed 3K unidirectional carbon composite layup with a lightweight matte protective clear coat.",
-    imagePath: "/images/project01-naked-carbon.png",
+    imagePath: "/images/project01-naked-carbon-hero.jpg",
     swatchHex: "#16191C",
     borderHex: "#3A4148",
   },

@@ -32,22 +32,26 @@ function ProductHero({ placeholder, name }: { placeholder: string; name: string 
         <rect width="100%" height="100%" fill={`url(#ph-${placeholder})`}/>
       </svg>
 
-      {/* Registration marks */}
-      <div className="absolute top-5 left-5 w-6 h-6 border-t-2 border-l-2 border-alkota-signal/50" />
-      <div className="absolute top-5 right-5 w-6 h-6 border-t-2 border-r-2 border-alkota-signal/50" />
-      <div className="absolute bottom-5 left-5 w-6 h-6 border-b-2 border-l-2 border-alkota-signal/50" />
-      <div className="absolute bottom-5 right-5 w-6 h-6 border-b-2 border-r-2 border-alkota-signal/50" />
+      {/* Technical Registration Crosshairs & Corner Reticles */}
+      <div className="absolute top-4 left-4 w-5 h-5 border-t border-l border-alkota-signal" />
+      <div className="absolute top-4 right-4 w-5 h-5 border-t border-r border-alkota-signal" />
+      <div className="absolute bottom-4 left-4 w-5 h-5 border-b border-l border-alkota-signal" />
+      <div className="absolute bottom-4 right-4 w-5 h-5 border-b border-r border-alkota-signal" />
 
-      {/* Centre content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 gap-2">
-        <div className={`font-mono text-xs tracking-widest uppercase ${isLight ? "text-black/25" : "text-white/25"}`}>
-          ALKOTA SUPPLY
+      {/* Centre Technical Content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 gap-3">
+        <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-black/60 border border-white/20 text-alkota-signal font-mono text-[9px] tracking-widest uppercase">
+          <span>DESIGN ARCHIVE</span>
+          <span className="text-white/40">•</span>
+          <span>ASSET PENDING</span>
         </div>
-        <div className={`font-display font-bold text-2xl tracking-tight ${isLight ? "text-black/30" : "text-white/30"}`}>
+        <div className={`font-display font-bold text-xl sm:text-2xl tracking-tight uppercase ${isLight ? "text-black/70" : "text-white/80"}`}>
           {name}
         </div>
-        <div className={`font-mono text-[10px] tracking-widest uppercase mt-2 ${isLight ? "text-black/15" : "text-white/15"}`}>
-          PHOTOGRAPHY ASSET PENDING
+        <div className="font-mono text-[10px] text-alkota-slate tracking-widest uppercase flex items-center gap-2">
+          <span>STUDIO ASSET ID: {placeholder.toUpperCase()}</span>
+          <span>//</span>
+          <span>STUDIO STAGE 01</span>
         </div>
       </div>
     </div>

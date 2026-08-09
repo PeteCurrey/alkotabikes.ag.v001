@@ -1,5 +1,22 @@
 import React from "react";
+import { Metadata } from "next";
+import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
+
+export const metadata: Metadata = {
+  title: "Warranty Policy | Alkota Cycles",
+  description:
+    "Limited chassis warranty and crash replacement policy details from Alkota Cycles. Coverage terms and claims process for original Project 01 owners.",
+  alternates: {
+    canonical: `${siteUrl}/support/warranty`,
+  },
+  openGraph: {
+    title: "Warranty Policy | Alkota Cycles",
+    description:
+      "Limited chassis warranty and crash replacement policy details from Alkota Cycles. Coverage terms and claims process for original Project 01 owners.",
+    url: `${siteUrl}/support/warranty`,
+  },
+};
 
 export default function WarrantyPage() {
   return (
@@ -14,7 +31,7 @@ export default function WarrantyPage() {
         <div className="space-y-4 font-sans text-xs text-alkota-graphite leading-relaxed">
           <div className="p-6 bg-alkota-snow border border-black/10 space-y-2">
             <h3 className="font-display font-bold text-sm text-alkota-black uppercase">LIMITED CHASSIS WARRANTY</h3>
-            <p>ALKOTA warrants Project 01 carbon frames against manufacturing defects for the lifetime of the original owner.</p>
+            <p>ALKOTA warrants Project 01 carbon frames against manufacturing defects for original owners under the terms of the chassis policy.</p>
           </div>
           <div className="p-6 bg-alkota-snow border border-black/10 space-y-2">
             <h3 className="font-display font-bold text-sm text-alkota-black uppercase">CRASH REPLACEMENT SCHEME</h3>

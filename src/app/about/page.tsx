@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
+import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
@@ -13,13 +14,17 @@ import { ArrowRight } from "lucide-react";
 // All currently EVIDENCE_REQUIRED. Copy uses correctly qualified language ("currently being developed around").
 
 export const metadata: Metadata = {
-  title: "About Alkota | Performance Engineering for Mountain Bikes",
+  title: "About | Alkota Cycles",
   description:
-    "Alkota is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+    "Alkota Cycles is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+  alternates: {
+    canonical: `${siteUrl}/about`,
+  },
   openGraph: {
-    title: "About Alkota | Performance Engineering for Mountain Bikes",
+    title: "About | Alkota Cycles",
     description:
-      "Alkota is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+      "Alkota Cycles is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+    url: `${siteUrl}/about`,
     images: [ALKOTA_STORY_MEDIA.peteGlacierWhite.src],
   },
 };

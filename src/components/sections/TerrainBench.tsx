@@ -1,11 +1,23 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { Compass } from "lucide-react";
-import { brandAssets } from "@/lib/assets";
+import { Compass, ImageOff } from "lucide-react";
 
+/**
+ * ASSET DEFECT RESOLUTION — 2026-08-09
+ *
+ * The asset previously used here (project01-alpine-testing.png) was byte-identical
+ * to public/images/engineering-workshop.png — a workshop photograph, not alpine
+ * terrain. It has been deleted. This component renders an explicit awaiting-asset
+ * state until a genuine field image is supplied.
+ *
+ * The "ELEVATION: 2,400M" and "STATUS: ACTIVE TRAIL TESTING" strings have also
+ * been removed. Field telemetry testing has NOT commenced (R00 programme status).
+ * These claims must be registered in lib/claims.ts before they may be rendered.
+ *
+ * See CLAUDE.md Non-Negotiable #4 (no duplicate assets) and #1 (no fabricated claims).
+ */
 export default function TerrainBench() {
   return (
     <section className="relative w-full bg-alkota-carbon text-alkota-white py-24 px-4 sm:px-6 lg:px-8 border-b border-white/10 tech-grid-dark overflow-hidden">
@@ -21,41 +33,39 @@ export default function TerrainBench() {
 
           <div className="flex items-center space-x-3 font-mono text-xs text-alkota-slate">
             <Compass className="w-4 h-4 text-alkota-signal" />
-            <span>ALPINE R&D / HAUTE-SAVOIE</span>
+            <span>ALPINE R&D / PROTOTYPE PROGRAMME</span>
           </div>
         </div>
 
-        {/* Alpine Riding Photographic Test Bench Container */}
-        <div className="relative w-full min-h-[480px] bg-alkota-black border border-white/10 p-8 md:p-12 flex flex-col justify-between overflow-hidden shadow-2xl group">
-          <Image
-            src={brandAssets.project01AlpineTesting}
-            alt="ALKOTA Project 01 rider testing prototype on alpine terrain"
-            fill
-            sizes="(max-width: 1280px) 100vw, 1280px"
-            className="object-cover object-center opacity-55 group-hover:scale-[1.02] transition-transform duration-700 ease-out"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-alkota-carbon via-alkota-carbon/80 to-transparent w-full md:w-3/5" />
-          <div className="absolute inset-0 bg-gradient-to-t from-alkota-carbon via-transparent to-alkota-carbon/40" />
-
-          <div className="flex justify-between items-center z-10 font-mono text-xs text-alkota-slate uppercase">
-            <span>ALPINE FIELD VALIDATION</span>
-            <span>ELEVATION: 2,400M</span>
+        {/* Awaiting-asset state — design archive pattern */}
+        <div className="relative w-full min-h-[480px] bg-alkota-black border border-white/10 border-dashed flex flex-col items-center justify-center gap-6 p-8">
+          <ImageOff className="w-10 h-10 text-alkota-slate/40" strokeWidth={1} />
+          <div className="text-center space-y-2">
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-alkota-slate/50">
+              ASSET PENDING
+            </div>
+            <div className="font-mono text-[9px] text-alkota-slate/30 max-w-sm leading-relaxed">
+              Field imagery will be sourced from prototype validation programme.
+              Planned: 2027 race development phase.
+            </div>
           </div>
 
-          <div className="my-auto max-w-xl space-y-4 z-10 py-8">
-            <p className="font-sans text-xl sm:text-2xl md:text-3xl text-alkota-white font-normal leading-snug">
-              Numbers help us understand a bicycle. Terrain tells us whether we understood it correctly.
-            </p>
-
-            <p className="font-sans text-sm md:text-base text-alkota-snow/90 leading-relaxed font-light">
-              Telemetry collection on high-velocity alpine trails reveals real-world impact forces, chassis resonance, and mud clearances that no computer simulation can replicate.
-            </p>
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-[9px] text-alkota-slate/30 uppercase border-t border-white/5 pt-3">
+            <span>PROJECT / 01 — PROTOTYPE VALIDATION PLANNED 2027</span>
+            <span>ASSET AWAITING</span>
           </div>
+        </div>
 
-          <div className="border-t border-white/10 pt-4 z-10 font-mono text-[11px] text-alkota-slate flex items-center justify-between bg-alkota-carbon/60 backdrop-blur-sm -mx-8 -mb-8 md:-mx-12 md:-mb-12 px-8 py-4 md:px-12">
-            <span>STATUS: ACTIVE TRAIL TESTING</span>
-            <span>PROJECT / 01 VALIDATION</span>
-          </div>
+        <div className="max-w-xl space-y-4">
+          <p className="font-sans text-xl sm:text-2xl md:text-3xl text-alkota-white font-normal leading-snug">
+            Numbers help us understand a bicycle. Terrain tells us whether we understood it correctly.
+          </p>
+
+          <p className="font-sans text-sm md:text-base text-alkota-snow/90 leading-relaxed font-light">
+            Telemetry collection on high-velocity alpine trails will reveal real-world impact forces,
+            chassis resonance, and mud clearances that no computer simulation can replicate.
+            Field validation will begin during the upcoming R00 prototype development phase.
+          </p>
         </div>
       </div>
     </section>

@@ -49,12 +49,22 @@ export default function Footer() {
       links: [
         { label: "Road to 2028", href: "/road-to-2028" },
         { label: "Philosophy & Origin", href: "/about" },
+        { label: "Mission & Values", href: "/mission" },
         { label: "Alkota Racing 2027", href: "/racing" },
-        { label: "Racing Dispatch", href: "/racing/dispatch" },
-        { label: "Project 01 Journal", href: "/journal/project-01" },
-        { label: "Field Notes Journal", href: "/journal" },
+        { label: "Work With Us", href: "/work-with-us" },
+        { label: "Ambassadors", href: "/ambassadors" },
         { label: "Partner Network", href: "/dealers" },
         { label: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      title: "RESOURCES",
+      links: [
+        { label: "FAQ", href: "/faq" },
+        { label: "Engineering Glossary", href: "/glossary" },
+        { label: "Safety & Intended Use", href: "/safety" },
+        { label: "Project 01 Journal", href: "/journal/project-01" },
+        { label: "Field Notes Journal", href: "/journal" },
       ],
     },
     {
@@ -64,16 +74,20 @@ export default function Footer() {
         { label: "Support Portal", href: "/support" },
         { label: "Owner Documentation", href: "/support/owners" },
         { label: "Technical Guides", href: "/support/technical" },
-        { label: "Warranty Policy", href: "/support/warranty" },
-        { label: "Partner Portal", href: "/partners" },
+        { label: "Warranty Policy", href: "/warranty" },
+        { label: "Complaints & Escalation", href: "/complaints" },
       ],
     },
     {
       title: "LEGAL",
       links: [
-        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Legal Centre", href: "/legal" },
         { label: "Terms of Service", href: "/terms" },
-        { label: "Cookie Settings", href: "/cookies" },
+        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Cookie Policy", href: "/cookies" },
+        { label: "Returns & Cancellation", href: "/returns" },
+        { label: "Shipping Policy", href: "/shipping" },
+        { label: "Accessibility Statement", href: "/accessibility" },
       ],
     },
   ];
@@ -104,7 +118,11 @@ export default function Footer() {
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 max-w-md">
+                <label htmlFor="footer-newsletter-email" className="sr-only">
+                  Email Address for Field Notes Newsletter
+                </label>
                 <input
+                  id="footer-newsletter-email"
                   type="email"
                   required
                   placeholder="Enter email address"
@@ -147,37 +165,10 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom Technical & Social Bar */}
+        {/* Bottom Technical Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-alkota-slate">
           <div>
             © {new Date().getFullYear()} ALKOTA PERFORMANCE ENGINEERING. ALL RIGHTS RESERVED.
-          </div>
-
-          <div className="flex items-center space-x-6">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-alkota-white transition-colors"
-            >
-              INSTAGRAM
-            </a>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-alkota-white transition-colors"
-            >
-              YOUTUBE
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-alkota-white transition-colors"
-            >
-              LINKEDIN
-            </a>
           </div>
 
           <div className="text-[10px] text-alkota-slate/60">

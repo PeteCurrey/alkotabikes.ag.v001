@@ -18,7 +18,8 @@ export const brandAssets = {
   project01CarbonHero: "/images/project01-naked-carbon-hero.jpg",
 
   // Environment & Engineering Photography
-  project01AlpineTesting: "/images/project01-alpine-testing.png",
+  // NOTE: project01AlpineTesting removed 2026-08-09 — was byte-identical to engineeringWorkshop.
+  // TerrainBench renders awaiting-asset state pending genuine field imagery (planned 2027).
   engineeringWorkshop: "/images/engineering-workshop.png",
 
   // Social Sharing Card

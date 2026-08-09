@@ -1,18 +1,17 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ArrowRight, Wrench, CheckCircle2 } from "lucide-react";
 import { brandAssets } from "@/lib/assets";
+import { claim } from "../../../lib/claims";
 
 export default function WorkshopFeature() {
   const workshopPoints = [
-    "Precision carbon fiber layup control & telemetry bench",
+    claim("ALK-CLAIM-003").text,
     "Architectural development laboratory",
-    "5-axis CNC machining & titanium hardware assembly",
-    "Linear spectral lighting & shock dyno testing",
+    claim("ALK-CLAIM-001").text,
+    claim("ALK-CLAIM-002").text,
   ];
 
   return (
@@ -56,9 +55,9 @@ export default function WorkshopFeature() {
           <div className="p-8 md:p-12 flex flex-wrap items-center justify-between gap-4 z-10 font-mono text-xs text-alkota-slate uppercase">
             <div className="flex items-center gap-2">
               <Wrench className="w-4 h-4 text-alkota-signal" />
-              <span>FACILITY / PERFORMANCE ENGINEERING LAB</span>
+              <span>{claim("ALK-CLAIM-005").text}</span>
             </div>
-            <span>LOCATION: R&D WORKSHOP 01</span>
+            <span>LOCATION: R&amp;D WORKSHOP 01</span>
           </div>
 
           {/* Center Editorial Copy */}

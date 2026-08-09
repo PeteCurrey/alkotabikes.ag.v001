@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { Metadata } from "next";
+import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { EngineeringSubNav } from "@/components/layout/SubNav";
 import CADViewerPlaceholder from "@/components/engineering/CADViewerPlaceholder";
@@ -8,6 +10,21 @@ import WorkshopFeature from "@/components/sections/WorkshopFeature";
 import NextStepBanner from "@/components/layout/NextStepBanner";
 import { ENGINEERING_PILLARS } from "@/lib/data/engineeringData";
 import { ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Performance Engineering | Alkota Cycles",
+  description:
+    "Inside the performance engineering methodology at Alkota Cycles. Explore our system-level development process for high-performance mountain bikes.",
+  alternates: {
+    canonical: `${siteUrl}/engineering`,
+  },
+  openGraph: {
+    title: "Performance Engineering | Alkota Cycles",
+    description:
+      "Inside the performance engineering methodology at Alkota Cycles. Explore our system-level development process for high-performance mountain bikes.",
+    url: `${siteUrl}/engineering`,
+  },
+};
 
 export default function EngineeringHubPage() {
   return (
