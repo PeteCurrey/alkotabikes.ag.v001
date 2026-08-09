@@ -459,6 +459,7 @@ export default function ReverseEngineeringPage() {
           </div>
 
           <div className="pt-6">
+            {/* CLAIMS: APC-001001 · APC-001002 — Development targets, correctly qualified as "current development target" */}
             <DevelopmentLedger
               question="How much travel does Project 01 actually need?"
               decision="160 mm front / 150 mm rear is the current development target."

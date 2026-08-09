@@ -467,6 +467,7 @@ export default function OurStoryPage() {
                   Create one serious analogue mountain bike capable of climbing properly, carrying speed through natural terrain and remaining composed when the trail becomes rough — without turning into an oversized enduro sled.
                 </p>
                 <p>
+                  {/* CLAIMS: APC-001001 · APC-001002 · APC-001003 — Development targets, correctly qualified */}
                   The current engineering baseline targets 160 mm front travel, 150 mm rear travel and a 29-inch primary platform.
                 </p>
                 <p className="text-base text-alkota-white font-normal">

@@ -106,3 +106,16 @@ export async function generateLeadReference(): Promise<string> {
   }
   return `APN-LEAD-${getRandomSuffix(6)}`;
 }
+
+/** Generate APC-XXXXXX (Engineering Claim Reference) */
+export async function generateClaimReference(): Promise<string> {
+  if (supabaseAdmin) {
+    try {
+      const { data, error } = await supabaseAdmin.rpc("nextval", { seq_name: "seq_claim_number" });
+      if (!error && data) return `APC-${pad(data)}`;
+    } catch {
+      // fallback
+    }
+  }
+  return `APC-${getRandomSuffix(6)}`;
+}

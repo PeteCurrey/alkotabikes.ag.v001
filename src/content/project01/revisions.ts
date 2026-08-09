@@ -12,6 +12,8 @@ export interface EngineeringRevision {
   changes: string[];
   reason: string;
   journalEntryRef?: string;
+  /** Engineering claim references governed by this revision */
+  claimRefs?: string[];
 }
 
 export const PROJECT_01_REVISIONS: EngineeringRevision[] = [
@@ -29,6 +31,18 @@ export const PROJECT_01_REVISIONS: EngineeringRevision[] = [
     ],
     reason: "Established single source of truth for physical prototype tooling and FEA analysis.",
     journalEntryRef: "001-the-design-brief",
+    claimRefs: [
+      "APC-001001", // 160 mm front travel
+      "APC-001002", // 150 mm rear travel
+      "APC-001003", // 29/29 wheel platform
+      "APC-001004", // Full carbon chassis
+      "APC-001005", // Low-pivot four-bar
+      "APC-001006", // S1-S4 fit geometry
+      "APC-001007", // L-master geometry
+      "APC-001008", // Kinematic curves
+      "APC-001009", // Layup schedule
+      "APC-001010", // Fit engine outputs
+    ],
   },
 ];
 

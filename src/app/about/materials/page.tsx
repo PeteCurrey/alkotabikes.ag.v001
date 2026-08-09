@@ -223,6 +223,7 @@ export default function MaterialsPage() {
         </div>
 
         <div className="pt-10 max-w-7xl mx-auto">
+          {/* CLAIM: APC-001004 — Full Carbon Chassis Intent (DESIGN_INTENT · EVIDENCE_REQUIRED) */}
           <DevelopmentLedger
             question="Why monocoque front triangle construction over bonded tube-to-tube?"
             decision="High-modulus UD carbon monocoque for the main chassis."

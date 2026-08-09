@@ -8,6 +8,9 @@ import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
+// CLAIM PROVENANCE: Public claims on this page are governed by the Engineering Claims system.
+// APC-001001 (160mm front travel), APC-001002 (150mm rear travel), APC-001004 (full carbon).
+// All currently EVIDENCE_REQUIRED. Copy uses correctly qualified language ("currently being developed around").
 
 export const metadata: Metadata = {
   title: "About Alkota | Performance Engineering for Mountain Bikes",
@@ -338,6 +341,7 @@ export default function AboutPage() {
               Alkota begins deliberately narrow.
             </p>
             <p>
+              {/* CLAIMS: APC-001001 · APC-001002 · APC-001004 — Development targets, correctly qualified */}
               Project 01 is the launch platform: an aggressive all-mountain / lightweight-enduro machine currently being developed around 160 mm front travel, 150 mm rear travel and a full-carbon chassis.
             </p>
             <p>

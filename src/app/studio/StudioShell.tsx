@@ -24,6 +24,8 @@ import {
   ChevronRight,
   ClipboardList,
   Factory,
+  ShieldAlert,
+  GitBranch,
 } from "lucide-react";
 
 interface NavItem {
@@ -36,6 +38,8 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: "DASHBOARD", href: "/studio", icon: LayoutDashboard },
   { label: "PROJECT 01", href: "/studio/project-01", icon: Cpu },
+  { label: "↳ EVIDENCE", href: "/studio/project-01/evidence", icon: ShieldAlert },
+  { label: "↳ RELEASE", href: "/studio/project-01/release", icon: GitBranch },
   { label: "COMMERCIAL", href: "/studio/commercial", icon: DollarSign, badge: "C00" },
   { label: "JOURNAL", href: "/studio/journal", icon: BookOpen },
   { label: "DESIGN ARCHIVE", href: "/studio/design", icon: Archive },
