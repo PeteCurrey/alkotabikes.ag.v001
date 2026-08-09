@@ -36,7 +36,6 @@ export default function Header() {
     { href: "/engineering", label: "ENGINEERING" },
     { href: "/racing", label: "RACING" },
     { href: "/journal", label: "JOURNAL" },
-    { href: "/store", label: "STORE" },
     { href: "/about", label: "ABOUT" },
   ];
 
@@ -50,12 +49,12 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Desktop Brand Logo */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Logo variant="header" theme="light" />
         </div>
 
         {/* Mobile Monogram */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <Logo variant="monogram" theme="light" />
         </div>
 
@@ -63,7 +62,15 @@ export default function Header() {
         <MegaMenuNav pathname={pathname} />
 
         {/* Header Right Action */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-4">
+          {/* Store Utility Link */}
+          <Link
+            href="/store"
+            className="font-mono text-[11px] tracking-widest uppercase text-alkota-snow hover:text-white transition-colors py-0.5 px-2"
+          >
+            STORE
+          </Link>
+
           {/* Cart Icon */}
           <button
             onClick={openCart}
@@ -91,7 +98,7 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-1.5 text-alkota-white focus:outline-none"
+          className="lg:hidden p-1.5 text-alkota-white focus:outline-none"
           aria-label="Toggle Navigation Menu"
         >
           {mobileMenuOpen ? (
@@ -104,7 +111,7 @@ export default function Header() {
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[48px] bg-alkota-carbon text-alkota-white z-40 flex flex-col justify-between p-6 border-t border-white/10 animate-fadeIn">
+        <div className="lg:hidden fixed inset-0 top-[48px] bg-alkota-carbon text-alkota-white z-40 flex flex-col justify-between p-6 border-t border-white/10 animate-fadeIn">
           <div className="space-y-6 pt-2">
             <div className="border-b border-white/10 pb-4">
               <Logo variant="header" theme="light" />

@@ -159,35 +159,6 @@ const MEGA_MENUS: CategoryMenu[] = [
     ],
   },
   {
-    id: "supply",
-    label: "STORE",
-    href: "/store",
-    featured: {
-      title: "FROM THE WORKSHOP",
-      subtitle: "Apparel, equipment and objects used while building Project 01.",
-      image: ALKOTA_STORY_MEDIA.workshopChassisAssembly.src,
-      linkText: "BROWSE ALKOTA SUPPLY",
-      linkHref: "/store",
-      statusLabel: "PRE-LAUNCH CATALOGUE",
-    },
-    sections: [
-      {
-        heading: "EQUIPMENT & APPAREL",
-        links: [
-          { label: "Alkota Supply Store", href: "/store", desc: "Full catalogue of workshop equipment & apparel" },
-          { label: "Apparel", href: "/store", desc: "Heavyweight tees, hoodies & overshirts" },
-          { label: "Equipment & Bottles", href: "/store", desc: "Aluminium water bottles, ceramic mugs & decals" },
-        ],
-      },
-      {
-        heading: "CART & PURCHASING",
-        links: [
-          { label: "View Cart", href: "/cart", desc: "Review selected items and pre-order state" },
-        ],
-      },
-    ],
-  },
-  {
     id: "about",
     label: "ABOUT",
     href: "/about",
@@ -213,7 +184,7 @@ const MEGA_MENUS: CategoryMenu[] = [
         links: [
           { label: "My Alkota", href: "/my-alkota", desc: "Development member portal", badge: "MEMBERS" },
           { label: "Project Support", href: "/support", desc: "Pre-production documentation & setup guides" },
-          { label: "Partner Network", href: "/dealers", desc: "Specialist partner recruitment programme" },
+          { label: "Partner Network", href: "/partners", desc: "Specialist partner recruitment programme" },
           { label: "Contact Founder", href: "/contact", desc: "Get in touch directly with Pete Currey" },
         ],
       },
