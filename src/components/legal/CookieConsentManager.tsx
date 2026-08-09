@@ -1,13 +1,15 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Shield, Cookie, X, Check, Lock } from "lucide-react";
+import { Shield, Cookie, X, Lock, CheckCircle2 } from "lucide-react";
+import { useRegion } from "@/components/region/RegionProvider";
 
 export interface CookiePreferences {
   strictlyNecessary: boolean; // Always true
   preferences: boolean;
   analytics: boolean;
   marketing: boolean;
+  gpcSignalDetected: boolean;
   version: string;
   timestamp: string;
   region?: string;
@@ -18,6 +20,7 @@ const DEFAULT_PREFERENCES: CookiePreferences = {
   preferences: false,
   analytics: false,
   marketing: false,
+  gpcSignalDetected: false,
   version: "1.0.0",
   timestamp: "",
 };
@@ -32,7 +35,7 @@ interface CookieConsentContextType {
   closeCookieSettings: () => void;
   acceptAll: () => void;
   rejectOptional: () => void;
-  saveCustomChoices: (choices: Omit<CookiePreferences, "strictlyNecessary" | "version" | "timestamp">) => void;
+  saveCustomChoices: (choices: Omit<CookiePreferences, "strictlyNecessary" | "gpcSignalDetected" | "version" | "timestamp">) => void;
 }
 
 const CookieConsentContext = createContext<CookieConsentContextType | undefined>(undefined);
@@ -53,6 +56,12 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     setMounted(true);
+    let gpcDetected = false;
+    if (typeof window !== "undefined" && typeof navigator !== "undefined") {
+      gpcDetected = (navigator as unknown as { globalPrivacyControl?: boolean | string }).globalPrivacyControl === true ||
+                    (navigator as unknown as { globalPrivacyControl?: boolean | string }).globalPrivacyControl === "1";
+    }
+
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
@@ -60,14 +69,22 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
         setPreferences({
           ...parsed,
           strictlyNecessary: true,
+          gpcSignalDetected: gpcDetected,
+          // If GPC is active, enforce opt-out for analytics and marketing
+          ...(gpcDetected ? { analytics: false, marketing: false } : {}),
         });
         setHasConsented(true);
+      } else {
+        setPreferences((prev) => ({
+          ...prev,
+          gpcSignalDetected: gpcDetected,
+          ...(gpcDetected ? { analytics: false, marketing: false } : {}),
+        }));
       }
     } catch {
       // Default fallback
     }
 
-    // Global event listener for openCookieSettings()
     const handleGlobalOpen = () => setIsSettingsOpen(true);
     window.addEventListener("alkota:open-cookie-settings", handleGlobalOpen);
     return () => {
@@ -97,8 +114,9 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
     saveConsent({
       strictlyNecessary: true,
       preferences: true,
-      analytics: true,
-      marketing: true,
+      analytics: !preferences.gpcSignalDetected, // Respect GPC if active
+      marketing: !preferences.gpcSignalDetected,
+      gpcSignalDetected: preferences.gpcSignalDetected,
       version: "1.0.0",
       timestamp: new Date().toISOString(),
     });
@@ -111,18 +129,20 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
       preferences: false,
       analytics: false,
       marketing: false,
+      gpcSignalDetected: preferences.gpcSignalDetected,
       version: "1.0.0",
       timestamp: new Date().toISOString(),
     });
     setIsSettingsOpen(false);
   };
 
-  const saveCustomChoices = (choices: Omit<CookiePreferences, "strictlyNecessary" | "version" | "timestamp">) => {
+  const saveCustomChoices = (choices: Omit<CookiePreferences, "strictlyNecessary" | "gpcSignalDetected" | "version" | "timestamp">) => {
     saveConsent({
       strictlyNecessary: true,
       preferences: choices.preferences,
-      analytics: choices.analytics,
-      marketing: choices.marketing,
+      analytics: preferences.gpcSignalDetected ? false : choices.analytics,
+      marketing: preferences.gpcSignalDetected ? false : choices.marketing,
+      gpcSignalDetected: preferences.gpcSignalDetected,
       version: "1.0.0",
       timestamp: new Date().toISOString(),
     });
@@ -148,9 +168,6 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
   );
 }
 
-/**
- * Global helper function to trigger the cookie settings modal from anywhere in the app
- */
 export function openCookieSettings() {
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("alkota:open-cookie-settings"));
@@ -158,6 +175,9 @@ export function openCookieSettings() {
 }
 
 function CookieConsentUI() {
+  const { region } = useRegion();
+  const isUS = region.code === "us";
+
   const {
     preferences,
     hasConsented,
@@ -187,7 +207,7 @@ function CookieConsentUI() {
 
   return (
     <>
-      {/* ── FIRST VISIT BANNER ──────────────────────────────────────────────── */}
+      {/* ── BANNER ──────────────────────────────────────────────────────────── */}
       {showBanner && (
         <div
           role="dialog"
@@ -199,36 +219,43 @@ function CookieConsentUI() {
             <div className="space-y-2 max-w-3xl">
               <div className="flex items-center gap-2 text-alkota-signal font-mono text-xs tracking-wider uppercase font-bold">
                 <Cookie className="w-4 h-4" />
-                <span>YOUR PRIVACY. YOUR CHOICE.</span>
+                <span>{isUS ? "YOUR PRIVACY CHOICES (US)" : "YOUR PRIVACY. YOUR CHOICE."}</span>
               </div>
               <p className="text-xs sm:text-sm text-alkota-snow/90 leading-relaxed font-sans">
-                We use essential technologies to keep Alkota secure and make the site work. With your permission,
-                we can also use optional analytics, preference and marketing technologies to understand how the site
-                is used and improve the experience. You can accept them, reject them or choose individually.
+                {isUS
+                  ? "We use essential technologies for website functionality. We also support browser opt-out signals (GPC) and allow you to customize your privacy choices below."
+                  : "We use essential technologies to keep Alkota secure and make the site work. With your permission, we can also use optional analytics, preference and marketing technologies."}
               </p>
+
+              {preferences.gpcSignalDetected && (
+                <div className="flex items-center gap-1.5 text-alkota-signal font-mono text-[11px]">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Global Privacy Control (GPC) signal detected — opt-out preference applied automatically.</span>
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto shrink-0">
+            <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto shrink-0 font-mono text-xs">
               <button
                 type="button"
                 onClick={acceptAll}
-                className="flex-1 sm:flex-initial px-5 py-2.5 bg-alkota-white text-alkota-black hover:bg-alkota-signal transition-colors font-mono text-xs font-bold uppercase tracking-wider text-center"
+                className="flex-1 sm:flex-initial px-5 py-2.5 bg-alkota-white text-alkota-black hover:bg-alkota-signal transition-colors font-bold uppercase tracking-wider text-center"
               >
-                ACCEPT ALL
+                {isUS ? "ACCEPT SELECTIONS" : "ACCEPT ALL"}
               </button>
               <button
                 type="button"
                 onClick={rejectOptional}
-                className="flex-1 sm:flex-initial px-5 py-2.5 bg-white/10 hover:bg-white/20 text-alkota-white border border-white/20 transition-colors font-mono text-xs font-bold uppercase tracking-wider text-center"
+                className="flex-1 sm:flex-initial px-5 py-2.5 bg-white/10 hover:bg-white/20 text-alkota-white border border-white/20 transition-colors font-bold uppercase tracking-wider text-center"
               >
-                REJECT OPTIONAL
+                {isUS ? "DO NOT SELL / SHARE" : "REJECT OPTIONAL"}
               </button>
               <button
                 type="button"
                 onClick={openCookieSettings}
-                className="flex-1 sm:flex-initial px-5 py-2.5 bg-transparent hover:bg-white/5 text-alkota-slate hover:text-alkota-white border border-white/10 transition-colors font-mono text-xs font-semibold uppercase tracking-wider text-center"
+                className="flex-1 sm:flex-initial px-5 py-2.5 bg-transparent hover:bg-white/5 text-alkota-slate hover:text-alkota-white border border-white/10 transition-colors font-semibold uppercase tracking-wider text-center"
               >
-                MANAGE CHOICES
+                {isUS ? "YOUR PRIVACY CHOICES" : "MANAGE CHOICES"}
               </button>
             </div>
           </div>
@@ -243,7 +270,7 @@ function CookieConsentUI() {
               <div className="flex items-center gap-3">
                 <Shield className="w-5 h-5 text-alkota-signal" />
                 <h2 className="font-display text-2xl font-bold uppercase tracking-tight text-alkota-white">
-                  COOKIE SETTINGS
+                  {isUS ? "YOUR PRIVACY CHOICES & COOKIE SETTINGS" : "COOKIE SETTINGS"}
                 </h2>
               </div>
               <button
@@ -256,9 +283,17 @@ function CookieConsentUI() {
               </button>
             </div>
 
+            {preferences.gpcSignalDetected && (
+              <div className="p-3 bg-alkota-signal/10 border border-alkota-signal/30 text-alkota-signal font-mono text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>Global Privacy Control (GPC) signal detected. Optional analytics and targeted marketing tracking are disabled.</span>
+              </div>
+            )}
+
             <p className="text-xs text-alkota-slate leading-relaxed font-sans">
-              Control how Alkota uses non-essential storage technologies on your device. Strictly necessary tools cannot
-              be disabled as they are required for security, account authentication, and core site performance.
+              {isUS
+                ? "Manage your privacy options and non-essential tracking technologies under applicable US state laws."
+                : "Control how Alkota uses non-essential storage technologies on your device. Strictly necessary tools cannot be disabled."}
             </p>
 
             <div className="space-y-4 font-sans">
@@ -267,14 +302,14 @@ function CookieConsentUI() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase text-alkota-white">
                     <Lock className="w-3.5 h-3.5 text-alkota-signal" />
-                    <span>STRICTLY NECESSARY</span>
+                    <span>STRICTLY NECESSARY (INCLUDES REGION COOKIE)</span>
                   </div>
                   <span className="text-[11px] font-mono uppercase bg-white/10 text-alkota-signal px-2 py-0.5 border border-alkota-signal/30">
                     ALWAYS ACTIVE
                   </span>
                 </div>
                 <p className="text-xs text-alkota-slate">
-                  Required for security, accounts, requested transactions and core site operation.
+                  Required for security, regional preferences (<code className="text-white">alkota-region</code>), and core site operation. Exempt from consent under privacy regulations.
                 </p>
               </div>
 
@@ -293,7 +328,7 @@ function CookieConsentUI() {
                   </label>
                 </div>
                 <p className="text-xs text-alkota-slate">
-                  Remembers non-essential choices, customized layout options, and saved configurations.
+                  Remembers non-essential choices and saved configurations.
                 </p>
               </div>
 
@@ -304,34 +339,36 @@ function CookieConsentUI() {
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={tempPrefs.analytics}
+                      disabled={preferences.gpcSignalDetected}
+                      checked={preferences.gpcSignalDetected ? false : tempPrefs.analytics}
                       onChange={(e) => setTempPrefs({ ...tempPrefs, analytics: e.target.checked })}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-white/10 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:h-5 after:w-5 after:transition-all peer-checked:bg-alkota-signal"></div>
+                    <div className="w-11 h-6 bg-white/10 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:h-5 after:w-5 after:transition-all peer-checked:bg-alkota-signal disabled:opacity-40"></div>
                   </label>
                 </div>
                 <p className="text-xs text-alkota-slate">
-                  Helps us measure site traffic, popular engineering topics, and aggregate user interactions to improve the platform.
+                  Measures site usage to improve performance.
                 </p>
               </div>
 
               {/* Marketing */}
               <div className="p-4 bg-alkota-black border border-white/10 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold uppercase text-alkota-white">MARKETING</span>
+                  <span className="font-mono text-xs font-bold uppercase text-alkota-white">TARGETED MARKETING</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={tempPrefs.marketing}
+                      disabled={preferences.gpcSignalDetected}
+                      checked={preferences.gpcSignalDetected ? false : tempPrefs.marketing}
                       onChange={(e) => setTempPrefs({ ...tempPrefs, marketing: e.target.checked })}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-white/10 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:h-5 after:w-5 after:transition-all peer-checked:bg-alkota-signal"></div>
+                    <div className="w-11 h-6 bg-white/10 peer-focus:outline-none peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:h-5 after:w-5 after:transition-all peer-checked:bg-alkota-signal disabled:opacity-40"></div>
                   </label>
                 </div>
                 <p className="text-xs text-alkota-slate">
-                  Used to measure external campaign performance and deliver relevant development announcements.
+                  Used for measuring advertising effectiveness. Alkota does not sell personal data.
                 </p>
               </div>
             </div>
@@ -342,21 +379,14 @@ function CookieConsentUI() {
                 onClick={rejectOptional}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 text-alkota-white text-xs font-bold uppercase tracking-wider transition-colors border border-white/10"
               >
-                REJECT OPTIONAL
-              </button>
-              <button
-                type="button"
-                onClick={acceptAll}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-alkota-white text-xs font-bold uppercase tracking-wider transition-colors border border-white/10"
-              >
-                ACCEPT ALL
+                {isUS ? "OPT-OUT OF ALL" : "REJECT OPTIONAL"}
               </button>
               <button
                 type="button"
                 onClick={() => saveCustomChoices(tempPrefs)}
                 className="px-5 py-2 bg-alkota-white text-alkota-black hover:bg-alkota-signal text-xs font-bold uppercase tracking-wider transition-colors"
               >
-                SAVE CHOICES
+                SAVE PRIVACY PREFERENCES
               </button>
             </div>
           </div>

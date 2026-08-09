@@ -9,11 +9,13 @@ import { useRegion } from "@/components/region/RegionProvider";
 import { buildRegionalPath } from "@/lib/regions";
 import RegionSwitcher from "@/components/region/RegionSwitcher";
 import { company } from "@/lib/company";
+import { openCookieSettings } from "@/components/legal/CookieConsentManager";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const { regionCode } = useRegion();
+  const isUS = regionCode === "us";
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,11 +87,20 @@ export default function Footer() {
       links: [
         { label: "Legal Centre", href: "/legal" },
         { label: "Terms of Service", href: "/terms" },
-        { label: "Privacy Policy", href: "/privacy" },
-        { label: "Cookie Policy", href: "/cookies" },
+        { label: isUS ? "US Privacy Notice" : "Privacy Policy", href: "/privacy" },
+        { label: isUS ? "Cookie Notice & Opt-Out" : "Cookie Policy", href: "/cookies" },
         { label: "Returns & Cancellation", href: "/returns" },
         { label: "Shipping Policy", href: "/shipping" },
         { label: "Accessibility Statement", href: "/accessibility" },
+        ...(isUS
+          ? [
+              {
+                label: "Your Privacy Choices",
+                href: "/cookies",
+                isButton: true,
+              },
+            ]
+          : []),
       ],
     },
   ];
@@ -154,12 +165,22 @@ export default function Footer() {
               <ul className="space-y-2.5 font-sans text-xs">
                 {group.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={buildRegionalPath(link.href, regionCode)}
-                      className="text-alkota-snow/80 hover:text-alkota-signal transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+                    {"isButton" in link && link.isButton ? (
+                      <button
+                        type="button"
+                        onClick={openCookieSettings}
+                        className="text-alkota-signal font-mono uppercase text-[11px] hover:underline"
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <Link
+                        href={buildRegionalPath(link.href, regionCode)}
+                        className="text-alkota-snow/80 hover:text-alkota-signal transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -175,12 +196,12 @@ export default function Footer() {
               {company.legalEntityName ? (
                 <span>
                   {company.legalEntityName} trading as {company.tradingName}
-                  {company.companyNumber ? (
+                  {"companyNumber" in company && company.companyNumber ? (
                     <>
                       {" "}·{" "}Co. No. {company.companyNumber}
                     </>
                   ) : null}
-                  {company.registeredIn ? (
+                  {"registeredIn" in company && company.registeredIn ? (
                     <>
                       {" "}·{" "}Registered in {company.registeredIn}
                     </>
@@ -193,6 +214,15 @@ export default function Footer() {
               )}
             </div>
             <div className="flex items-center gap-4">
+              {isUS && (
+                <button
+                  type="button"
+                  onClick={openCookieSettings}
+                  className="text-alkota-signal hover:underline text-[10px] uppercase font-bold"
+                >
+                  Your Privacy Choices
+                </button>
+              )}
               <RegionSwitcher variant="subnav" />
             </div>
           </div>

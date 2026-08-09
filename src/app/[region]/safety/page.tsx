@@ -1,231 +1,199 @@
 import React from "react";
 import { Metadata } from "next";
 import siteUrl from "@/lib/env";
-import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
-import { renderCleanLegalText, CUSTOMER_SERVICE_EMAIL } from "@/config/legal";
+import { getLegalDocument } from "@/config/legalDocuments";
+import { getCompany } from "@/lib/company";
+import { getRegionalCompliance } from "@/lib/product-compliance";
+import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ShieldCheck } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Safety & Intended Use",
-  description:
-    "Pre-ride checks, helmet requirements, carbon inspection, torque guidance, and modification warnings for Project 01.",
-  alternates: {
-    canonical: `${siteUrl}/safety`,
-  },
-  openGraph: {
-    title: "Safety & Intended Use",
-    description:
-      "Pre-ride checks, helmet requirements, carbon inspection, torque guidance, and modification warnings for Project 01.",
-    url: `${siteUrl}/safety`,
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const isUS = region === "us";
+  const title = isUS
+    ? "Product Safety & CPSC Compliance (16 CFR Part 1512)"
+    : "Product Safety & Intended Use (EN ISO 4210)";
+  const description = isUS
+    ? "CPSC 16 CFR Part 1512 compliance overview, mandatory reflector set requirements, braking standards, and safety checks for Project 01."
+    : "EN ISO 4210 pre-ride protocols, intended use envelope, carbon inspection, torque guidance, and maintenance for Project 01.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${region}/safety`,
+      languages: {
+        "en-GB": `${siteUrl}/uk/safety`,
+        "en-US": `${siteUrl}/us/safety`,
+        "x-default": `${siteUrl}/us/safety`,
+      },
+    },
+    openGraph: {
+      title: `${title} | Alkota Cycles`,
+      description,
+      url: `${siteUrl}/${region}/safety`,
+    },
+  };
+}
 
 const TOC = [
-  { id: "safe-docs", title: "1. Read the Documentation" },
-  { id: "safe-use", title: "2. Intended Use" },
-  { id: "safe-helmet", title: "3. Helmet & Protection" },
-  { id: "safe-preride", title: "4. Pre-Ride Check" },
-  { id: "safe-torque", title: "5. Torque Values" },
-  { id: "safe-suspension", title: "6. Suspension Limits" },
-  { id: "safe-wheels", title: "7. Wheels & Tyres" },
-  { id: "safe-brakes", title: "8. Brakes" },
-  { id: "safe-carbon", title: "9. Carbon Inspection" },
-  { id: "safe-crash", title: "10. Post-Crash Inspection" },
-  { id: "safe-mod", title: "11. Structural Modification" },
-  { id: "safe-maint", title: "12. Maintenance" },
-  { id: "safe-pro", title: "13. Professional Support" },
-  { id: "safe-bulletins", title: "14. Safety Bulletins" },
-  { id: "safe-children", title: "15. Young Riders" },
-  { id: "safe-liability", title: "16. Liability Notice" },
+  { id: "safe-standard", title: "1. Applicable Safety Standards" },
+  { id: "safe-physical", title: "2. Physical Product Requirements" },
+  { id: "safe-docs", title: "3. Technical Documentation" },
+  { id: "safe-use", title: "4. Intended Use Envelope" },
+  { id: "safe-helmet", title: "5. Helmet & Protection" },
+  { id: "safe-preride", title: "6. Pre-Ride Checklist" },
+  { id: "safe-carbon", title: "7. Carbon Inspection" },
+  { id: "safe-bulletins", title: "8. Technical Recalls & Bulletins" },
 ];
 
-export default function SafetyPage() {
-  const doc = LEGAL_DOCUMENTS.safety;
-  const supportEmail = renderCleanLegalText(CUSTOMER_SERVICE_EMAIL);
+export default async function SafetyPage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const resolvedParams = await params;
+  const regionCode = (
+    resolvedParams.region === "uk" ? "uk" : "us"
+  ) as RegionCode;
+  const isUS = regionCode === "us";
+  const doc = getLegalDocument("safety", regionCode);
+  const company = getCompany(regionCode);
+  const compliance = getRegionalCompliance(regionCode);
 
   return (
-    <LegalPageLayout document={doc} toc={TOC} eyebrow="PRODUCT SAFETY & INTENDED USE">
+    <LegalPageLayout
+      document={doc}
+      toc={TOC}
+      eyebrow={isUS ? "PRODUCT SAFETY & CPSC 16 CFR 1512" : "PRODUCT SAFETY & EN ISO 4210"}
+    >
       <div className="space-y-10">
-        {/* Safety callout */}
+        {/* Safety Callout */}
         <div className="p-5 bg-amber-50 border-l-4 border-amber-500 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <p className="text-sm text-amber-900 leading-relaxed">
-            Mountain biking involves speed, changing terrain, impacts and the possibility of serious injury.
-            No bicycle removes those risks. Good engineering, correct setup, maintenance, judgement and protective
-            equipment all matter.
+            Mountain biking involves inherent environmental risks. Good engineering, correct setup, pre-ride inspection, maintenance, and certified protective equipment co-exist with rider responsibility.
           </p>
         </div>
 
+        {/* 1. Applicable Standard */}
+        <section id="safe-standard" className="space-y-3">
+          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+            01. APPLICABLE SAFETY STANDARDS ({regionCode.toUpperCase()})
+          </h2>
+          <p>
+            Bicycles distributed in {isUS ? "the United States" : "the United Kingdom"} are governed by specific regulatory and safety standards:
+          </p>
+          <div className="p-5 bg-alkota-snow border border-black/10 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs font-bold text-alkota-black uppercase">
+                {compliance.primaryStandard.name}
+              </span>
+              <span className="px-2 py-0.5 bg-amber-100 text-amber-800 font-mono text-[10px] uppercase font-bold">
+                STATUS: {compliance.primaryStandard.status}
+              </span>
+            </div>
+            <p className="text-xs text-black/70 leading-relaxed">
+              {compliance.primaryStandard.scope}
+            </p>
+            <div className="p-3 bg-white border border-black/10 text-xs font-mono text-black/80">
+              {compliance.primaryStandard.developmentNotes}
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Physical Product Implications */}
+        <section id="safe-physical" className="space-y-3">
+          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+            02. PHYSICAL PRODUCT COMPLIANCE IMPLICATIONS
+          </h2>
+          {isUS ? (
+            <div className="p-5 bg-red-950/5 border-l-4 border-red-600 space-y-3">
+              <div className="flex items-center gap-2 font-mono text-xs font-bold text-red-900 uppercase">
+                <ShieldCheck className="w-4 h-4 text-red-600" />
+                <span>PHYSICAL PRODUCT SPECIFICATION &amp; CPSC 16 CFR 1512 MANDATE</span>
+              </div>
+              <p className="text-xs text-red-950 leading-relaxed">
+                US bicycle safety regulation (CPSC 16 CFR Part 1512) mandates physical product design and equipment specifications that differ from European standards. Compliance requires engineering and supply chain integration:
+              </p>
+              <ul className="space-y-2 text-xs font-mono text-black/80 list-disc pl-5">
+                {compliance.primaryStandard.physicalProductImplications?.map((imp, idx) => (
+                  <li key={idx}>{imp}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="text-sm leading-relaxed">
+              EN ISO 4210-6 standards govern structural test loads, fatigue limits, and impact absorption for mountain bicycles in the UK. Validation testing is conducted with UKAS-accredited laboratories.
+            </p>
+          )}
+        </section>
+
+        {/* 3. Technical Documentation */}
         <section id="safe-docs" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            01. READ THE PRODUCT-SPECIFIC DOCUMENTATION
+            03. TECHNICAL DOCUMENTATION
           </h2>
           <p>
-            The final owner manual and technical information supplied with a production Bike take priority over general
-            editorial material on this Site. Do not use marketing copy as a workshop guide.
+            Production bikes ship with comprehensive owner manuals and torque specifications. Workshop procedures must strictly follow technical guides rather than general online estimates.
           </p>
         </section>
 
+        {/* 4. Intended Use Envelope */}
         <section id="safe-use" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            02. USE THE BIKE WITHIN ITS PUBLISHED INTENDED USE
+            04. INTENDED USE ENVELOPE
           </h2>
           <p>
-            Project 01&apos;s final production intended-use classification (including ASTM/EN category) will be published
-            before delivery. Do not create or infer a category claim from pre-production information.
+            Project 01 is engineered for aggressive trail and enduro mountain bike usage. Final ASTM usage classifications (Category 4 / Category 5) will be certified prior to production distribution.
           </p>
         </section>
 
+        {/* 5. Protection */}
         <section id="safe-helmet" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            03. HELMET AND PROTECTIVE EQUIPMENT
+            05. HELMET &amp; PROTECTIVE EQUIPMENT
           </h2>
           <p>
-            Always wear an appropriate, correctly fitted cycling helmet. Wear protective equipment suited to the terrain
-            and riding activity — full-face, armour, knee/elbow protection where appropriate.
+            Always wear a certified bicycle helmet complying with CPSC or EN 1078 standards, alongside appropriate body protection suited to trail severity.
           </p>
         </section>
 
+        {/* 6. Pre-Ride Checklist */}
         <section id="safe-preride" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            04. PRE-RIDE CHECK
+            06. PRE-RIDE CHECKLIST
           </h2>
-          <p>Before each ride, check:</p>
-          <ul className="list-disc pl-6 space-y-1 text-sm">
-            <li>Brakes — lever feel, pad contact, rotor condition</li>
-            <li>Wheels — axle security, spoke tension, rim condition</li>
-            <li>Tyres — pressure, casing integrity, tread</li>
-            <li>Cockpit — bar, stem, and headset tightness</li>
-            <li>Suspension — air pressures, sag settings, pivot fasteners</li>
-            <li>Drivetrain — chain, cassette, derailleur alignment</li>
-            <li>Frame — no visible cracks, impact marks or unusual sounds</li>
+          <ul className="list-disc pl-5 space-y-1 text-sm">
+            <li>Brakes — lever feel, pad wear, and hydraulic pressure</li>
+            <li>Wheels &amp; Axles — thru-axle torque and spoke integrity</li>
+            <li>Cockpit — stem clamp torque and handlebar alignment</li>
+            <li>Suspension — air pressure sag and pivot hardware security</li>
           </ul>
         </section>
 
-        <section id="safe-torque" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            05. TORQUE VALUES
-          </h2>
-          <p className="font-medium">
-            Always use product-specific torque specifications from the owner manual or component documentation.
-          </p>
-          <p>
-            Never apply a generic torque value from a glossary, article or online guide to a safety-critical fastener.
-            Incorrect torque can cause component failure.
-          </p>
-        </section>
-
-        <section id="safe-suspension" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            06. SUSPENSION — CONFIGURATION LIMITS
-          </h2>
-          <p>
-            Only use approved shock stroke/eye-to-eye dimensions, fork travel, and air volume configurations for the
-            specific Bike model. Changing suspension dimensions can affect geometry, bearing loads, clearances, handling
-            and safety.
-          </p>
-        </section>
-
-        <section id="safe-wheels" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            07. WHEELS AND TYRES
-          </h2>
-          <p>
-            Use compatible wheel, rim and tyre combinations. Verify clearance is adequate under real riding conditions
-            including mud loading and system flex.
-          </p>
-        </section>
-
-        <section id="safe-brakes" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            08. BRAKES
-          </h2>
-          <p>
-            Brake systems are safety critical. Installation, bleeding, rotor sizing, pad bedding and pad condition must
-            follow applicable manufacturer and Alkota-specific instructions.
-          </p>
-        </section>
-
+        {/* 7. Carbon Inspection */}
         <section id="safe-carbon" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            09. CARBON COMPONENTS — INSPECTION
+            07. CARBON CHASSIS INSPECTION
           </h2>
           <p>
-            Inspect carbon components carefully following any significant impact or suspected damage. Carbon damage may
-            not present as visible deformation — unlike metal, it may fail without prior warning deformation.
-          </p>
-          <p className="font-medium">If in any doubt, stop riding and obtain competent professional inspection.</p>
-        </section>
-
-        <section id="safe-crash" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            10. POST-CRASH INSPECTION
-          </h2>
-          <p>
-            After any significant crash, inspect the Bike thoroughly before continued use. If structural damage is
-            suspected, do not continue riding. Contact an authorised Alkota Partner or qualified bicycle technician.
+            Inspect carbon fibre frame sections after any hard crash. Delamination or structural cracking can occur without external paint deformation. Discontinue use immediately if structural damage is suspected.
           </p>
         </section>
 
-        <section id="safe-mod" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            11. STRUCTURAL MODIFICATION
-          </h2>
-          <p>
-            Do not drill, cut, bond or structurally alter a frame unless specifically authorised in writing by Alkota.
-            Unauthorised modifications void applicable warranty for damage caused by or related to the modification.
-          </p>
-        </section>
-
-        <section id="safe-maint" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            12. MAINTENANCE
-          </h2>
-          <p>
-            A high-performance bicycle requires regular maintenance. Service intervals depend on use intensity, riding
-            conditions and component manufacturer guidance. Refer to the production-specific owner manual.
-          </p>
-        </section>
-
-        <section id="safe-pro" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            13. PROFESSIONAL SUPPORT
-          </h2>
-          <p>
-            If you are not competent to perform a safety-critical service task, use an appropriately qualified bicycle
-            technician or authorised Alkota Partner.
-          </p>
-        </section>
-
+        {/* 8. Recalls */}
         <section id="safe-bulletins" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            14. TECHNICAL BULLETINS & RECALLS
+            08. TECHNICAL RECALLS &amp; SAFETY BULLETINS
           </h2>
           <p>
-            Where a safety-related technical bulletin affects an individual Bike, Alkota may contact the registered owner
-            and display information through My Alkota. Ensure your ownership registration is current.
-          </p>
-        </section>
-
-        <section id="safe-children" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            15. YOUNG RIDERS
-          </h2>
-          <p>
-            A parent or guardian is responsible for evaluating whether a bicycle, trail and riding environment are
-            appropriate for a young rider.
-          </p>
-        </section>
-
-        <section id="safe-liability" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            16. LIABILITY
-          </h2>
-          <p>
-            Nothing on this page is intended to exclude Alkota&apos;s liability for an unsafe, defective or non-conforming
-            product, or any other mandatory legal liability. Rider responsibility for appropriate use coexists with
-            Alkota&apos;s obligations under product safety and consumer law.
+            Mandatory product safety communications and CPSC reporting bulletins are distributed to registered owners via email and displayed in My Alkota. Contact customer support at <a href={`mailto:${company.email.customerService}`} className="underline font-mono">{company.email.customerService}</a>.
           </p>
         </section>
       </div>

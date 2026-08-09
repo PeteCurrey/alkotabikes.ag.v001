@@ -1,34 +1,46 @@
 import React from "react";
 import { Metadata } from "next";
 import siteUrl from "@/lib/env";
-import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
-import {
-  FRAME_WARRANTY_TERM,
-  PAINT_FINISH_WARRANTY_TERM,
-  CRASH_REPLACEMENT_AVAILABLE,
-  WARRANTY_TRANSFERABLE,
-  WARRANTY_EMAIL,
-  renderCleanLegalText,
-} from "@/config/legal";
+import { getLegalDocument } from "@/config/legalDocuments";
+import { getCompany } from "@/lib/company";
+import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
-import { ShieldAlert, Wrench, CheckCircle } from "lucide-react";
+import { ShieldAlert } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Warranty Policy",
-  description:
-    "Alkota commercial warranty philosophy, statutory rights distinction, claim process, and pre-production release status.",
-  alternates: {
-    canonical: `${siteUrl}/warranty`,
-  },
-  openGraph: {
-    title: "Warranty Policy",
-    description:
-      "Alkota commercial warranty philosophy, statutory rights distinction, claim process, and pre-production release status.",
-    url: `${siteUrl}/warranty`,
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const isUS = region === "us";
+  const title = isUS
+    ? "US Limited Warranty & Pre-Sale Disclosures"
+    : "Alkota Limited Warranty Framework";
+  const description = isUS
+    ? "Magnuson-Moss Warranty Act compliant LIMITED warranty framework, pre-sale availability disclosures, and claim procedures."
+    : "Alkota commercial warranty philosophy, statutory rights distinction under Consumer Rights Act 2015, and claim process.";
 
-const TOC = [
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${region}/warranty`,
+      languages: {
+        "en-GB": `${siteUrl}/uk/warranty`,
+        "en-US": `${siteUrl}/us/warranty`,
+        "x-default": `${siteUrl}/us/warranty`,
+      },
+    },
+    openGraph: {
+      title: `${title} | Alkota Cycles`,
+      description,
+      url: `${siteUrl}/${region}/warranty`,
+    },
+  };
+}
+
+const UK_TOC = [
   { id: "philosophy", title: "Warranty Philosophy" },
   { id: "provider", title: "1. Warranty Provider" },
   { id: "applicable", title: "2. Applicable Warranty" },
@@ -36,25 +48,174 @@ const TOC = [
   { id: "finish", title: "4. Finish & Paint" },
   { id: "third-party", title: "5. Third-Party Components" },
   { id: "exclusions", title: "6. Commercial Exclusions" },
-  { id: "modifications", title: "7. Modifications" },
-  { id: "crash", title: "8. Crash Replacement" },
-  { id: "claim", title: "9. Making a Claim" },
-  { id: "inspection", title: "10. Inspection" },
-  { id: "remedy", title: "11. Remedy" },
-  { id: "statutory", title: "12. Statutory Rights" },
-  { id: "second-owners", title: "13. Second Owners" },
-  { id: "race-use", title: "14. Race Use" },
-  { id: "contact", title: "15. Contact" },
+  { id: "claim", title: "7. Making a Claim" },
+  { id: "statutory", title: "8. Statutory Rights (UK)" },
 ];
 
-export default function WarrantyPage() {
-  const doc = LEGAL_DOCUMENTS.warranty;
-  const warrantyEmail = renderCleanLegalText(WARRANTY_EMAIL);
+const US_TOC = [
+  { id: "us-w-1", title: "1. Magnuson-Moss Act Designation (LIMITED)" },
+  { id: "us-w-2", title: "2. Pre-Sale Availability Notice" },
+  { id: "us-w-3", title: "3. Warranty Provider & Scope" },
+  { id: "us-w-4", title: "4. Frame & Swingarm Coverage" },
+  { id: "us-w-5", title: "5. Finish & Cosmetic Paint" },
+  { id: "us-w-6", title: "6. Third-Party Components" },
+  { id: "us-w-7", title: "7. Exclusions & Limitations" },
+  { id: "us-w-8", title: "8. State Law Rights & Disclaimers" },
+  { id: "us-w-9", title: "9. How to File a Warranty Claim" },
+];
 
+export default async function WarrantyPage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const resolvedParams = await params;
+  const regionCode = (
+    resolvedParams.region === "uk" ? "uk" : "us"
+  ) as RegionCode;
+  const isUS = regionCode === "us";
+  const doc = getLegalDocument("warranty", regionCode);
+  const company = getCompany(regionCode);
+
+  if (isUS) {
+    return (
+      <LegalPageLayout
+        document={doc}
+        toc={US_TOC}
+        eyebrow="US CONSUMER WARRANTY (MAGNUSON-MOSS ACT)"
+      >
+        <div className="space-y-10">
+          {/* Pre-Production Notice Banner */}
+          <div className="p-6 bg-alkota-carbon text-alkota-snow border border-white/10 space-y-3 font-mono">
+            <div className="flex items-center gap-2 text-alkota-signal font-bold uppercase tracking-wider text-xs">
+              <ShieldAlert className="w-4 h-4" />
+              <span>PROJECT 01 PRE-PRODUCTION US WARRANTY NOTICE</span>
+            </div>
+            <p className="text-sm font-sans text-alkota-snow/90 leading-relaxed">
+              Project 01 is currently in R00 pre-production development. Final commercial warranty terms and schedules will be published prior to production release and order opening.
+            </p>
+            <div className="inline-block px-3 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest">
+              TERMS TO BE CONFIRMED BEFORE US PRODUCTION RELEASE.
+            </div>
+          </div>
+
+          {/* 1. MMWA Designation */}
+          <section id="us-w-1" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              01. MAGNUSON-MOSS WARRANTY ACT DESIGNATION
+            </h2>
+            <div className="p-4 bg-alkota-snow border border-black/10 space-y-2">
+              <div className="font-mono text-sm font-bold text-alkota-black uppercase tracking-wider">
+                DESIGNATION: LIMITED WARRANTY
+              </div>
+              <p className="text-xs text-black/70 leading-relaxed">
+                In compliance with the federal Magnuson-Moss Warranty Act (15 U.S.C. §2301 et seq.) and 16 CFR Part 700, this written warranty is conspicuously designated as a <strong>LIMITED WARRANTY</strong>. This designation applies to consumer purchases over $15 in the United States.
+              </p>
+            </div>
+          </section>
+
+          {/* 2. Pre-Sale Availability */}
+          <section id="us-w-2" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              02. PRE-SALE AVAILABILITY NOTICE
+            </h2>
+            <p>
+              In accordance with 16 CFR Part 702 (Pre-Sale Availability of Written Warranty Terms), the full text of this written limited warranty is made available online prior to purchase at <em>alkotacycles.com/us/warranty</em> and upon request from customer support or authorized US partners.
+            </p>
+          </section>
+
+          {/* 3. Provider */}
+          <section id="us-w-3" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              03. WARRANTY PROVIDER &amp; SCOPE
+            </h2>
+            <p>The warrantor providing this limited warranty is:</p>
+            <div className="p-4 bg-alkota-snow border border-black/10 font-mono text-xs space-y-1">
+              <div><span className="text-black/50">WARRANTOR:</span> {company.legalEntityName}</div>
+              <div><span className="text-black/50">WARRANTY EMAIL:</span> {company.email.warranty}</div>
+              <div><span className="text-black/50">WEBSITE:</span> {company.websiteUrl}</div>
+            </div>
+          </section>
+
+          {/* 4. Frame */}
+          <section id="us-w-4" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              04. FRAME &amp; SWINGARM COVERAGE
+            </h2>
+            <p>
+              Alkota warrants the carbon chassis frame and rear swingarm against defects in materials and manufacturing workmanship for the designated warranty term to the original purchaser.
+            </p>
+            <div className="p-3 bg-alkota-snow border border-black/10 font-mono text-xs">
+              <span className="text-black/50">WARRANTY DURATION:</span> TO BE CONFIRMED BEFORE US PRODUCTION RELEASE
+            </div>
+          </section>
+
+          {/* 5. Finish */}
+          <section id="us-w-5" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              05. FINISH &amp; COSMETIC PAINT
+            </h2>
+            <p>
+              Paint finishes, graphics, and clear coat layers are covered against manufacturing defects such as peeling or blistering for a specific finish term. Normal cosmetic scratch wear from trail use is excluded.
+            </p>
+          </section>
+
+          {/* 6. Third Party */}
+          <section id="us-w-6" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              06. THIRD-PARTY COMPONENTS
+            </h2>
+            <p>
+              Suspension dampers, drivetrain components, brakes, and wheels manufactured by third-party suppliers are warranted by their respective original manufacturers. Alkota will assist customers in facilitating component warranty claims.
+            </p>
+          </section>
+
+          {/* 7. Exclusions */}
+          <section id="us-w-7" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              07. EXCLUSIONS &amp; LIMITATIONS
+            </h2>
+            <p>This limited warranty does not cover:</p>
+            <ul className="list-disc pl-5 space-y-1 text-sm">
+              <li>Normal wear and tear on consumable parts (brake pads, tyres, chains, seals, bearings).</li>
+              <li>Damage resulting from crashes, collisions, improper assembly, or inadequate maintenance.</li>
+              <li>Damage caused by unauthorized structural modifications or exceeding intended usage limits.</li>
+              <li>Damage incurred during commercial rental or unapproved racing use.</li>
+            </ul>
+          </section>
+
+          {/* 8. State Law Rights */}
+          <section id="us-w-8" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              08. STATE LAW RIGHTS &amp; LEGAL DISCLAIMERS
+            </h2>
+            <p className="text-xs text-black/80 leading-relaxed">
+              THIS LIMITED WARRANTY GIVES YOU SPECIFIC LEGAL RIGHTS, AND YOU MAY ALSO HAVE OTHER RIGHTS WHICH VARY FROM STATE TO STATE. SOME STATES DO NOT ALLOW LIMITATIONS ON HOW LONG AN IMPLIED WARRANTY LASTS OR THE EXCLUSION OR LIMITATION OF INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THE ABOVE LIMITATIONS OR EXCLUSIONS MAY NOT APPLY TO YOU.
+            </p>
+          </section>
+
+          {/* 9. Claim */}
+          <section id="us-w-9" className="space-y-3">
+            <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
+              09. HOW TO FILE A WARRANTY CLAIM
+            </h2>
+            <p>
+              To initiate a warranty claim in the US, contact <a href={`mailto:${company.email.warranty}`} className="underline font-mono">{company.email.warranty}</a> with proof of purchase, chassis serial number, and photographs of the issue.
+            </p>
+          </section>
+        </div>
+      </LegalPageLayout>
+    );
+  }
+
+  // UK Warranty Framework
   return (
-    <LegalPageLayout document={doc} toc={TOC} eyebrow="COMMERCIAL WARRANTY">
+    <LegalPageLayout
+      document={doc}
+      toc={UK_TOC}
+      eyebrow="COMMERCIAL WARRANTY (UK)"
+    >
       <div className="space-y-10">
-        {/* Pre-Production Notice Banner */}
         <div className="p-6 bg-alkota-carbon text-alkota-snow border border-white/10 space-y-3 font-mono">
           <div className="flex items-center gap-2 text-alkota-signal font-bold uppercase tracking-wider text-xs">
             <ShieldAlert className="w-4 h-4" />
@@ -64,203 +225,77 @@ export default function WarrantyPage() {
             Project 01 has not yet reached production release. Commercial warranty terms are subject to final engineering validation.
           </p>
           <div className="inline-block px-3 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest">
-            FINAL PROJECT 01 PRODUCTION WARRANTY TO BE PUBLISHED BEFORE PRODUCTION ORDERS OPEN.
+            FINAL PRODUCTION WARRANTY TO BE PUBLISHED BEFORE PRODUCTION ORDERS OPEN.
           </div>
         </div>
 
-        {/* Philosophy */}
         <section id="philosophy" className="space-y-3">
           <h2 className="font-display font-bold text-2xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
             OUR WARRANTY PHILOSOPHY
           </h2>
-          <p>
-            A premium mountain bike should be designed to be ridden, maintained, rebuilt and kept.
-          </p>
-          <p>Our warranty exists to support that principle.</p>
-          <p>It is also important to distinguish a commercial warranty from your legal rights.</p>
-          <p>The Alkota Limited Warranty is an additional benefit.</p>
-          <p>
-            It does not replace or reduce mandatory rights you may have against the seller where goods are faulty,
-            misdescribed, not of satisfactory quality or otherwise fail to conform to applicable consumer law.
-          </p>
+          <p>A premium mountain bike should be designed to be ridden, maintained, rebuilt and kept.</p>
+          <p>The Alkota Limited Warranty is an additional commercial benefit and does not replace statutory consumer rights under the Consumer Rights Act 2015.</p>
         </section>
 
-        {/* 1. Who Provides */}
         <section id="provider" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            1. WHO PROVIDES THE WARRANTY
+            1. WARRANTY PROVIDER
           </h2>
-          <p>Where stated in the applicable Warranty Schedule, the warranty provider is:</p>
           <div className="p-4 bg-alkota-snow border border-black/10 font-mono text-xs">
-            Alkota Cycles (Legal Entity Pending) — alkotacycles.com
+            {company.legalEntityName ?? company.tradingName} — {company.websiteUrl}
           </div>
         </section>
 
-        {/* 2. What Warranty Applies */}
         <section id="applicable" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            2. WHAT WARRANTY APPLIES?
+            2. APPLICABLE WARRANTY
           </h2>
-          <p>
-            The exact warranty applying to a Bike will be identified by product, model year, production revision, market,
-            original purchase date, and warranty schedule version.
-          </p>
-          <p>Your My Alkota record will display the warranty schedule applicable to your individual Bike.</p>
+          <p>The warranty schedule applying to your individual bike is tracked in your My Alkota owner record.</p>
         </section>
 
-        {/* 3. Frame Warranty */}
         <section id="frame" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
             3. FRAME WARRANTY
           </h2>
           <div className="p-4 bg-alkota-snow border border-black/10 space-y-2 font-mono text-xs">
-            <div className="font-bold text-alkota-black uppercase">Carbon Frame & Swingarm</div>
-            <div>
-              <span className="text-black/50">WARRANTY TERM:</span>{" "}
-              {FRAME_WARRANTY_TERM || "TO BE CONFIRMED BEFORE PRODUCTION RELEASE"}
-            </div>
-            <div>
-              <span className="text-black/50">ELIGIBILITY:</span> Original purchaser from Alkota or authorised Alkota Partner
-            </div>
+            <div className="font-bold text-alkota-black uppercase">Carbon Frame &amp; Swingarm</div>
+            <div><span className="text-black/50">WARRANTY TERM:</span> TO BE CONFIRMED BEFORE PRODUCTION RELEASE</div>
           </div>
-          <p className="text-sm">
-            Coverage applies to qualifying defects in material or workmanship during the applicable warranty period.
-          </p>
         </section>
 
-        {/* 4. Finish */}
         <section id="finish" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            4. FINISH & PAINT
+            4. FINISH &amp; PAINT
           </h2>
-          <p>Paint, clearcoat, graphics and cosmetic finish are subject to separate terms. Normal cosmetic wear is separate from defects.</p>
-          <div className="p-3 bg-alkota-snow border border-black/10 font-mono text-xs">
-            <span className="text-black/50">FINISH COVERAGE:</span>{" "}
-            {PAINT_FINISH_WARRANTY_TERM || "TO BE CONFIRMED BEFORE PRODUCTION RELEASE"}
-          </div>
+          <p>Paint and finish coverage is subject to separate terms. Cosmetic trail wear is excluded.</p>
         </section>
 
-        {/* 5. Third-Party Components */}
         <section id="third-party" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
             5. THIRD-PARTY COMPONENTS
           </h2>
-          <p>
-            Project 01 uses specialist components produced by other manufacturers which carry their own manufacturer warranty.
-          </p>
-          <p>
-            Where Alkota sold the complete Bike to a consumer, component manufacturer warranties do not require you to abandon
-            statutory rights against Alkota as seller.
-          </p>
+          <p>Specialist components carry manufacturer warranties. Exercising component warranties does not require you to surrender statutory rights against Alkota as retailer.</p>
         </section>
 
-        {/* 6. Exclusions */}
         <section id="exclusions" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            6. WHAT A COMMERCIAL WARRANTY GENERALLY DOES NOT COVER
+            6. COMMERCIAL EXCLUSIONS
           </h2>
-          <p>A commercial warranty is not intended to cover issues caused solely by:</p>
-          <ul className="list-disc pl-6 space-y-1 text-sm">
-            <li>Normal wear and tear or consumable component wear (tyres, brake pads, chains, bearings, grips, seals)</li>
-            <li>Neglect, incorrect maintenance, or incorrect assembly</li>
-            <li>Misuse, crash or impact damage</li>
-            <li>Corrosion caused by inappropriate storage or maintenance</li>
-            <li>Use of incompatible components or unauthorised modification</li>
-            <li>Failure to follow safety-critical service instructions</li>
-          </ul>
+          <p>Excludes wear and tear, neglect, crash damage, corrosion, or unapproved structural modifications.</p>
         </section>
 
-        {/* 7. Modifications */}
-        <section id="modifications" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            7. MODIFICATIONS
-          </h2>
-          <p>
-            Where an unauthorised or incompatible modification causes or contributes to a failure, it may affect a claim
-            concerning that failure. Unrelated statutory rights remain unaffected.
-          </p>
-        </section>
-
-        {/* 8. Crash Damage */}
-        <section id="crash" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            8. CRASH DAMAGE
-          </h2>
-          <p>Crash or impact damage is separate from a manufacturing defect.</p>
-          <div className="p-4 bg-alkota-snow border border-black/10 font-mono text-xs space-y-1">
-            <div className="font-bold text-alkota-black uppercase">CRASH REPLACEMENT PROGRAMME</div>
-            <div className="text-amber-800 font-bold">
-              {CRASH_REPLACEMENT_AVAILABLE ? "AVAILABLE" : "UNDER DEVELOPMENT — DETAILS TO BE PUBLISHED BEFORE PRODUCTION"}
-            </div>
-          </div>
-        </section>
-
-        {/* 9. Making a Claim */}
         <section id="claim" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            9. MAKING A WARRANTY CLAIM
+            7. MAKING A CLAIM
           </h2>
-          <p>Start your claim by contacting support or through My Alkota when available:</p>
-          <div className="p-4 bg-alkota-snow border border-black/10 font-mono text-xs">
-            <span className="text-black/50">WARRANTY CONTACT:</span> {warrantyEmail}
-          </div>
-          <p className="text-sm">
-            Please provide name, proof of purchase, frame serial number, photographs, and a description of the issue.
-          </p>
+          <p>Contact <a href={`mailto:${company.email.warranty}`} className="underline font-mono">{company.email.warranty}</a> to initiate a claim.</p>
         </section>
 
-        {/* 10. Inspection */}
-        <section id="inspection" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            10. INSPECTION
-          </h2>
-          <p>We may need to inspect the Bike or component and will provide clear instructions on shipping or Partner inspection.</p>
-        </section>
-
-        {/* 11. Remedy */}
-        <section id="remedy" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            11. REMEDY
-          </h2>
-          <p>Qualifying claims will be resolved by repair, replacement or another appropriate remedy.</p>
-        </section>
-
-        {/* 12. Statutory Rights */}
         <section id="statutory" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            12. STATUTORY RIGHTS
+            8. STATUTORY RIGHTS (UK)
           </h2>
-          <p>Your statutory rights under consumer protection laws are independent of commercial warranty terms.</p>
-        </section>
-
-        {/* 13. Second Owners */}
-        <section id="second-owners" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            13. SECOND OWNERS / TRANSFER POLICY
-          </h2>
-          <div className="p-3 bg-alkota-snow border border-black/10 font-mono text-xs">
-            <span className="text-black/50">SECOND-OWNER POLICY:</span>{" "}
-            {WARRANTY_TRANSFERABLE ? "TRANSFERABLE SUBJECT TO TERMS" : "SECOND-OWNER / TRANSFER POLICY TO BE CONFIRMED"}
-          </div>
-        </section>
-
-        {/* 14. Race Use */}
-        <section id="race-use" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            14. RACE USE
-          </h2>
-          <p>
-            Project 01 is developed as a performance mountain bike. Warranty exclusions will align with the published intended-use
-            category rather than imposing blanket competition bans.
-          </p>
-        </section>
-
-        {/* 15. Contact */}
-        <section id="contact" className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            15. CONTACT
-          </h2>
-          <p>Direct warranty enquiries: {warrantyEmail}</p>
+          <p>UK consumer statutory rights under the Consumer Rights Act 2015 operate independently of commercial warranty guarantees.</p>
         </section>
       </div>
     </LegalPageLayout>

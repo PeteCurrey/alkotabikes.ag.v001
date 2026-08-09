@@ -1,65 +1,98 @@
 import React from "react";
 import { Metadata } from "next";
 import siteUrl from "@/lib/env";
-import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
+import { getLegalDocument } from "@/config/legalDocuments";
+import { getCompany } from "@/lib/company";
+import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
-import { Check, Shield } from "lucide-react";
+import { Check } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Accessibility Statement",
-  description:
-    "Alkota's commitment to WCAG 2.2 AA accessibility, keyboard navigation, reduced motion support, and how to report issues.",
-  alternates: {
-    canonical: `${siteUrl}/accessibility`,
-  },
-  openGraph: {
-    title: "Accessibility Statement",
-    description:
-      "Alkota's WCAG 2.2 AA accessibility commitment, keyboard navigation, reduced motion support, and how to report issues.",
-    url: `${siteUrl}/accessibility`,
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const isUS = region === "us";
+  const title = isUS
+    ? "Accessibility Statement (US — ADA & WCAG 2.2 AA)"
+    : "Accessibility Statement";
+  const description = isUS
+    ? "Alkota's commitment to web accessibility under the Americans with Disabilities Act (ADA Title III) and WCAG 2.2 AA conformance."
+    : "Alkota's WCAG 2.2 AA accessibility commitment, keyboard navigation, reduced motion support, and reporting.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${region}/accessibility`,
+      languages: {
+        "en-GB": `${siteUrl}/uk/accessibility`,
+        "en-US": `${siteUrl}/us/accessibility`,
+        "x-default": `${siteUrl}/us/accessibility`,
+      },
+    },
+    openGraph: {
+      title: `${title} | Alkota Cycles`,
+      description,
+      url: `${siteUrl}/${region}/accessibility`,
+    },
+  };
+}
 
 const goals = [
-  "Keyboard navigation throughout all interactive features",
-  "Visible, high-contrast focus states on all interactive elements",
-  "Semantic heading structure (H1 → H2 → H3) throughout all pages",
-  "Sufficient colour contrast ratios on all text and interactive elements",
-  "Meaningful alternative text for all informative images",
-  "Captions or transcripts for video content where applicable",
-  "Reduced motion support via prefers-reduced-motion media query",
-  "Responsive text sizing that respects browser zoom preferences",
-  "Visible form labels and clear error messaging",
-  "Screen-reader-friendly controls and ARIA attributes where required",
-  "Alternatives to hover-only interaction patterns",
+  "Keyboard navigation throughout all interactive features and configurators",
+  "Visible, high-contrast focus indicators on all interactive controls",
+  "Semantic heading structure (H1 → H2 → H3) across all regional pages",
+  "Sufficient colour contrast ratios meeting WCAG 2.2 AA standards",
+  "Meaningful text alternatives (alt text) for informative imagery",
+  "Captions or transcripts for technical media content where applicable",
+  "Reduced motion support via prefers-reduced-motion CSS media queries",
+  "Responsive text sizing respecting browser font zoom settings",
+  "Accessible form controls with persistent labels and error messaging",
+  "Screen-reader support utilizing ARIA landmark roles and live regions",
 ];
 
-export default function AccessibilityPage() {
-  const doc = LEGAL_DOCUMENTS.accessibility;
+export default async function AccessibilityPage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const resolvedParams = await params;
+  const regionCode = (
+    resolvedParams.region === "uk" ? "uk" : "us"
+  ) as RegionCode;
+  const isUS = regionCode === "us";
+  const doc = getLegalDocument("accessibility", regionCode);
+  const company = getCompany(regionCode);
 
   return (
-    <LegalPageLayout document={doc} eyebrow="SITE ACCESSIBILITY">
+    <LegalPageLayout document={doc} eyebrow={isUS ? "US ACCESSIBILITY (ADA & WCAG 2.2 AA)" : "SITE ACCESSIBILITY"}>
       <div className="space-y-10">
-        {/* Standard commitment */}
         <section className="space-y-4">
           <p className="text-base leading-relaxed">
-            Alkota uses photography, technical diagrams, motion and interactive product experiences extensively.
-            Those things should enhance the site, not make it inaccessible.
+            Alkota Cycles uses technical photography, CAD schematics, and interactive product configurator tools. We design our digital experiences so that high visual fidelity enhances the platform without creating accessibility barriers.
           </p>
-          <p>
-            We aim to design alkotacycles.com with WCAG 2.2 Level AA principles in mind.
-          </p>
-          <div className="p-4 bg-alkota-carbon/5 border border-black/10 font-mono text-xs text-alkota-slate">
-            Until an independent accessibility audit has confirmed full conformance, we do not claim that the entire
-            site is certified or fully compliant with WCAG 2.2 AA. This statement reflects our active commitment and
-            design intent.
-          </div>
+
+          {isUS ? (
+            <div className="p-4 bg-alkota-carbon/5 border border-black/10 font-mono text-xs space-y-2">
+              <div className="font-bold text-alkota-black uppercase">
+                AMERICANS WITH DISABILITIES ACT (ADA TITLE III) &amp; WCAG 2.2 AA COMMITMENT
+              </div>
+              <p className="text-alkota-slate leading-relaxed">
+                Alkota Cycles is committed to facilitating the accessibility and usability of alkotacycles.com/us for individuals with disabilities in accordance with Title III of the Americans with Disabilities Act (ADA) and the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA.
+              </p>
+            </div>
+          ) : (
+            <div className="p-4 bg-alkota-carbon/5 border border-black/10 font-mono text-xs text-alkota-slate leading-relaxed">
+              We design alkotacycles.com/uk with World Wide Web Consortium (W3C) WCAG 2.2 Level AA guidelines in mind. This statement outlines our active accessibility commitments and implementation standards.
+            </div>
+          )}
         </section>
 
-        {/* What we work toward */}
         <section className="space-y-4">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            WE WORK TOWARD
+            ACCESSIBILITY IMPLEMENTATION STANDARDS
           </h2>
           <ul className="space-y-2">
             {goals.map((goal) => (
@@ -71,60 +104,34 @@ export default function AccessibilityPage() {
           </ul>
         </section>
 
-        {/* Configurator */}
         <section className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            CONFIGURATOR
+            CONFIGURATOR &amp; 3D SHOWROOM ACCESSIBILITY
           </h2>
           <p>
-            Interactive visual hotspots in the Configurator and component exploder must also have an accessible indexed
-            list alternative for keyboard and screen-reader users.
+            Interactive hotspots in our 3D showroom and component spec builder include accessible keyboard alternatives and structured text indices for screen-reader navigation.
           </p>
         </section>
 
-        {/* Design Archive */}
         <section className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            DESIGN ARCHIVE
+            REDUCED MOTION SUPPORT
           </h2>
           <p>
-            Technical and engineering imagery in the Design Archive should include meaningful captions and descriptive
-            alternative text where possible.
+            Alkota respects the <code className="font-mono text-xs bg-black/5 px-1.5 py-0.5">prefers-reduced-motion</code> operating system setting. Users with reduced motion enabled will receive static transitions without motion-intensive animations.
           </p>
         </section>
 
-        {/* Motion */}
         <section className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            MOTION & ANIMATION
+            REPORTING AN ACCESSIBILITY BARRIER
           </h2>
           <p>
-            Alkota respects <code className="font-mono text-xs bg-black/5 px-1.5 py-0.5">prefers-reduced-motion</code>.
-            Users who have requested reduced motion will not experience large scroll-driven animations or
-            motion-intensive transitions.
-          </p>
-        </section>
-
-        {/* Contact */}
-        <section className="space-y-3">
-          <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            REPORTING AN ACCESSIBILITY ISSUE
-          </h2>
-          <p>
-            If part of the site prevents you from accessing information or completing a task, contact customer support.
-          </p>
-          <p>Tell us:</p>
-          <ul className="list-disc pl-6 space-y-1 text-sm">
-            <li>The page or feature where the issue occurs</li>
-            <li>A description of the problem</li>
-            <li>The assistive technology or browser you are using</li>
-            <li>The information or action you are trying to access</li>
-          </ul>
-          <p>
-            We will try to provide a practical alternative while the underlying issue is investigated and resolved.
+            If you encounter an accessibility barrier or require assistance accessing any content on our website, please contact our support team:
           </p>
           <div className="p-4 bg-alkota-snow border border-black/10 font-mono text-xs">
-            <span className="text-black/50">ACCESSIBILITY CONTACT:</span> support@alkotacycles.com
+            <div><span className="text-black/50">ACCESSIBILITY EMAIL:</span> {company.email.customerService}</div>
+            <div><span className="text-black/50">RESPONSE TIMEFRAME:</span> Within 2 business days</div>
           </div>
         </section>
       </div>
