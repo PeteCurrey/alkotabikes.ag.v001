@@ -2,22 +2,17 @@
  * ALKOTA CYCLES — COMPANY IDENTITY MODULE
  * lib/company.ts
  *
- * Single source of truth for all company identity data rendered on the site.
+ * Single source of truth for company identity data per region.
  *
  * RULES:
- * - Pull all values from src/config/legal.ts — never hardcode strings here.
- * - If a field still contains a {{PLACEHOLDER}}, it is not yet known and should
- *   be represented as null rather than an invented value.
- * - The build does NOT fail here — placeholders are intentional for pre-launch.
- * - What DOES fail the build is rendering a placeholder in a live commerce path
- *   (enforced by lib/legal-status.ts and the verify-claims script).
- *
- * TRADEMARK NOTE:
- * This module also serves as the canonical trademark registry.
- * Any component rendering a brand identifier must reference this registry,
- * not inline strings.
+ * - Pull UK values from src/config/legal.ts.
+ * - US entity fields use explicit "PLACEHOLDER — " literals until real values are provided.
+ * - Do NOT invent plausible US entity names, numbers or addresses.
+ * - Every placeholder is reported at build time via scripts/placeholder-report.ts and
+ *   fails production builds on alkotacycles.com.
  */
 
+import type { RegionCode } from "./regions";
 import {
   LEGAL_TRADING_NAME,
   LEGAL_ENTITY_NAME,
@@ -38,78 +33,113 @@ import {
   hasUnresolvedPlaceholders,
 } from "@/config/legal";
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
 function resolved(value: string): string | null {
   return hasUnresolvedPlaceholders(value) ? null : value;
 }
 
-// ── COMPANY IDENTITY ─────────────────────────────────────────────────────────
-
-export const company = {
-  /** Brand trading name shown publicly: "Alkota Cycles" */
-  tradingName: LEGAL_TRADING_NAME,
-
-  /**
-   * Full registered legal entity name.
-   * null = not yet incorporated / registration pending.
-   */
-  legalEntityName: resolved(LEGAL_ENTITY_NAME),
-
-  /** Companies House number. null = not yet registered. */
-  companyNumber: resolved(COMPANY_NUMBER),
-
-  /** Registered office address. null = pending. */
-  registeredOffice: resolved(REGISTERED_OFFICE),
-
-  /** Jurisdiction: England and Wales / Scotland / Northern Ireland */
-  registeredIn: resolved(REGISTERED_IN),
-
-  /** VAT registration number. null = not VAT registered or pending. */
-  vatNumber: resolved(VAT_NUMBER),
-
-  /** ICO registration reference (UK GDPR). null = pending. */
-  icoReference: resolved(ICO_REGISTRATION_REFERENCE),
-
-  // ── CONTACT ENDPOINTS ────────────────────────────────────────────────────
-
+export interface BaseCompanyEntity {
+  tradingName: string;
+  legalEntityName: string | null;
   email: {
-    /** Primary customer contact. */
-    customerService: resolved(CUSTOMER_SERVICE_EMAIL),
-    /** Legal and IP enquiries. */
-    legal: resolved(LEGAL_EMAIL),
-    /** Data subject rights and privacy enquiries. */
-    privacy: resolved(PRIVACY_EMAIL),
-    /** Warranty claims. */
-    warranty: resolved(WARRANTY_EMAIL),
-    /** Returns and refund requests. */
-    returns: resolved(RETURNS_EMAIL),
-    /** Employment applications. */
-    careers: resolved(CAREERS_EMAIL),
-    /** Ambassador and rider applications. */
-    ambassadors: resolved(AMBASSADOR_EMAIL),
+    customerService: string | null;
+    legal: string | null;
+    privacy: string | null;
+    warranty: string | null;
+    returns: string | null;
+    careers: string | null;
+    ambassadors: string | null;
+  };
+  telephone: string | null;
+  returnsAddress: string | null;
+  domain: string;
+  websiteUrl: string;
+}
+
+export interface UKCompanyEntity extends BaseCompanyEntity {
+  region: "uk";
+  companyNumber: string | null;
+  registeredOffice: string | null;
+  registeredIn: string | null;
+  vatNumber: string | null;
+  icoReference: string | null;
+}
+
+export interface USCompanyEntity extends BaseCompanyEntity {
+  region: "us";
+  /** e.g. LLC, Corporation */
+  entityType: string;
+  stateOfIncorporation: string;
+  registeredAgent: string;
+  principalPlaceOfBusiness: string;
+  /** Internal store presence only — NEVER rendered on public pages */
+  ein: string;
+  stateTaxRegistrations: string[];
+}
+
+export type CompanyEntity = UKCompanyEntity | USCompanyEntity;
+
+export const COMPANY_ENTITIES: Record<RegionCode, CompanyEntity> = {
+  uk: {
+    region: "uk",
+    tradingName: LEGAL_TRADING_NAME,
+    legalEntityName: resolved(LEGAL_ENTITY_NAME),
+    companyNumber: resolved(COMPANY_NUMBER),
+    registeredOffice: resolved(REGISTERED_OFFICE),
+    registeredIn: resolved(REGISTERED_IN),
+    vatNumber: resolved(VAT_NUMBER),
+    icoReference: resolved(ICO_REGISTRATION_REFERENCE),
+    email: {
+      customerService: resolved(CUSTOMER_SERVICE_EMAIL) ?? "support@alkotacycles.com",
+      legal: resolved(LEGAL_EMAIL) ?? "legal@alkotacycles.com",
+      privacy: resolved(PRIVACY_EMAIL) ?? "privacy@alkotacycles.com",
+      warranty: resolved(WARRANTY_EMAIL) ?? "warranty@alkotacycles.com",
+      returns: resolved(RETURNS_EMAIL) ?? "returns@alkotacycles.com",
+      careers: resolved(CAREERS_EMAIL) ?? "careers@alkotacycles.com",
+      ambassadors: resolved(AMBASSADOR_EMAIL) ?? "ambassadors@alkotacycles.com",
+    },
+    telephone: resolved(CUSTOMER_SERVICE_PHONE),
+    returnsAddress: resolved(RETURNS_ADDRESS),
+    domain: "alkotacycles.com",
+    websiteUrl: "https://alkotacycles.com",
   },
 
-  /** Optional telephone. null = not published. */
-  telephone: resolved(CUSTOMER_SERVICE_PHONE),
+  us: {
+    region: "us",
+    tradingName: LEGAL_TRADING_NAME,
+    legalEntityName: "PLACEHOLDER — US Entity Legal Name",
+    entityType: "PLACEHOLDER — US Entity Type (e.g. LLC / Corporation)",
+    stateOfIncorporation: "PLACEHOLDER — US State of Incorporation",
+    registeredAgent: "PLACEHOLDER — US Registered Agent",
+    principalPlaceOfBusiness: "PLACEHOLDER — US Principal Place of Business",
+    ein: "PLACEHOLDER — US EIN (internal use only)",
+    stateTaxRegistrations: ["PLACEHOLDER — State Tax Registration"],
+    email: {
+      customerService: "support@alkotacycles.com",
+      legal: "legal@alkotacycles.com",
+      privacy: "privacy@alkotacycles.com",
+      warranty: "warranty@alkotacycles.com",
+      returns: "returns@alkotacycles.com",
+      careers: "careers@alkotacycles.com",
+      ambassadors: "ambassadors@alkotacycles.com",
+    },
+    telephone: null,
+    returnsAddress: "PLACEHOLDER — US Returns Address",
+    domain: "alkotacycles.com",
+    websiteUrl: "https://alkotacycles.com/us",
+  },
+};
 
-  /** Physical returns address. null = pending. */
-  returnsAddress: resolved(RETURNS_ADDRESS),
+/**
+ * Get company entity information for a specific region.
+ */
+export function getCompany(region: RegionCode = "uk"): CompanyEntity {
+  return COMPANY_ENTITIES[region] ?? COMPANY_ENTITIES.uk;
+}
 
-  // ── WEB PRESENCE ────────────────────────────────────────────────────────
-
-  domain: "alkotacycles.com",
-  websiteUrl: "https://alkotacycles.com",
-} as const;
+/** Default company identity export (UK entity baseline for legacy imports) */
+export const company = COMPANY_ENTITIES.uk;
 
 // ── TRADEMARK REGISTRY ───────────────────────────────────────────────────────
-//
-// Every brand identifier that appears publicly must be registered here.
-// Status values:
-//   REGISTERED      — registered trade mark with registration number
-//   PENDING         — application filed, awaiting registry decision
-//   UNREGISTERED    — used as a trade mark but not yet applied for
-//   COMMON_LAW      — protected via common law / passing-off only
 
 export type TrademarkStatus =
   | "REGISTERED"
@@ -120,13 +150,9 @@ export type TrademarkStatus =
 export interface TrademarkEntry {
   mark: string;
   status: TrademarkStatus;
-  /** Jurisdiction or class. */
   jurisdiction?: string;
-  /** Registry reference number, if registered or pending. */
   registrationNumber?: string;
-  /** Description of goods/services covered. */
   covers: string;
-  /** Internal note. */
   note?: string;
 }
 
@@ -135,8 +161,7 @@ export const trademarkRegistry: TrademarkEntry[] = [
     mark: "ALKOTA",
     status: "UNREGISTERED",
     covers: "Mountain bicycles; bicycle frames; bicycle components; apparel",
-    note:
-      "Primary brand identifier. Application to be filed prior to commercial launch.",
+    note: "Primary brand identifier. Application to be filed prior to commercial launch.",
   },
   {
     mark: "ALKOTA CYCLES",
@@ -148,8 +173,7 @@ export const trademarkRegistry: TrademarkEntry[] = [
     mark: "PROJECT 01",
     status: "UNREGISTERED",
     covers: "Mountain bicycle development programme; bicycle frames and components",
-    note:
-      "Development programme identifier. To be evaluated for registration prior to production release.",
+    note: "Development programme identifier.",
   },
   {
     mark: "ALKOTA SUPPLY",
@@ -161,35 +185,45 @@ export const trademarkRegistry: TrademarkEntry[] = [
 
 // ── STATUS HELPERS ───────────────────────────────────────────────────────────
 
-/**
- * Returns true if the company's legal identity is fully resolved
- * (no placeholder fields in the minimum required set for commerce).
- */
-export function isCompanyIdentityComplete(): boolean {
-  return (
-    company.legalEntityName !== null &&
-    company.companyNumber !== null &&
-    company.registeredOffice !== null &&
-    company.registeredIn !== null &&
-    company.email.legal !== null &&
-    company.email.privacy !== null
-  );
+export function isCompanyIdentityComplete(region: RegionCode = "uk"): boolean {
+  const entity = COMPANY_ENTITIES[region];
+  if (entity.region === "uk") {
+    return (
+      entity.legalEntityName !== null &&
+      entity.companyNumber !== null &&
+      entity.registeredOffice !== null &&
+      entity.registeredIn !== null &&
+      entity.email.legal !== null &&
+      entity.email.privacy !== null
+    );
+  } else {
+    return (
+      !entity.legalEntityName.includes("PLACEHOLDER — ") &&
+      !entity.registeredAgent.includes("PLACEHOLDER — ") &&
+      !entity.principalPlaceOfBusiness.includes("PLACEHOLDER — ")
+    );
+  }
 }
 
-/**
- * Returns a formatted legal identity block suitable for footer rendering.
- * Returns null if company identity is incomplete.
- */
-export function getLegalIdentityBlock(): {
+export function getLegalIdentityBlock(region: RegionCode = "uk"): {
   line1: string;
   line2: string;
   line3: string;
 } | null {
-  if (!isCompanyIdentityComplete()) return null;
+  if (!isCompanyIdentityComplete(region)) return null;
 
-  return {
-    line1: `${company.legalEntityName} trading as ${company.tradingName}`,
-    line2: `Company No. ${company.companyNumber} · Registered in ${company.registeredIn}`,
-    line3: `Registered Office: ${company.registeredOffice}`,
-  };
+  const entity = COMPANY_ENTITIES[region];
+  if (entity.region === "uk") {
+    return {
+      line1: `${entity.legalEntityName} trading as ${entity.tradingName}`,
+      line2: `Company No. ${entity.companyNumber} · Registered in ${entity.registeredIn}`,
+      line3: `Registered Office: ${entity.registeredOffice}`,
+    };
+  } else {
+    return {
+      line1: `${entity.legalEntityName} trading as ${entity.tradingName}`,
+      line2: `${entity.entityType} · Incorporated in ${entity.stateOfIncorporation}`,
+      line3: `Principal Place of Business: ${entity.principalPlaceOfBusiness}`,
+    };
+  }
 }

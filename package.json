@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts",
+    "prebuild": "tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts && tsx scripts/placeholder-report.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "verify": "tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts"
+    "verify": "tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts && tsx scripts/placeholder-report.ts"
   },
   "dependencies": {
     "@react-three/drei": "^9.121.0",
