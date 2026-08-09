@@ -1,10 +1,16 @@
 import { MetadataRoute } from "next";
+import { headers } from "next/headers";
 import { siteUrl } from "@/lib/env";
 
-export default function robots(): MetadataRoute.Robots {
-  const isProduction = process.env.VERCEL_ENV === "production";
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const headerList = await headers();
+  const host = headerList.get("host") || "";
 
-  if (isProduction) {
+  // Allow crawling ONLY when requested via the official production domain (alkotacycles.com)
+  const isOfficialProductionDomain =
+    host.includes("alkotacycles.com") && !host.includes("vercel.app");
+
+  if (isOfficialProductionDomain) {
     return {
       rules: {
         userAgent: "*",
@@ -15,7 +21,7 @@ export default function robots(): MetadataRoute.Robots {
     };
   }
 
-  // Staging / Preview / Development environment backstop: disallow all crawling
+  // Preview, staging, localhost, and .vercel.app deployments: disallow all crawling
   return {
     rules: {
       userAgent: "*",

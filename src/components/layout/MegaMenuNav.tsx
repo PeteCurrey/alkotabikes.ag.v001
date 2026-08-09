@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronDown, ShoppingBag, Settings, Layers, ShieldCheck, Flame, BookOpen, Wrench } from "lucide-react";
 import { brandAssets } from "@/lib/assets";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
-import { useCart } from "@/lib/store/cartContext";
+import { useRegion } from "@/components/region/RegionProvider";
+import { buildRegionalPath } from "@/lib/regions";
 
 interface CategoryMenu {
   id: string;
@@ -37,7 +38,7 @@ const MEGA_MENUS: CategoryMenu[] = [
   {
     id: "bikes",
     label: "BIKES",
-    href: "/bikes",
+    href: "/bikes/project-01",
     featured: {
       title: "PROJECT 01",
       subtitle: "160mm / 150mm All-Mountain Chassis · Development Baseline R00",
@@ -51,7 +52,6 @@ const MEGA_MENUS: CategoryMenu[] = [
         heading: "PLATFORM ARCHITECTURE",
         links: [
           { label: "Project 01 Overview", href: "/bikes/project-01", desc: "Flagship 160/150mm carbon all-mountain chassis" },
-          { label: "Platform Lineup", href: "/bikes", desc: "Our one-machine product strategy" },
         ],
       },
       {
@@ -66,7 +66,7 @@ const MEGA_MENUS: CategoryMenu[] = [
         heading: "DESIGN HISTORY",
         links: [
           { label: "Design Archive", href: "/project-01/design-archive", desc: "The drawings behind the machine" },
-          { label: "Development Journal", href: "/journal/project-01", desc: "Engineering decisions & programme updates" },
+          { label: "Development Journal", href: "/journal", desc: "Engineering decisions & programme updates" },
         ],
       },
     ],
@@ -119,7 +119,6 @@ const MEGA_MENUS: CategoryMenu[] = [
         links: [
           { label: "Racing Programme 2027", href: "/racing", desc: "Competition validation ahead of 2028 launch" },
           { label: "2027 Programme Detail", href: "/racing/2027", desc: "The planned race-development architecture" },
-          { label: "Racing Dispatches", href: "/racing/dispatch", desc: "Development updates from the programme" },
         ],
       },
       {
@@ -139,15 +138,14 @@ const MEGA_MENUS: CategoryMenu[] = [
       subtitle: "The chronological engineering record of Project 01 becoming real.",
       image: ALKOTA_STORY_MEDIA.peteWorkshopLab.src,
       linkText: "READ DEVELOPMENT JOURNAL",
-      linkHref: "/journal/project-01",
+      linkHref: "/journal",
       statusLabel: "CHRONOLOGICAL RECORD",
     },
     sections: [
       {
         heading: "DEVELOPMENT ARCHIVE",
         links: [
-          { label: "Project 01 Journal", href: "/journal/project-01", desc: "Engineering notes, drawings & founder dispatches", badge: "FEATURED" },
-          { label: "Field Notes Journal", href: "/journal", desc: "Technical articles & trail stories" },
+          { label: "Development Journal", href: "/journal", desc: "Engineering notes, drawings & founder dispatches", badge: "FEATURED" },
         ],
       },
       {
@@ -183,7 +181,7 @@ const MEGA_MENUS: CategoryMenu[] = [
         heading: "OWNERSHIP & SUPPORT",
         links: [
           { label: "My Alkota", href: "/my-alkota", desc: "Development member portal", badge: "MEMBERS" },
-          { label: "Project Support", href: "/support", desc: "Pre-production documentation & setup guides" },
+          { label: "Ownership Portal", href: "/ownership", desc: "Pre-production documentation & setup guides" },
           { label: "Partner Network", href: "/partners", desc: "Specialist partner recruitment programme" },
           { label: "Contact Founder", href: "/contact", desc: "Get in touch directly with Pete Currey" },
         ],
@@ -194,11 +192,13 @@ const MEGA_MENUS: CategoryMenu[] = [
 
 export default function MegaMenuNav({ pathname }: { pathname: string }) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const { regionCode } = useRegion();
 
   return (
     <nav className="hidden lg:flex items-center space-x-7 relative" onMouseLeave={() => setActiveMenu(null)}>
       {MEGA_MENUS.map((menu) => {
-        const isActive = pathname === menu.href || (menu.href !== "/" && pathname.startsWith(menu.href));
+        const regionalHref = buildRegionalPath(menu.href, regionCode);
+        const isActive = pathname === regionalHref || (menu.href !== "/" && pathname.startsWith(regionalHref));
         const isOpen = activeMenu === menu.id;
 
         return (
@@ -208,7 +208,7 @@ export default function MegaMenuNav({ pathname }: { pathname: string }) {
             onMouseEnter={() => setActiveMenu(menu.id)}
           >
             <Link
-              href={menu.href}
+              href={regionalHref}
               className={`font-mono text-[11px] tracking-widest uppercase transition-colors inline-flex items-center gap-1 relative py-0.5 ${
                 isActive || isOpen
                   ? "text-alkota-signal font-bold"
@@ -243,7 +243,7 @@ export default function MegaMenuNav({ pathname }: { pathname: string }) {
                           {section.links.map((link) => (
                             <Link
                               key={link.label}
-                              href={link.href}
+                              href={buildRegionalPath(link.href, regionCode)}
                               onClick={() => setActiveMenu(null)}
                               className="group block p-2 hover:bg-white/5 border border-transparent hover:border-white/10 transition-all"
                             >
@@ -300,7 +300,7 @@ export default function MegaMenuNav({ pathname }: { pathname: string }) {
                     </div>
 
                     <Link
-                      href={menu.featured.linkHref}
+                      href={buildRegionalPath(menu.featured.linkHref, regionCode)}
                       onClick={() => setActiveMenu(null)}
                       className="mt-4 font-mono text-[10px] font-bold uppercase tracking-wider text-alkota-signal hover:text-white flex items-center justify-between border-t border-white/10 pt-3 group"
                     >

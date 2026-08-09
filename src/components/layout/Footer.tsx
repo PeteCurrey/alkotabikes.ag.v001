@@ -5,9 +5,15 @@ import Link from "next/link";
 import Logo from "@/components/brand/Logo";
 import { ArrowRight, Check } from "lucide-react";
 
+import { useRegion } from "@/components/region/RegionProvider";
+import { buildRegionalPath } from "@/lib/regions";
+import RegionSwitcher from "@/components/region/RegionSwitcher";
+import { company } from "@/lib/company";
+
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const { regionCode } = useRegion();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +28,6 @@ export default function Footer() {
       title: "BIKES",
       links: [
         { label: "Project 01", href: "/bikes/project-01" },
-        { label: "Platform Overview", href: "/bikes" },
         { label: "Configurator", href: "/configure" },
         { label: "How to Order", href: "/order" },
       ],
@@ -53,7 +58,7 @@ export default function Footer() {
         { label: "Alkota Racing 2027", href: "/racing" },
         { label: "Work With Us", href: "/work-with-us" },
         { label: "Ambassadors", href: "/ambassadors" },
-        { label: "Partner Network", href: "/dealers" },
+        { label: "Partner Network", href: "/partners" },
         { label: "Contact", href: "/contact" },
       ],
     },
@@ -63,17 +68,14 @@ export default function Footer() {
         { label: "FAQ", href: "/faq" },
         { label: "Engineering Glossary", href: "/glossary" },
         { label: "Safety & Intended Use", href: "/safety" },
-        { label: "Project 01 Journal", href: "/journal/project-01" },
-        { label: "Field Notes Journal", href: "/journal" },
+        { label: "Development Journal", href: "/journal" },
       ],
     },
     {
       title: "OWNERSHIP",
       links: [
         { label: "My Alkota", href: "/my-alkota" },
-        { label: "Support Portal", href: "/support" },
-        { label: "Owner Documentation", href: "/support/owners" },
-        { label: "Technical Guides", href: "/support/technical" },
+        { label: "Ownership Portal", href: "/ownership" },
         { label: "Warranty Policy", href: "/warranty" },
         { label: "Complaints & Escalation", href: "/complaints" },
       ],
@@ -143,7 +145,7 @@ export default function Footer() {
         </div>
 
         {/* Navigation Links Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6">
           {navGroups.map((group) => (
             <div key={group.title} className="space-y-4">
               <h4 className="font-mono text-xs tracking-widest text-alkota-slate uppercase">
@@ -153,7 +155,7 @@ export default function Footer() {
                 {group.links.map((link) => (
                   <li key={link.label}>
                     <Link
-                      href={link.href}
+                      href={buildRegionalPath(link.href, regionCode)}
                       className="text-alkota-snow/80 hover:text-alkota-signal transition-colors"
                     >
                       {link.label}
@@ -166,13 +168,42 @@ export default function Footer() {
         </div>
 
         {/* Bottom Technical Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-alkota-slate">
-          <div>
-            © {new Date().getFullYear()} ALKOTA PERFORMANCE ENGINEERING. ALL RIGHTS RESERVED.
+        <div className="pt-8 border-t border-white/10 flex flex-col gap-3 font-mono text-[11px] text-alkota-slate">
+          {/* Legal entity identity line */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="text-center sm:text-left">
+              {company.legalEntityName ? (
+                <span>
+                  {company.legalEntityName} trading as {company.tradingName}
+                  {company.companyNumber ? (
+                    <>
+                      {" "}·{" "}Co. No. {company.companyNumber}
+                    </>
+                  ) : null}
+                  {company.registeredIn ? (
+                    <>
+                      {" "}·{" "}Registered in {company.registeredIn}
+                    </>
+                  ) : null}
+                </span>
+              ) : (
+                <span className="text-alkota-slate/50">
+                  {company.tradingName} · LEGAL ENTITY REGISTRATION PENDING
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-4">
+              <RegionSwitcher variant="subnav" />
+            </div>
           </div>
-
-          <div className="text-[10px] text-alkota-slate/60">
-            SYSTEM STATUS: PROJECT / 01 DEVELOPMENT
+          {/* Copyright + system status */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-alkota-slate/60">
+            <div>
+              © {new Date().getFullYear()} {company.legalEntityName ?? company.tradingName}. ALL RIGHTS RESERVED.
+            </div>
+            <div>
+              SYSTEM STATUS: PROJECT / 01 DEVELOPMENT
+            </div>
           </div>
         </div>
       </div>

@@ -10,13 +10,18 @@ import { useCart } from "@/lib/store/cartContext";
 
 import MegaMenuNav from "@/components/layout/MegaMenuNav";
 
+import RegionSwitcher from "@/components/region/RegionSwitcher";
+import { useRegion } from "@/components/region/RegionProvider";
+import { buildRegionalPath } from "@/lib/regions";
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { totalItems, openCart } = useCart();
+  const { regionCode } = useRegion();
   const pathname = usePathname();
 
-  const isConfigurator = pathname === "/configure";
+  const isConfigurator = pathname.includes("/configure");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,11 +37,11 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: "/bikes", label: "BIKES" },
-    { href: "/engineering", label: "ENGINEERING" },
-    { href: "/racing", label: "RACING" },
-    { href: "/journal", label: "JOURNAL" },
-    { href: "/about", label: "ABOUT" },
+    { href: buildRegionalPath("/bikes/project-01", regionCode), label: "BIKES" },
+    { href: buildRegionalPath("/engineering", regionCode), label: "ENGINEERING" },
+    { href: buildRegionalPath("/racing", regionCode), label: "RACING" },
+    { href: buildRegionalPath("/journal", regionCode), label: "JOURNAL" },
+    { href: buildRegionalPath("/about", regionCode), label: "ABOUT" },
   ];
 
   return (
@@ -62,10 +67,13 @@ export default function Header() {
         <MegaMenuNav pathname={pathname} />
 
         {/* Header Right Action */}
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-3">
+          {/* Region Switcher */}
+          <RegionSwitcher variant="header" />
+
           {/* Store Utility Link */}
           <Link
-            href="/store"
+            href={buildRegionalPath("/store", regionCode)}
             className="font-mono text-[11px] tracking-widest uppercase text-alkota-snow hover:text-white transition-colors py-0.5 px-2"
           >
             STORE
@@ -87,7 +95,7 @@ export default function Header() {
 
           {/* Primary CTA: JOIN PROJECT 01 */}
           <Link
-            href="/order"
+            href={buildRegionalPath("/order", regionCode)}
             className="group relative inline-flex items-center gap-1.5 px-4 py-2 bg-alkota-signal text-alkota-black hover:bg-white transition-all duration-200 font-mono text-[11px] tracking-wider uppercase font-bold shadow-lg"
           >
             <span>JOIN PROJECT 01</span>
@@ -98,9 +106,10 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-1.5 text-alkota-white focus:outline-none"
+          className="lg:hidden p-1.5 text-alkota-white focus:outline-none flex items-center gap-2"
           aria-label="Toggle Navigation Menu"
         >
+          <RegionSwitcher variant="header" />
           {mobileMenuOpen ? (
             <X className="w-5 h-5 text-alkota-signal" />
           ) : (
@@ -111,7 +120,7 @@ export default function Header() {
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-[48px] bg-alkota-carbon text-alkota-white z-40 flex flex-col justify-between p-6 border-t border-white/10 animate-fadeIn">
+        <div className="lg:hidden fixed inset-0 top-[48px] bg-alkota-carbon text-alkota-white z-40 flex flex-col justify-between p-6 border-t border-white/10 animate-fadeIn overflow-y-auto">
           <div className="space-y-6 pt-2">
             <div className="border-b border-white/10 pb-4">
               <Logo variant="header" theme="light" />
@@ -136,8 +145,10 @@ export default function Header() {
           </div>
 
           <div className="space-y-3 pb-8 border-t border-white/10 pt-6">
+            <RegionSwitcher variant="mobile" />
+
             <Link
-              href="/configure"
+              href={buildRegionalPath("/configure", regionCode)}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-alkota-signal text-alkota-black font-mono font-bold text-xs tracking-wider uppercase"
             >
@@ -145,7 +156,7 @@ export default function Header() {
               <span>LAUNCH CONFIGURATOR</span>
             </Link>
             <Link
-              href="/order"
+              href={buildRegionalPath("/order", regionCode)}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full inline-flex items-center justify-center gap-2 py-2.5 border border-alkota-signal text-alkota-signal font-mono font-bold text-xs tracking-wider uppercase"
             >
@@ -153,7 +164,7 @@ export default function Header() {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/my-alkota"
+              href={buildRegionalPath("/my-alkota", regionCode)}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full inline-flex items-center justify-center gap-2 py-2 border border-white/10 text-alkota-slate font-mono text-xs tracking-wider uppercase hover:text-white hover:border-white/30 transition-colors"
             >

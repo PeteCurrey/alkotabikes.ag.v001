@@ -41,6 +41,8 @@ const nextConfig: NextConfig = {
       { source: "/support/technical", destination: "/ownership", permanent: true },
       { source: "/journal/project-01", destination: "/journal?tag=programme", permanent: true },
       { source: "/racing/dispatch", destination: "/journal?tag=racing", permanent: true },
+      // Legal Notice moved to /legal/notice; /legal is now the index.
+      // No redirect needed — both routes now exist as distinct pages.
     ];
   },
 };

@@ -4,6 +4,7 @@ import { PROJECT_01_JOURNAL_ENTRIES, JournalEntry } from "@/content/journal/proj
 import { DESIGN_ARCHIVE } from "@/content/design/archive";
 import { products } from "@/content/store/products";
 import { PROJECT_01_SYSTEMS } from "@/lib/data/project01";
+import { VALID_REGIONS } from "@/lib/regions";
 
 function parseValidDate(dateStr?: string): Date | undefined {
   if (!dateStr) return undefined;
@@ -11,89 +12,152 @@ function parseValidDate(dateStr?: string): Date | undefined {
   return isNaN(d.getTime()) ? undefined : d;
 }
 
+const rawStaticPaths = [
+  "",
+  "/bikes/project-01",
+  "/order",
+  "/configure",
+  "/road-to-2028",
+  "/engineering",
+  "/engineering/chassis",
+  "/engineering/kinematics",
+  "/engineering/materials",
+  "/engineering/testing",
+  "/engineering-philosophy",
+  "/about",
+  "/about/story",
+  "/about/philosophy",
+  "/about/build-process",
+  "/about/testing",
+  "/about/reverse-engineering",
+  "/about/materials",
+  "/journal",
+  "/project-01/design-archive",
+  "/racing",
+  "/racing/2027",
+  "/partners",
+  "/partners/find",
+  "/ownership",
+  "/my-alkota",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/cookies",
+  "/legal",
+  "/warranty",
+  "/returns",
+  "/shipping",
+  "/safety",
+  "/complaints",
+  "/accessibility",
+  "/faq",
+  "/glossary",
+  "/ambassadors",
+  "/work-with-us",
+  "/mission",
+  "/store",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${siteUrl}`, priority: 1.0, changeFrequency: "daily" },
-    { url: `${siteUrl}/bikes/project-01`, priority: 1.0, changeFrequency: "weekly" },
-    { url: `${siteUrl}/order`, priority: 1.0, changeFrequency: "weekly" },
-    { url: `${siteUrl}/configure`, priority: 0.8, changeFrequency: "weekly" },
-    { url: `${siteUrl}/road-to-2028`, priority: 0.8, changeFrequency: "weekly" },
-    { url: `${siteUrl}/engineering`, priority: 0.8, changeFrequency: "weekly" },
-    { url: `${siteUrl}/engineering/chassis`, priority: 0.8, changeFrequency: "monthly" },
-    { url: `${siteUrl}/engineering/kinematics`, priority: 0.8, changeFrequency: "monthly" },
-    { url: `${siteUrl}/engineering/materials`, priority: 0.8, changeFrequency: "monthly" },
-    { url: `${siteUrl}/engineering/testing`, priority: 0.8, changeFrequency: "monthly" },
-    { url: `${siteUrl}/engineering-philosophy`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about/story`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about/philosophy`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about/build-process`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about/testing`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about/reverse-engineering`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/about/materials`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/journal`, priority: 0.8, changeFrequency: "weekly" },
-    { url: `${siteUrl}/project-01/design-archive`, priority: 0.8, changeFrequency: "weekly" },
-    { url: `${siteUrl}/racing`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/racing/2027`, priority: 0.6, changeFrequency: "monthly" },
-    { url: `${siteUrl}/partners`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/partners/find`, priority: 0.6, changeFrequency: "monthly" },
-    { url: `${siteUrl}/ownership`, priority: 0.7, changeFrequency: "monthly" },
-    { url: `${siteUrl}/my-alkota`, priority: 0.6, changeFrequency: "monthly" },
-    { url: `${siteUrl}/contact`, priority: 0.5, changeFrequency: "monthly" },
-    { url: `${siteUrl}/privacy`, priority: 0.3, changeFrequency: "yearly" },
-    { url: `${siteUrl}/terms`, priority: 0.3, changeFrequency: "yearly" },
-    { url: `${siteUrl}/cookies`, priority: 0.3, changeFrequency: "yearly" },
-    { url: `${siteUrl}/legal`, priority: 0.4, changeFrequency: "monthly" },
-    { url: `${siteUrl}/warranty`, priority: 0.4, changeFrequency: "yearly" },
-    { url: `${siteUrl}/returns`, priority: 0.4, changeFrequency: "yearly" },
-    { url: `${siteUrl}/shipping`, priority: 0.4, changeFrequency: "yearly" },
-    { url: `${siteUrl}/safety`, priority: 0.4, changeFrequency: "yearly" },
-    { url: `${siteUrl}/complaints`, priority: 0.4, changeFrequency: "yearly" },
-    { url: `${siteUrl}/accessibility`, priority: 0.3, changeFrequency: "yearly" },
-    { url: `${siteUrl}/faq`, priority: 0.6, changeFrequency: "weekly" },
-    { url: `${siteUrl}/glossary`, priority: 0.6, changeFrequency: "monthly" },
-    { url: `${siteUrl}/ambassadors`, priority: 0.5, changeFrequency: "monthly" },
-    { url: `${siteUrl}/work-with-us`, priority: 0.5, changeFrequency: "monthly" },
-    { url: `${siteUrl}/mission`, priority: 0.6, changeFrequency: "monthly" },
-    { url: `${siteUrl}/store`, priority: 0.7, changeFrequency: "weekly" },
-  ];
+  const entries: MetadataRoute.Sitemap = [];
+
+  // Generate static regional entries
+  for (const path of rawStaticPaths) {
+    for (const region of VALID_REGIONS) {
+      entries.push({
+        url: `${siteUrl}/${region}${path}`,
+        lastModified: new Date(),
+        changeFrequency: path === "" ? "daily" : "weekly",
+        priority: path === "" ? 1.0 : 0.8,
+        alternates: {
+          languages: {
+            "en-GB": `${siteUrl}/uk${path}`,
+            "en-US": `${siteUrl}/us${path}`,
+            "x-default": `${siteUrl}/us${path}`,
+          },
+        },
+      });
+    }
+  }
 
   // Dynamic Journal Entries
-  const journalRoutes: MetadataRoute.Sitemap = PROJECT_01_JOURNAL_ENTRIES.map((entry: JournalEntry) => ({
-    url: `${siteUrl}/journal/project-01/${entry.slug}`,
-    lastModified: parseValidDate(entry.date),
-    priority: 0.7,
-    changeFrequency: "monthly",
-  }));
+  for (const entry of PROJECT_01_JOURNAL_ENTRIES) {
+    const path = `/journal/${entry.slug}`;
+    for (const region of VALID_REGIONS) {
+      entries.push({
+        url: `${siteUrl}/${region}${path}`,
+        lastModified: parseValidDate(entry.date),
+        priority: 0.7,
+        changeFrequency: "monthly",
+        alternates: {
+          languages: {
+            "en-GB": `${siteUrl}/uk${path}`,
+            "en-US": `${siteUrl}/us${path}`,
+            "x-default": `${siteUrl}/us${path}`,
+          },
+        },
+      });
+    }
+  }
 
   // Dynamic Component Details
-  const componentRoutes: MetadataRoute.Sitemap = PROJECT_01_SYSTEMS.map((sys) => ({
-    url: `${siteUrl}/bikes/project-01/components/${sys.slug}`,
-    lastModified: parseValidDate(sys.sourceLastVerified),
-    priority: 0.7,
-    changeFrequency: "monthly",
-  }));
+  for (const sys of PROJECT_01_SYSTEMS) {
+    const path = `/bikes/project-01/components/${sys.slug}`;
+    for (const region of VALID_REGIONS) {
+      entries.push({
+        url: `${siteUrl}/${region}${path}`,
+        lastModified: parseValidDate(sys.sourceLastVerified),
+        priority: 0.7,
+        changeFrequency: "monthly",
+        alternates: {
+          languages: {
+            "en-GB": `${siteUrl}/uk${path}`,
+            "en-US": `${siteUrl}/us${path}`,
+            "x-default": `${siteUrl}/us${path}`,
+          },
+        },
+      });
+    }
+  }
 
   // Dynamic Design Archive Artifacts
-  const designArchiveRoutes: MetadataRoute.Sitemap = DESIGN_ARCHIVE.map((artifact) => ({
-    url: `${siteUrl}/project-01/design-archive/${artifact.slug}`,
-    lastModified: parseValidDate(artifact.dateAdded),
-    priority: 0.6,
-    changeFrequency: "monthly",
-  }));
+  for (const artifact of DESIGN_ARCHIVE) {
+    const path = `/project-01/design-archive/${artifact.slug}`;
+    for (const region of VALID_REGIONS) {
+      entries.push({
+        url: `${siteUrl}/${region}${path}`,
+        lastModified: parseValidDate(artifact.dateAdded),
+        priority: 0.6,
+        changeFrequency: "monthly",
+        alternates: {
+          languages: {
+            "en-GB": `${siteUrl}/uk${path}`,
+            "en-US": `${siteUrl}/us${path}`,
+            "x-default": `${siteUrl}/us${path}`,
+          },
+        },
+      });
+    }
+  }
 
   // Dynamic Store Products
-  const productRoutes: MetadataRoute.Sitemap = products.map((prod) => ({
-    url: `${siteUrl}/store/${prod.slug}`,
-    priority: 0.6,
-    changeFrequency: "monthly",
-  }));
+  for (const prod of products) {
+    const path = `/store/${prod.slug}`;
+    for (const region of VALID_REGIONS) {
+      entries.push({
+        url: `${siteUrl}/${region}${path}`,
+        priority: 0.6,
+        changeFrequency: "monthly",
+        alternates: {
+          languages: {
+            "en-GB": `${siteUrl}/uk${path}`,
+            "en-US": `${siteUrl}/us${path}`,
+            "x-default": `${siteUrl}/us${path}`,
+          },
+        },
+      });
+    }
+  }
 
-  return [
-    ...staticRoutes,
-    ...journalRoutes,
-    ...componentRoutes,
-    ...designArchiveRoutes,
-    ...productRoutes,
-  ];
+  return entries;
 }

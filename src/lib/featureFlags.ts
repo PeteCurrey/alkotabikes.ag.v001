@@ -2,6 +2,23 @@
 // Centralised commercial feature toggles — not in route files to avoid Next.js type conflicts
 // All flags default to false. Each must be explicitly enabled once gates are passed.
 
+// ─── Store Mode ────────────────────────────────────────────────────────────────
+//
+// CATALOGUE   → Store is browse-only. Product pages render but "Add to Cart"
+//               and Checkout are replaced with a "Coming Soon" notice.
+//               Cart context is available (for UI testing) but checkout is blocked.
+// TRANSACTIONAL → Live commerce is active. Requires all COMMERCE_REQUIRED_DOCUMENTS
+//               to be APPROVED in config/legalDocuments.ts and isCommercePermitted()
+//               to return permitted: true. Set this ONLY after legal sign-off.
+//
+// The enforcement happens server-side in lib/legal-status.ts.
+// This flag is the human intent signal; the gate is the machine enforcement.
+
+export type StoreMode = "CATALOGUE" | "TRANSACTIONAL";
+
+/** Current store operating mode. Change ONLY after legal gate is passed. */
+export const STORE_MODE: StoreMode = "CATALOGUE";
+
 // ─── Phase 02: Reservation System ────────────────────────────────────────────
 
 /**

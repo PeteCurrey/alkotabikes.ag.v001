@@ -4,7 +4,7 @@ import { ArrowRight, FileQuestion, ArrowLeft, ShieldAlert } from "lucide-react";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 
 export const metadata = {
-  title: "404 Route Not Found | Alkota Cycles",
+  title: "404 Route Not Found",
   description: "The requested route does not exist in the Alkota Cycles platform index.",
 };
 
