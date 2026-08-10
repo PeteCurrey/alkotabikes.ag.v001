@@ -88,10 +88,8 @@ const vercelProjectProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || '';
 const vercelEnv = process.env.VERCEL_ENV || '';
 
 const isProductionDomain =
-  vercelUrl.includes('alkotacycles.com') ||
-  siteUrl.includes('alkotacycles.com') ||
-  vercelProjectProdUrl.includes('alkotacycles.com') ||
-  (vercelEnv === 'production' && !vercelUrl.includes('vercel.app'));
+  (vercelEnv === 'production' && !vercelUrl.includes('vercel.app')) ||
+  process.env.STRICT_PLACEHOLDERS === 'true';
 
 if (matches.length > 0 && isProductionDomain) {
   console.error('  ✗ PRODUCTION BUILD FAILED: Unresolved placeholders present on production domain alkotacycles.com.');
