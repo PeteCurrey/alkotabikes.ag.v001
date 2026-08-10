@@ -1,3 +1,5 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,17 +14,7 @@ import PlaceIdentity from "@/components/editorial/PlaceIdentity";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Our Story | From Bike Shop to Alkota Project 01",
-  description:
-    "The story behind Alkota: from Pete Currey's first bike-shop job at 15 through racing, retail, industry experience and the development of Project 01.",
-  openGraph: {
-    title: "Our Story | From Bike Shop to Alkota Project 01",
-    description:
-      "The story behind Alkota: from Pete Currey's first bike-shop job at 15 through racing, retail, industry experience and the development of Project 01.",
-    images: [ALKOTA_STORY_MEDIA.peteRidingHistory.src],
-  },
-};
+
 
 /* ─────────────────────────────────────────────────────────
    Small reusable: wide image with label
@@ -80,6 +72,22 @@ function ChapterStrip({ num, label }: { num: string; label: string }) {
       </span>
     </div>
   );
+}
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about/story",
+    title: "Our Story | From Bike Shop to Alkota Project 01",
+    description: "The story behind Alkota: from Pete Currey",
+  });
 }
 
 export default function OurStoryPage() {

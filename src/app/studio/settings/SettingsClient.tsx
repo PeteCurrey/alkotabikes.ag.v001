@@ -34,7 +34,7 @@ export default function SettingsClient() {
 
   const handleExportStore = () => {
     const rows = [['ID', 'NAME', 'PRICE', 'STATUS']];
-    products.forEach(p => rows.push([p.id, p.name, String(p.price || ''), p.status]));
+    products.forEach(p => rows.push([p.id, p.name, p.prices.uk ? `£${p.prices.uk.amountMinor / 100}` : '', p.status]));
     downloadCSV(rows, 'store-catalogue.csv');
   };
 

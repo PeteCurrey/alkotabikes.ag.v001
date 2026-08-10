@@ -1,24 +1,28 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
 import MaterialSwatches from "@/components/engineering/MaterialSwatches";
 
-export const metadata: Metadata = {
-  title: "Materials & Structures — Carbon Fibre, Aluminium Alloy & Titanium",
-  description:
-    "A technical analysis of mountain bike material selection: unidirectional carbon fibre layup schedules, resin systems, AL7075-T6 alloy, Grade 5 titanium fasteners, and the engineering rationale for each application.",
-  alternates: {
-    canonical: `${siteUrl}/engineering/materials`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/engineering/materials",
     title: "Materials & Structures — Carbon Fibre, Aluminium Alloy & Titanium",
-    description:
-      "A technical analysis of mountain bike material selection: unidirectional carbon fibre layup schedules, resin systems, AL7075-T6 alloy, Grade 5 titanium fasteners, and the engineering rationale for each application.",
-    url: `${siteUrl}/engineering/materials`,
-  },
-};
+    description: "A technical analysis of mountain bike material selection: unidirectional carbon fibre layup schedules, resin systems, AL7075-T6 alloy, Grade 5 titanium fasteners, and the engineering rationale for each application.",
+  });
+}
 
 export default function MaterialsEngineeringPage() {
   const breadcrumbs = [

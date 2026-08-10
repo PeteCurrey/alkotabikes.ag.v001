@@ -1,22 +1,26 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 
-export const metadata: Metadata = {
-  title: "Technical Specifications",
-  description:
-    "Comprehensive technical specifications and frame standards by Alkota Cycles. Bearing sizes, shock hardware dimensions, and brake mount specs.",
-  alternates: {
-    canonical: `${siteUrl}/support/technical`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/support/technical",
     title: "Technical Specifications",
-    description:
-      "Comprehensive technical specifications and frame standards by Alkota Cycles. Bearing sizes, shock hardware dimensions, and brake mount specs.",
-    url: `${siteUrl}/support/technical`,
-  },
-};
+    description: "Comprehensive technical specifications and frame standards by Alkota Cycles. Bearing sizes, shock hardware dimensions, and brake mount specs.",
+  });
+}
 
 export default function TechnicalSupportPage() {
   return (

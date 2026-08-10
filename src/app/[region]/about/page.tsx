@@ -1,8 +1,9 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import StoryNavigation from "@/components/story/StoryNavigation";
 import ChapterTransition from "@/components/story/ChapterTransition";
@@ -13,21 +14,7 @@ import { ArrowRight } from "lucide-react";
 // APC-001001 (160mm front travel), APC-001002 (150mm rear travel), APC-001004 (full carbon).
 // All currently EVIDENCE_REQUIRED. Copy uses correctly qualified language ("currently being developed around").
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Alkota Cycles is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
-  alternates: {
-    canonical: `${siteUrl}/about`,
-  },
-  openGraph: {
-    title: "About",
-    description:
-      "Alkota Cycles is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
-    url: `${siteUrl}/about`,
-    images: [ALKOTA_STORY_MEDIA.peteGlacierWhite.src],
-  },
-};
+
 
 const CHAPTER_EXPLORER_TILES = [
   {
@@ -79,6 +66,22 @@ const CHAPTER_EXPLORER_TILES = [
     alt: "Engineering philosophy complete machine",
   },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about",
+    title: "About",
+    description: "Alkota Cycles is a performance engineering company building mountain bikes as complete systems. Discover the philosophy behind Project 01.",
+  });
+}
 
 export default function AboutPage() {
   const principles = [

@@ -1,24 +1,28 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ArrowRight, BookOpen, ShieldCheck, Wrench, Lock } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Technical Support",
-  description:
-    "Technical support and documentation hub by Alkota Cycles. Access user manuals, torque specifications, warranty policies, and service resources.",
-  alternates: {
-    canonical: `${siteUrl}/support`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/support",
     title: "Technical Support",
-    description:
-      "Technical support and documentation hub by Alkota Cycles. Access user manuals, torque specifications, warranty policies, and service resources.",
-    url: `${siteUrl}/support`,
-  },
-};
+    description: "Technical support and documentation hub by Alkota Cycles. Access user manuals, torque specifications, warranty policies, and service resources.",
+  });
+}
 
 export default function SupportHubPage() {
   const sections = [

@@ -1,13 +1,30 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Lock, ArrowRight } from "lucide-react";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 
-export const metadata: Metadata = {
-  title: "Race Dispatch | Alkota Racing 2027",
-  description: "Alkota Racing dispatch notes will begin during the 2027 competition development programme.",
-};
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string; slug?: string }>;
+}): Promise<Metadata> {
+  const { region, slug } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  const pageSlug = slug ?? "";
+  const displayTitle = pageSlug ? `Race Dispatch | Alkota Racing 2027 — ${pageSlug.replace(/-/g, " ").toUpperCase()}` : "Race Dispatch | Alkota Racing 2027";
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: `/racing/dispatch/${pageSlug}`,
+    title: displayTitle,
+    description: "Alkota Racing dispatch notes will begin during the 2027 competition development programme.",
+  });
+}
 
 export default function RaceDispatchSlugPage() {
   return (

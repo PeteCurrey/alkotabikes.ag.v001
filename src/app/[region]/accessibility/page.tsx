@@ -1,44 +1,10 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import { getLegalDocument } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
-import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Check } from "lucide-react";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "Accessibility Statement (US — ADA & WCAG 2.2 AA)"
-    : "Accessibility Statement";
-  const description = isUS
-    ? "Alkota's commitment to web accessibility under the Americans with Disabilities Act (ADA Title III) and WCAG 2.2 AA conformance."
-    : "Alkota's WCAG 2.2 AA accessibility commitment, keyboard navigation, reduced motion support, and reporting.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/accessibility`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/accessibility`,
-        "en-US": `${siteUrl}/us/accessibility`,
-        "x-default": `${siteUrl}/us/accessibility`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/accessibility`,
-    },
-  };
-}
 
 const goals = [
   "Keyboard navigation throughout all interactive features and configurators",
@@ -52,6 +18,22 @@ const goals = [
   "Accessible form controls with persistent labels and error messaging",
   "Screen-reader support utilizing ARIA landmark roles and live regions",
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/accessibility",
+    title: "Accessibility",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function AccessibilityPage({
   params,

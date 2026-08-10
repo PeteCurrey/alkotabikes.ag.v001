@@ -1,43 +1,11 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import { getLegalDocument } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
-import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import Link from "next/link";
 import { DATA_PROCESSORS } from "@/lib/processors";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS ? "US Privacy Notice & Consumer Rights" : "Privacy Policy";
-  const description = isUS
-    ? "US Multi-State Privacy Notice covering CCPA/CPRA rights, GPC signal support, state Attorney General contact, and Do Not Sell/Share choices."
-    : "Transparency on data collection, Fit Engine inputs, saved configurations, lawful bases, retention schedules, and UK ICO rights.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/privacy`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/privacy`,
-        "en-US": `${siteUrl}/us/privacy`,
-        "x-default": `${siteUrl}/us/privacy`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/privacy`,
-    },
-  };
-}
 
 const UK_TOC = [
   { id: "p-1", title: "1. Data Controller" },
@@ -83,6 +51,22 @@ const US_TOC = [
   { id: "us-12", title: "12. Data Retention & Security" },
   { id: "us-13", title: "13. State Attorney General Contact" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/privacy",
+    title: "1. Data Controller",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function PrivacyPolicyPage({
   params,

@@ -1,3 +1,5 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,17 +13,7 @@ import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight, CheckCircle2, RefreshCw } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Testing & Validation | Alkota Performance Engineering",
-  description:
-    "How Alkota turns engineering targets into evidence through structural validation, prototype inspection and real-terrain testing.",
-  openGraph: {
-    title: "Testing & Validation | Alkota Performance Engineering",
-    description:
-      "How Alkota turns engineering targets into evidence through structural validation, prototype inspection and real-terrain testing.",
-    images: [ALKOTA_STORY_MEDIA.hauteSavoieAlpineTest.src],
-  },
-};
+
 
 /* ─────────────────────────────────────────────────────────
    Validation Matrix Cards Data
@@ -88,6 +80,22 @@ const LOOP_STEPS = [
   { step: "LEARN", desc: "Data & Feedback Synthesis" },
   { step: "CHANGE", desc: "Chassis & Spec Refinement" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about/testing",
+    title: "Testing & Validation | Alkota Performance Engineering",
+    description: "How Alkota turns engineering targets into evidence through structural validation, prototype inspection and real-terrain testing.",
+  });
+}
 
 export default function TestingPage() {
   return (

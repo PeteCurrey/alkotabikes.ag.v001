@@ -1,49 +1,16 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import { getLegalDocument } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
-import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { ShieldAlert } from "lucide-react";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "US Limited Warranty & Pre-Sale Disclosures"
-    : "Alkota Limited Warranty Framework";
-  const description = isUS
-    ? "Magnuson-Moss Warranty Act compliant LIMITED warranty framework, pre-sale availability disclosures, and claim procedures."
-    : "Alkota commercial warranty philosophy, statutory rights distinction under Consumer Rights Act 2015, and claim process.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/warranty`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/warranty`,
-        "en-US": `${siteUrl}/us/warranty`,
-        "x-default": `${siteUrl}/us/warranty`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/warranty`,
-    },
-  };
-}
 
 const UK_TOC = [
   { id: "philosophy", title: "Warranty Philosophy" },
   { id: "provider", title: "1. Warranty Provider" },
-  { id: "applicable", title: "2. Applicable Warranty" },
+  { id: "applicable", title: "2. Applicable Warranty Schedule" },
+  { id: "schedule", title: "↳ Warranty Schedule (ALK-UK-WARSCHED-001)" },
   { id: "frame", title: "3. Frame Warranty" },
   { id: "finish", title: "4. Finish & Paint" },
   { id: "third-party", title: "5. Third-Party Components" },
@@ -63,6 +30,22 @@ const US_TOC = [
   { id: "us-w-8", title: "8. State Law Rights & Disclaimers" },
   { id: "us-w-9", title: "9. How to File a Warranty Claim" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/warranty",
+    title: "Warranty Philosophy",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function WarrantyPage({
   params,
@@ -248,9 +231,25 @@ export default async function WarrantyPage({
 
         <section id="applicable" className="space-y-3">
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
-            2. APPLICABLE WARRANTY
+            2. APPLICABLE WARRANTY SCHEDULE
           </h2>
-          <p>The warranty schedule applying to your individual bike is tracked in your My Alkota owner record.</p>
+          <p>
+            The commercial warranty terms and coverage terms for Project 01 are set out in the controlled <strong>Warranty Schedule (Document ID: ALK-UK-WARSCHED-001)</strong> below. Upon bike registration, individual chassis serial numbers and warranty registration records are linked to your My Alkota account.
+          </p>
+        </section>
+
+        <section id="schedule" className="space-y-3 pl-4 border-l-2 border-alkota-signal/30">
+          <div className="font-mono text-xs font-bold uppercase tracking-wider text-alkota-signal">WARRANTY SCHEDULE — DOCUMENT ID: ALK-UK-WARSCHED-001 · STATUS: DRAFT</div>
+          <div className="p-4 bg-alkota-snow border border-black/10 font-mono text-xs space-y-3">
+            <div className="font-bold text-alkota-black uppercase">COVERAGE SUMMARY (PRE-PRODUCTION DRAFT — SUBJECT TO REVISION)</div>
+            <div className="space-y-1">
+              <div className="flex gap-3"><span className="text-black/50 w-52 shrink-0">Carbon Frame &amp; Swingarm:</span><span>Term to be confirmed before production release</span></div>
+              <div className="flex gap-3"><span className="text-black/50 w-52 shrink-0">AL7075-T6 Linkages &amp; Pivots:</span><span>Defect replacement — term to be confirmed</span></div>
+              <div className="flex gap-3"><span className="text-black/50 w-52 shrink-0">Frame Paint &amp; Finish:</span><span>Manufacturing defect (peeling/blistering) — term to be confirmed</span></div>
+              <div className="flex gap-3"><span className="text-black/50 w-52 shrink-0">3rd-Party Components:</span><span>Respective manufacturer warranties — facilitated by Alkota</span></div>
+            </div>
+            <div className="text-black/40 text-[10px] uppercase tracking-wider">Final schedule published before production orders open. Linked to chassis serial number upon bike registration in My Alkota.</div>
+          </div>
         </section>
 
         <section id="frame" className="space-y-3">

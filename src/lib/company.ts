@@ -37,9 +37,53 @@ function resolved(value: string): string | null {
   return hasUnresolvedPlaceholders(value) ? null : value;
 }
 
+export type TrademarkStatus =
+  | "REGISTERED"
+  | "PENDING"
+  | "UNREGISTERED"
+  | "COMMON_LAW";
+
+export interface TrademarkEntry {
+  mark: string;
+  status: TrademarkStatus;
+  jurisdiction?: string;
+  niceClass?: number | null;
+  registrationNumber?: string | null;
+  covers?: string;
+  note?: string;
+}
+
+export const trademarkRegistry: TrademarkEntry[] = [
+  {
+    mark: "ALKOTA",
+    status: "UNREGISTERED",
+    covers: "Mountain bicycles; bicycle frames; bicycle components; apparel",
+    note: "Primary brand identifier. Application to be filed prior to commercial launch.",
+  },
+  {
+    mark: "ALKOTA CYCLES",
+    status: "UNREGISTERED",
+    covers: "Mountain bicycles; bicycle frames; retail services relating to bicycles",
+    note: "Trading name composite mark.",
+  },
+  {
+    mark: "PROJECT 01",
+    status: "UNREGISTERED",
+    covers: "Mountain bicycle development programme; bicycle frames and components",
+    note: "Development programme identifier.",
+  },
+  {
+    mark: "ALKOTA SUPPLY",
+    status: "UNREGISTERED",
+    covers: "Clothing; headwear; drinkware; accessories",
+    note: "Apparel sub-brand.",
+  },
+];
+
 export interface BaseCompanyEntity {
   tradingName: string;
   legalEntityName: string | null;
+  trademarks: TrademarkEntry[];
   email: {
     customerService: string | null;
     legal: string | null;
@@ -88,6 +132,7 @@ export const COMPANY_ENTITIES: Record<RegionCode, CompanyEntity> = {
     registeredIn: resolved(REGISTERED_IN),
     vatNumber: resolved(VAT_NUMBER),
     icoReference: resolved(ICO_REGISTRATION_REFERENCE),
+    trademarks: [],
     email: {
       customerService: resolved(CUSTOMER_SERVICE_EMAIL) ?? "support@alkotacycles.com",
       legal: resolved(LEGAL_EMAIL) ?? "legal@alkotacycles.com",
@@ -113,6 +158,7 @@ export const COMPANY_ENTITIES: Record<RegionCode, CompanyEntity> = {
     principalPlaceOfBusiness: "PLACEHOLDER — US Principal Place of Business",
     ein: "PLACEHOLDER — US EIN (internal use only)",
     stateTaxRegistrations: ["PLACEHOLDER — State Tax Registration"],
+    trademarks: [],
     email: {
       customerService: "support@alkotacycles.com",
       legal: "legal@alkotacycles.com",
@@ -139,49 +185,7 @@ export function getCompany(region: RegionCode = "uk"): CompanyEntity {
 /** Default company identity export (UK entity baseline for legacy imports) */
 export const company = COMPANY_ENTITIES.uk;
 
-// ── TRADEMARK REGISTRY ───────────────────────────────────────────────────────
 
-export type TrademarkStatus =
-  | "REGISTERED"
-  | "PENDING"
-  | "UNREGISTERED"
-  | "COMMON_LAW";
-
-export interface TrademarkEntry {
-  mark: string;
-  status: TrademarkStatus;
-  jurisdiction?: string;
-  registrationNumber?: string;
-  covers: string;
-  note?: string;
-}
-
-export const trademarkRegistry: TrademarkEntry[] = [
-  {
-    mark: "ALKOTA",
-    status: "UNREGISTERED",
-    covers: "Mountain bicycles; bicycle frames; bicycle components; apparel",
-    note: "Primary brand identifier. Application to be filed prior to commercial launch.",
-  },
-  {
-    mark: "ALKOTA CYCLES",
-    status: "UNREGISTERED",
-    covers: "Mountain bicycles; bicycle frames; retail services relating to bicycles",
-    note: "Trading name composite mark.",
-  },
-  {
-    mark: "PROJECT 01",
-    status: "UNREGISTERED",
-    covers: "Mountain bicycle development programme; bicycle frames and components",
-    note: "Development programme identifier.",
-  },
-  {
-    mark: "ALKOTA SUPPLY",
-    status: "UNREGISTERED",
-    covers: "Clothing; headwear; drinkware; accessories",
-    note: "Apparel sub-brand.",
-  },
-];
 
 // ── STATUS HELPERS ───────────────────────────────────────────────────────────
 

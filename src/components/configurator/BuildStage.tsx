@@ -372,11 +372,11 @@ export default function BuildStage({
             )}
           </div>
 
-          {/* Pricing Banner per rule: Never show £0. Show development configuration / pricing TBC */}
+          {/* Pricing Banner per rule: Never show zero. Show development configuration / pricing TBC */}
           <div className="p-4 bg-alkota-carbon border border-white/10 font-mono text-xs space-y-1">
             <span className="text-alkota-slate text-[10px] uppercase block font-bold">PRICING STATUS:</span>
             <div className="text-white font-bold text-sm uppercase">
-              {PROJECT01_PRICING_VISIBLE ? "£8,450 BASE ESTIMATE" : "FINAL PRICING TO BE CONFIRMED"}
+              PRODUCTION PRICING TBC
             </div>
             <p className="text-[10px] text-alkota-slate font-light">
               Formal production pricing will be announced prior to 2028 reservation lock.

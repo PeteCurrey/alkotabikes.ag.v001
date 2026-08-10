@@ -1,32 +1,28 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import Project01PageClient from "./Project01PageClient";
 import ProductSchema from "@/components/schema/ProductSchema";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
 
-export const metadata: Metadata = {
-  title: "Project 01 Mountain Bike",
-  description:
-    "Project 01 is the flagship technical development platform by Alkota Cycles. Aggressive all-mountain engineering with Horst-style four-bar kinematics.",
-  alternates: {
-    canonical: `${siteUrl}/bikes/project-01`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/bikes/project-01",
     title: "Project 01 Mountain Bike",
-    description:
-      "Project 01 is the flagship technical development platform by Alkota Cycles. Aggressive all-mountain engineering with Horst-style four-bar kinematics.",
-    url: `${siteUrl}/bikes/project-01`,
-    images: [
-      {
-        url: `${siteUrl}/images/project01-glacier-white-hero.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Alkota Project 01 Mountain Bike Glacier White",
-      },
-    ],
-  },
-};
+    description: "Project 01 is the flagship technical development platform by Alkota Cycles. Aggressive all-mountain engineering with Horst-style four-bar kinematics.",
+  });
+}
 
 export default function Project01Page() {
   const breadcrumbs = [

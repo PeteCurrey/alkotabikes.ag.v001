@@ -1,23 +1,12 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
-import siteUrl from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 import { Mountain, Video, Wrench, Users, Mic2, ShoppingBag } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Ambassadors",
-  description:
-    "Alkota works with riders who are authentic, capable, and willing to genuinely test Project 01. Find out how to apply.",
-  alternates: {
-    canonical: `${siteUrl}/ambassadors`,
-  },
-  openGraph: {
-    title: "Ambassadors",
-    description:
-      "Alkota works with riders who are authentic, capable, and willing to genuinely test Project 01.",
-    url: `${siteUrl}/ambassadors`,
-  },
-};
+
 
 const formats = [
   {
@@ -51,6 +40,22 @@ const formats = [
     desc: "Represent Alkota Supply with a genuine connection to the workshop and mountain environment.",
   },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/ambassadors",
+    title: "Ambassadors",
+    description: "Alkota works with riders who are authentic, capable, and willing to genuinely test Project 01. Find out how to apply.",
+  });
+}
 
 export default function AmbassadorsPage() {
   return (

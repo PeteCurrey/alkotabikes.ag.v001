@@ -1,22 +1,11 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
-import siteUrl from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 
-export const metadata: Metadata = {
-  title: "Mission & Values",
-  description:
-    "Why Alkota exists, what we believe in, and the non-negotiables that govern how we build and communicate about Project 01.",
-  alternates: {
-    canonical: `${siteUrl}/mission`,
-  },
-  openGraph: {
-    title: "Mission & Values",
-    description:
-      "Why Alkota exists, what we believe in, and how those beliefs govern how we design and build.",
-    url: `${siteUrl}/mission`,
-  },
-};
+
 
 const pillars = [
   {
@@ -50,6 +39,22 @@ const pillars = [
     body: "The legal and consumer protection framework that governs how Alkota operates commercially exists for good reasons. We will meet it properly and explain it clearly — not treat it as a formality.",
   },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/mission",
+    title: "Mission & Values",
+    description: "Why Alkota exists, what we believe in, and the non-negotiables that govern how we build and communicate about Project 01.",
+  });
+}
 
 export default function MissionPage() {
   return (

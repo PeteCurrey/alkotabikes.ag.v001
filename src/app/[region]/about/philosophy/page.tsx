@@ -1,3 +1,5 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,17 +11,7 @@ import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight, ShieldCheck, Settings, Cpu, Layers } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Engineering Philosophy | Alkota",
-  description:
-    "The principles governing Alkota's approach to geometry, suspension, serviceability, components, testing and complete-bike design.",
-  openGraph: {
-    title: "Engineering Philosophy | Alkota",
-    description:
-      "The principles governing Alkota's approach to geometry, suspension, serviceability, components, testing and complete-bike design.",
-    images: [ALKOTA_STORY_MEDIA.standaloneWhiteBike.src],
-  },
-};
+
 
 const PHILOSOPHY_ITEMS = [
   {
@@ -100,6 +92,22 @@ const PHILOSOPHY_ITEMS = [
     imgAlt: "Alpine field testing evidence",
   },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about/philosophy",
+    title: "Engineering Philosophy | Alkota",
+    description: "The principles governing Alkota",
+  });
+}
 
 export default function EngineeringPhilosophyPage() {
   return (

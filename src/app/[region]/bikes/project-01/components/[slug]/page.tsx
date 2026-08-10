@@ -1,6 +1,6 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import { PROJECT_01_SYSTEMS } from "@/lib/data/project01";
 import { notFound } from "next/navigation";
 import ComponentDetailClient from "./ComponentDetailClient";
@@ -10,35 +10,22 @@ export async function generateStaticParams() {
   return PROJECT_01_SYSTEMS.map((sys) => ({ slug: sys.slug }));
 }
 
+
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ region: string; slug?: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const component = PROJECT_01_SYSTEMS.find((s) => s.slug === slug);
-
-  if (!component) {
-    return {
-      title: "Component Not Found",
-    };
-  }
-
-  const title = `${component.brand} ${component.model} | Alkota Cycles`;
-  const description = `Technical integration details for the ${component.brand} ${component.model} on the Alkota Cycles Project 01 chassis baseline.`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/bikes/project-01/components/${slug}`,
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}/bikes/project-01/components/${slug}`,
-    },
-  };
+  const { region, slug } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  const pageSlug = slug ?? "";
+  const displayTitle = pageSlug ? `Component Not Found — ${pageSlug.replace(/-/g, " ").toUpperCase()}` : "Component Not Found";
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: `/bikes/project-01/components/${pageSlug}`,
+    title: displayTitle,
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function ComponentDetailPage({

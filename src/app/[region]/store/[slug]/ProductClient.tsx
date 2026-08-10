@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShoppingBag, Check } from "lucide-react";
 import type { Product } from "@/content/store/products";
 import { useCart } from "@/lib/store/cartContext";
+import { useRegion } from "@/components/region/RegionProvider";
+import { formatPrice } from "@/lib/pricing";
 
 // ─── Product Image Placeholder ────────────────────────────────────────────────
 function ProductHero({ placeholder, name }: { placeholder: string; name: string }) {
@@ -66,6 +68,8 @@ export default function ProductClient({
   product: Product;
   cartEnabled?: boolean;
 }) {
+  const { regionCode } = useRegion();
+  const price = product.prices[regionCode];
   const { addItem, openCart } = useCart();
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>(
     Object.fromEntries(product.variants.map((v) => [v.label, v.options[0]]))
@@ -134,9 +138,13 @@ export default function ProductClient({
             {/* Price */}
             <div className="flex items-baseline gap-3">
               <div className="font-mono text-2xl font-semibold text-alkota-black">
-                {product.price !== null
-                  ? `£${product.price.toFixed(2)}`
-                  : <span className="text-alkota-slate text-sm tracking-wider">PRICE NOT YET CONFIRMED</span>}
+                {price ? (
+                  formatPrice(price)
+                ) : (
+                  <span className="text-alkota-slate text-xs tracking-wider uppercase font-bold">
+                    UNAVAILABLE IN {regionCode.toUpperCase()} MARKET — PRICING PENDING
+                  </span>
+                )}
               </div>
               {isComingSoon && (
                 <div className="font-mono text-[10px] text-alkota-signal border border-alkota-signal/30 px-2 py-0.5 tracking-widest uppercase">

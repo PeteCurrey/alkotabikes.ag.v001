@@ -1,24 +1,28 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
 import KinematicChart from "@/components/engineering/KinematicChart";
 
-export const metadata: Metadata = {
-  title: "Suspension Kinematics — Leverage Ratio, Anti-Squat & Axle Path",
-  description:
-    "A technical deep-dive into mountain bike suspension kinematics: leverage ratio and progression, anti-squat geometry, pedal kickback, rearward axle trajectory, and the engineering decisions that separate behaviour from travel numbers.",
-  alternates: {
-    canonical: `${siteUrl}/engineering/kinematics`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/engineering/kinematics",
     title: "Suspension Kinematics — Leverage Ratio, Anti-Squat & Axle Path",
-    description:
-      "A technical deep-dive into mountain bike suspension kinematics: leverage ratio and progression, anti-squat geometry, pedal kickback, rearward axle trajectory, and the engineering decisions that separate behaviour from travel numbers.",
-    url: `${siteUrl}/engineering/kinematics`,
-  },
-};
+    description: "A technical deep-dive into mountain bike suspension kinematics: leverage ratio and progression, anti-squat geometry, pedal kickback, rearward axle trajectory, and the engineering decisions that separate behaviour from travel numbers.",
+  });
+}
 
 export default function KinematicsEngineeringPage() {
   const breadcrumbs = [

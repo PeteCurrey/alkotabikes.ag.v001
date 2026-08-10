@@ -1,6 +1,6 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import RacingClient from "./RacingClient";
 
 export async function generateMetadata({
@@ -9,31 +9,13 @@ export async function generateMetadata({
   params: Promise<{ region: string }>;
 }): Promise<Metadata> {
   const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "Alkota Racing US | Development Programme 2027"
-    : "Alkota Racing UK | Development Programme 2027";
-  const description = isUS
-    ? "Alkota Racing US is the planned 2027 US race-development programme for Project 01, taking prototype validation into US competition ahead of 2028 launch."
-    : "Alkota Racing UK is the planned 2027 UK & European race-development programme for Project 01, taking prototype validation into competition ahead of 2028 launch.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/racing`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/racing`,
-        "en-US": `${siteUrl}/us/racing`,
-        "x-default": `${siteUrl}/us/racing`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      images: ["/images/story/mountain-event-paddock-environment.jpg"],
-    },
-  };
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/racing",
+    title: "Racing",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function RacingPage({

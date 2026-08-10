@@ -1,3 +1,5 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,17 +14,7 @@ import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 import SystemExplorer from "./SystemExplorer";
 
-export const metadata: Metadata = {
-  title: "Reverse Engineering the Ride | Alkota Project 01",
-  description:
-    "How Alkota studies complete mountain-bike systems, questions assumptions and converts rider behaviour into Project 01 engineering requirements.",
-  openGraph: {
-    title: "Reverse Engineering the Ride | Alkota Project 01",
-    description:
-      "How Alkota studies complete mountain-bike systems, questions assumptions and converts rider behaviour into Project 01 engineering requirements.",
-    images: [ALKOTA_STORY_MEDIA.reverseEngineeringTelemetry.src],
-  },
-};
+
 
 /* ─────────────────────────────────────────────────────────
    Reusable image block
@@ -81,6 +73,22 @@ const QUESTION_LIST = [
   "Features that compromise primary structure",
   "Performance claims without evidence",
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about/reverse-engineering",
+    title: "Reverse Engineering the Ride | Alkota Project 01",
+    description: "How Alkota studies complete mountain-bike systems, questions assumptions and converts rider behaviour into Project 01 engineering requirements.",
+  });
+}
 
 export default function ReverseEngineeringPage() {
   return (

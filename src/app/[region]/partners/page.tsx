@@ -1,7 +1,6 @@
-import React from "react";
-import { Metadata } from "next";
-import siteUrl from "@/lib/env";
+import { buildRegionalMetadata } from "@/lib/metadata";
 import type { RegionCode } from "@/lib/regions";
+import { Metadata } from "next";
 import PartnerRecruitmentClient from "./PartnerRecruitmentClient";
 
 export async function generateMetadata({
@@ -10,31 +9,13 @@ export async function generateMetadata({
   params: Promise<{ region: string }>;
 }): Promise<Metadata> {
   const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "US Partner Network Recruitment & Dealerships"
-    : "UK Partner Network Recruitment";
-  const description = isUS
-    ? "Alkota US Partner Network recruitment. Establishing conversations with US retail, service, and demo partners ahead of 2028."
-    : "Alkota UK Partner Network recruitment. Establishing conversations with UK retail and service partners ahead of planned 2028 production.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/partners`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/partners`,
-        "en-US": `${siteUrl}/us/partners`,
-        "x-default": `${siteUrl}/us/partners`,
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}/${region}/partners`,
-    },
-  };
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/partners",
+    title: "Partners",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function PartnersPage({

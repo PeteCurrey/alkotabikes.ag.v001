@@ -1,3 +1,5 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,17 +14,7 @@ import { DESIGN_JOURNEY } from "@/content/media/designJourney";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Carbon & Materials | Alkota Project 01",
-  description:
-    "Inside Alkota's approach to carbon structure, materials, hardware and the development of the Project 01 chassis.",
-  openGraph: {
-    title: "Carbon & Materials | Alkota Project 01",
-    description:
-      "Inside Alkota's approach to carbon structure, materials, hardware and the development of the Project 01 chassis.",
-    images: [ALKOTA_STORY_MEDIA.carbonLayupDevelopment.src],
-  },
-};
+
 
 /* ─────────────────────────────────────────────────────────
    Reusable image block
@@ -98,6 +90,22 @@ const CRITICAL_DEMANDS = [
   "Manufacturing",
   "Serviceability",
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about/materials",
+    title: "Carbon & Materials | Alkota Project 01",
+    description: "Inside Alkota",
+  });
+}
 
 export default function MaterialsPage() {
   return (

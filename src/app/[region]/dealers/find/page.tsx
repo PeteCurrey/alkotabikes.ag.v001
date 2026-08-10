@@ -1,11 +1,25 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Find a Partner | Alkota",
-  description: "Alkota Partner Network locator. Available when approved partners are active.",
-  robots: { index: false, follow: false },
-};
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/dealers/find",
+    title: "Find a Partner | Alkota",
+    description: "Alkota Partner Network locator. Available when approved partners are active.",
+  });
+}
 
 export default function FindPartnerPage() {
   return (

@@ -1,11 +1,25 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Demo Booking | Alkota",
-  description: "Project 01 demo ride booking. Available when demo inventory is confirmed.",
-  robots: { index: false, follow: false },
-};
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/demo",
+    title: "Demo Booking | Alkota",
+    description: "Project 01 demo ride booking. Available when demo inventory is confirmed.",
+  });
+}
 
 export default function DemoPage() {
   return (

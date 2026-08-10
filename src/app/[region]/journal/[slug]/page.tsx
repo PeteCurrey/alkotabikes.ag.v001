@@ -1,7 +1,8 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import { notFound } from "next/navigation";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ARTICLES } from "@/lib/data/journalData";
@@ -13,30 +14,24 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const article = ARTICLES.find((a) => a.slug === slug);
 
-  if (!article) {
-    return {
-      title: "Article Not Found",
-    };
-  }
 
-  const title = `${article.title} | Alkota Cycles`;
 
-  return {
-    title,
-    description: article.excerpt,
-    alternates: {
-      canonical: `${siteUrl}/journal/${slug}`,
-    },
-    openGraph: {
-      title,
-      description: article.excerpt,
-      url: `${siteUrl}/journal/${slug}`,
-    },
-  };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string; slug?: string }>;
+}): Promise<Metadata> {
+  const { region, slug } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  const pageSlug = slug ?? "";
+  const displayTitle = pageSlug ? `Article Not Found — ${pageSlug.replace(/-/g, " ").toUpperCase()}` : "Article Not Found";
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: `/journal/${pageSlug}`,
+    title: displayTitle,
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function ArticlePage({ params }: PageProps) {

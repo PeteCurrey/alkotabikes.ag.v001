@@ -1,24 +1,14 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
 import { renderCleanLegalText } from "@/config/legal";
+import { getCompany } from "@/lib/company";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 
-export const metadata: Metadata = {
-  title: "Legal Notice",
-  description:
-    "Operator particulars, website terms of use, intellectual property protections, press guidance, and pre-production development disclaimers.",
-  alternates: {
-    canonical: `${siteUrl}/legal/notice`,
-  },
-  openGraph: {
-    title: "Legal Notice",
-    description:
-      "Operator particulars, website terms of use, intellectual property protections, press guidance, and pre-production development disclaimers.",
-    url: `${siteUrl}/legal/notice`,
-  },
-};
+
 
 const RAW_LEGAL_TEXT = `
 1. SITE OPERATOR
@@ -63,7 +53,8 @@ Assets specifically identified as approved press/media assets may be used subjec
 The existence of a publicly viewable image elsewhere on the Site does not automatically create a commercial media licence.
 
 8. TRADE MARKS
-ALKOTA, ALKOTA CYCLES, PROJECT 01 and associated marks may be trade marks or brand identifiers of Alkota.
+ALKOTA™, ALKOTA CYCLES™, and PROJECT 01™ are unregistered trade marks and brand identifiers used by Alkota Cycles.
+No trade mark registration is claimed or asserted in this jurisdiction.
 Third-party names and marks belong to their respective owners.
 A reference to a component manufacturer does not imply sponsorship, endorsement or commercial partnership unless expressly stated.
 
@@ -114,7 +105,30 @@ const TOC = [
   { id: "sec-15", title: "Legal Contact" },
 ];
 
-export default function LegalNoticePage() {
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/legal/notice",
+    title: "Legal Notice",
+    description: "Operator particulars, website terms of use, intellectual property protections, press guidance, and pre-production development disclaimers.",
+  });
+}
+
+export default async function LegalNoticePage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  const companyEntity = getCompany(regionCode);
   const doc = LEGAL_DOCUMENTS.legal;
   const cleanText = renderCleanLegalText(RAW_LEGAL_TEXT);
 
@@ -180,7 +194,35 @@ export default function LegalNoticePage() {
           <h2 className="font-display font-bold text-xl uppercase tracking-tight text-alkota-black border-b border-black/10 pb-2">
             08. TRADE MARKS
           </h2>
-          <p>ALKOTA, ALKOTA CYCLES, and PROJECT 01 are registered or pending brand identifiers.</p>
+          {(() => {
+            const registered = companyEntity.trademarks.filter(
+              (t) => t.status === "REGISTERED" && t.registrationNumber
+            );
+            if (registered.length === 0) {
+              return (
+                <div className="space-y-2">
+                  <p>
+                    ALKOTA™, ALKOTA CYCLES™, and PROJECT 01™ are unregistered trade marks and brand identifiers used by Alkota Cycles.
+                  </p>
+                  <p className="text-xs text-black/70">
+                    No trade mark registration is claimed or asserted in this jurisdiction. Plain ™ marks require no registration and carry no representation of statutory registration. All third-party trade marks, product names, and brand names referenced on this site belong to their respective owners. Reference to third-party component manufacturers does not imply endorsement, sponsorship, or affiliation.
+                  </p>
+                </div>
+              );
+            }
+            return (
+              <div className="space-y-2">
+                <p>The following trade marks are registered in this jurisdiction:</p>
+                <ul className="list-disc pl-5 text-xs font-mono">
+                  {registered.map((t) => (
+                    <li key={t.mark}>
+                      {t.mark}\u00AE — Registration No. {t.registrationNumber} (Class {t.niceClass ?? "N/A"})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })()}
         </section>
 
         <section id="sec-9" className="space-y-3">

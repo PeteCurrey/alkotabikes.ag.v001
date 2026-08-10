@@ -1,25 +1,30 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
 import { renderCleanLegalText, CUSTOMER_SERVICE_EMAIL, PRIVACY_EMAIL, WARRANTY_EMAIL } from "@/config/legal";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { MessageSquare } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Complaints",
-  description:
-    "How to raise a complaint about an Alkota order, reservation, product, privacy matter or warranty claim.",
-  alternates: {
-    canonical: `${siteUrl}/complaints`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/complaints",
     title: "Complaints",
-    description:
-      "How to raise a complaint about an Alkota order, reservation, product, privacy matter or warranty claim.",
-    url: `${siteUrl}/complaints`,
-  },
-};
+    description: "How to raise a complaint about an Alkota order, reservation, product, privacy matter or warranty claim.",
+  });
+}
 
 export default function ComplaintsPage() {
   const doc = LEGAL_DOCUMENTS.complaints;

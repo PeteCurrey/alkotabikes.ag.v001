@@ -1,22 +1,10 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
-import siteUrl from "@/lib/env";
 
-export const metadata: Metadata = {
-  title: "Work With Us",
-  description:
-    "Opportunities to work with Alkota Cycles. We don't publish invented vacancies. Current openings only.",
-  alternates: {
-    canonical: `${siteUrl}/work-with-us`,
-  },
-  openGraph: {
-    title: "Work With Us",
-    description:
-      "Opportunities to work with Alkota Cycles. Current openings only.",
-    url: `${siteUrl}/work-with-us`,
-  },
-};
+
 
 // ── ROLE DATA ─────────────────────────────────────────────────────────────────
 // Add genuine roles here when openings exist.
@@ -43,6 +31,22 @@ const openRoles: Role[] = [
   //   brief: "Drive structural analysis and layup development on Project 01.",
   // },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/work-with-us",
+    title: "Work With Us",
+    description: "Opportunities to work with Alkota Cycles. We don",
+  });
+}
 
 export default function WorkWithUsPage() {
   const hasRoles = openRoles.length > 0;

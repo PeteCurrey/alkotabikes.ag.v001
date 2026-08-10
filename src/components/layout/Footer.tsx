@@ -61,6 +61,7 @@ export default function Footer() {
         { label: "Work With Us", href: "/work-with-us" },
         { label: "Ambassadors", href: "/ambassadors" },
         { label: "Partner Network", href: "/partners" },
+        { label: "Dealer Portal", href: "/partners/portal" },
         { label: "Contact", href: "/contact" },
       ],
     },

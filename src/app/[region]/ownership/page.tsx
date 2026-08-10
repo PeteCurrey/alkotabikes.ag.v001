@@ -1,9 +1,9 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl } from "@/lib/env";
 import { getCompany } from "@/lib/company";
-import { buildRegionalPath, type RegionCode } from "@/lib/regions";
+import { buildRegionalPath } from "@/lib/regions";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ShieldCheck, FileText, Wrench, ArrowRight, UserCheck } from "lucide-react";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
@@ -14,31 +14,13 @@ export async function generateMetadata({
   params: Promise<{ region: string }>;
 }): Promise<Metadata> {
   const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "US Ownership & Support Hub"
-    : "UK Ownership & Support Hub";
-  const description = isUS
-    ? "Official Alkota Cycles US ownership hub. Regional warrantor identity, technical support routes, and partner network plans ahead of 2028 delivery."
-    : "Official Alkota Cycles UK ownership hub. UK warrantor identity, technical support routes, and partner network plans ahead of 2028 delivery.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/ownership`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/ownership`,
-        "en-US": `${siteUrl}/us/ownership`,
-        "x-default": `${siteUrl}/us/ownership`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/ownership`,
-    },
-  };
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/ownership",
+    title: "Ownership",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function OwnershipPage({

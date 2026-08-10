@@ -1,42 +1,10 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import { getLegalDocument } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
-import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import Link from "next/link";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS ? "Terms & Conditions of Sale (US)" : "Terms & Conditions of Sale";
-  const description = isUS
-    ? "US Consumer Terms of Sale governing product purchases, contractual return policies, and US state law provisions."
-    : "UK Consumer Terms of Sale governing purchases, statutory cancellation rights under Consumer Contracts Regulations, and order fulfilment.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/terms`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/terms`,
-        "en-US": `${siteUrl}/us/terms`,
-        "x-default": `${siteUrl}/us/terms`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/terms`,
-    },
-  };
-}
 
 const UK_TOC = [
   { id: "s-1", title: "1. About These Terms" },
@@ -67,6 +35,22 @@ const US_TOC = [
   { id: "us-s-11", title: "11. Arbitration & Class Action Waiver (Optional)" },
   { id: "us-s-12", title: "12. Governing Law" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/terms",
+    title: "1. About These Terms",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function TermsPage({
   params,

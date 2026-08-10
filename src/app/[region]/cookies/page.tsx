@@ -1,7 +1,8 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import CookiesClient from "./CookiesClient";
+
 
 export async function generateMetadata({
   params,
@@ -9,31 +10,13 @@ export async function generateMetadata({
   params: Promise<{ region: string }>;
 }): Promise<Metadata> {
   const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "Cookie Notice & Opt-Out Preferences (US)"
-    : "Cookie Policy & Privacy Preferences";
-  const description = isUS
-    ? "US cookie disclosure, opt-out mechanisms, Global Privacy Control (GPC) signal integration, and storage technology register."
-    : "Categorisation of storage technologies, PECR consent rules, tag control, and technology register.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/cookies`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/cookies`,
-        "en-US": `${siteUrl}/us/cookies`,
-        "x-default": `${siteUrl}/us/cookies`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/cookies`,
-    },
-  };
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/cookies",
+    title: "Cookies",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function CookiesPage() {

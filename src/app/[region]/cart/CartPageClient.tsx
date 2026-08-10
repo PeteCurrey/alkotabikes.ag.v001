@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Minus, Plus, X, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/store/cartContext";
+import { useRegion } from "@/components/region/RegionProvider";
+import { formatPrice } from "@/lib/pricing";
 
 function ProductThumbnail({ placeholder }: { placeholder: string }) {
   const colorMap: Record<string, string> = {
@@ -31,9 +33,8 @@ function ProductThumbnail({ placeholder }: { placeholder: string }) {
 }
 
 export default function CartPageClient() {
+  const { regionCode } = useRegion();
   const { state, removeItem, updateQty, clearCart, totalItems, totalPrice } = useCart();
-
-  const formatPrice = (p: number) => `£${p.toFixed(2)}`;
 
   return (
     <div className="bg-alkota-white min-h-screen pt-[60px]">
@@ -84,6 +85,7 @@ export default function CartPageClient() {
               </div>
 
               {state.items.map((item) => {
+                const price = item.product.prices[regionCode];
                 const variantStr = Object.entries(item.selectedVariants)
                   .map(([k, v]) => `${k}: ${v}`)
                   .join(" · ");
@@ -109,9 +111,11 @@ export default function CartPageClient() {
                           <div className="font-mono text-[10px] text-alkota-slate tracking-wide mt-0.5">{variantStr}</div>
                         )}
                         <div className="font-mono text-xs text-alkota-black/70 mt-1">
-                          {item.product.price !== null
-                            ? formatPrice(item.product.price)
-                            : <span className="text-alkota-slate">COMING SOON</span>}
+                          {price ? (
+                            formatPrice(price)
+                          ) : (
+                            <span className="text-alkota-slate">UNAVAILABLE</span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -137,9 +141,14 @@ export default function CartPageClient() {
 
                     {/* Total */}
                     <div className="col-span-2 font-mono text-sm text-alkota-black text-right">
-                      {item.product.price !== null
-                        ? formatPrice(item.product.price * item.quantity)
-                        : "—"}
+                      {price ? (
+                        formatPrice({
+                          ...price,
+                          amountMinor: price.amountMinor * item.quantity,
+                        })
+                      ) : (
+                        "—"
+                      )}
                     </div>
 
                     {/* Remove */}
@@ -181,6 +190,7 @@ export default function CartPageClient() {
                 </div>
 
                 {state.items.map((item) => {
+                  const price = item.product.prices[regionCode];
                   const variantStr = Object.entries(item.selectedVariants)
                     .map(([, v]) => v).join(" · ");
                   return (
@@ -191,7 +201,7 @@ export default function CartPageClient() {
                         {" "}<span className="text-alkota-slate">×{item.quantity}</span>
                       </span>
                       <span className="font-mono text-alkota-black flex-shrink-0">
-                        {item.product.price !== null ? formatPrice(item.product.price * item.quantity) : "—"}
+                        {price ? formatPrice({ ...price, amountMinor: price.amountMinor * item.quantity }) : "—"}
                       </span>
                     </div>
                   );
@@ -200,7 +210,9 @@ export default function CartPageClient() {
                 <div className="border-t border-alkota-black/10 pt-4 space-y-2">
                   <div className="flex justify-between">
                     <span className="font-mono text-xs text-alkota-slate uppercase tracking-wider">Subtotal</span>
-                    <span className="font-mono text-sm font-semibold text-alkota-black">{formatPrice(totalPrice)}</span>
+                    <span className="font-mono text-sm font-semibold text-alkota-black">
+                      {formatPrice({ region: regionCode, amountMinor: totalPrice, currency: regionCode === "uk" ? "GBP" : "USD", taxIncluded: regionCode === "uk", taxRateApplied: regionCode === "uk" ? 0.20 : null })}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="font-mono text-xs text-alkota-slate uppercase tracking-wider">Shipping</span>

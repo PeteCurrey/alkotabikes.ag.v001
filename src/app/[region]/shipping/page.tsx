@@ -1,24 +1,13 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
 import { renderCleanLegalText, CUSTOMER_SERVICE_EMAIL } from "@/config/legal";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 
-export const metadata: Metadata = {
-  title: "Shipping & Delivery",
-  description:
-    "Delivery markets, Partner handover, dispatch estimates, risk of loss, and international import duty treatment.",
-  alternates: {
-    canonical: `${siteUrl}/shipping`,
-  },
-  openGraph: {
-    title: "Shipping & Delivery",
-    description:
-      "Delivery markets, Partner handover, dispatch estimates, risk of loss, and international import duty treatment.",
-    url: `${siteUrl}/shipping`,
-  },
-};
+
 
 const TOC = [
   { id: "ship-1", title: "1. Delivery Markets" },
@@ -34,6 +23,22 @@ const TOC = [
   { id: "ship-11", title: "11. Lost or Damaged Shipments" },
   { id: "ship-12", title: "12. Store Orders" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/shipping",
+    title: "Shipping & Delivery",
+    description: "Delivery markets, Partner handover, dispatch estimates, risk of loss, and international import duty treatment.",
+  });
+}
 
 export default function ShippingPage() {
   const doc = LEGAL_DOCUMENTS.shipping;

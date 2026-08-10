@@ -1,25 +1,29 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
 import TerrainBench from "@/components/sections/TerrainBench";
 import TestRecord from "@/components/engineering/TestRecord";
 
-export const metadata: Metadata = {
-  title: "Validation & Testing Methodology — FEA, Fatigue & Field Telemetry",
-  description:
-    "Engineering validation methodology for the Alkota Project 01: finite element analysis limits, ISO 4210 fatigue protocol, physical strain gauge instrumentation, and field telemetry logging. A claim is not a specification until the test data says so.",
-  alternates: {
-    canonical: `${siteUrl}/engineering/testing`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/engineering/testing",
     title: "Validation & Testing Methodology — FEA, Fatigue & Field Telemetry",
-    description:
-      "Engineering validation methodology for the Alkota Project 01: finite element analysis limits, ISO 4210 fatigue protocol, physical strain gauge instrumentation, and field telemetry logging. A claim is not a specification until the test data says so.",
-    url: `${siteUrl}/engineering/testing`,
-  },
-};
+    description: "Engineering validation methodology for the Alkota Project 01: finite element analysis limits, ISO 4210 fatigue protocol, physical strain gauge instrumentation, and field telemetry logging. A claim is not a specification until the test data says so.",
+  });
+}
 
 export default function TestingEngineeringPage() {
   const breadcrumbs = [

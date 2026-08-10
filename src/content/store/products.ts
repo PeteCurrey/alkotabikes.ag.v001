@@ -1,7 +1,10 @@
 // ALKOTA SUPPLY — Product Catalogue
 // Status: INTENT-BASED PLACEHOLDER
-// Prices are indicative and subject to confirmation.
-// Do not display £0.00 — use status "coming_soon" to show "COMING SOON".
+// Prices are regionalized integer minor units (RegionalPrice).
+// US prices are NOT SET until authored commercially. Missing price = unavailable in region.
+
+import type { RegionalPrice } from "@/lib/pricing";
+import type { RegionCode } from "@/lib/regions";
 
 export type ProductStatus = "available" | "coming_soon" | "sold_out";
 
@@ -16,7 +19,8 @@ export interface Product {
   name: string;
   subtitle: string;
   category: string;
-  price: number | null;        // null = price not confirmed
+  /** Regional prices indexed by region. Missing price = unavailable in that region. */
+  prices: Partial<Record<RegionCode, RegionalPrice>>;
   status: ProductStatus;
   variants: ProductVariant[];
   description: string;
@@ -32,7 +36,16 @@ export const products: Product[] = [
     name: "Performance Engineering Cap",
     subtitle: "5-panel structured cap",
     category: "HEADWEAR",
-    price: 45,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 4500,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+      // US price not set (null) -> unavailable in US market until authored
+    },
     status: "coming_soon",
     variants: [
       { label: "COLOUR", options: ["Black", "Graphite"] },
@@ -55,7 +68,15 @@ export const products: Product[] = [
     name: "Engineering Tee — Black",
     subtitle: "Heavyweight cotton crew",
     category: "APPAREL",
-    price: 55,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 5500,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+    },
     status: "coming_soon",
     variants: [
       { label: "SIZE", options: ["XS", "S", "M", "L", "XL", "XXL"] },
@@ -77,7 +98,15 @@ export const products: Product[] = [
     name: "Engineering Tee — White",
     subtitle: "Heavyweight cotton crew",
     category: "APPAREL",
-    price: 55,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 5500,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+    },
     status: "coming_soon",
     variants: [
       { label: "SIZE", options: ["XS", "S", "M", "L", "XL", "XXL"] },
@@ -99,7 +128,15 @@ export const products: Product[] = [
     name: "Workshop Hoodie",
     subtitle: "400gsm fleece-lined pullover",
     category: "APPAREL",
-    price: 120,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 12000,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+    },
     status: "coming_soon",
     variants: [
       { label: "SIZE", options: ["XS", "S", "M", "L", "XL", "XXL"] },
@@ -124,7 +161,7 @@ export const products: Product[] = [
     name: "Paddock Overshirt",
     subtitle: "Technical woven overshirt",
     category: "APPAREL",
-    price: null,
+    prices: {},
     status: "coming_soon",
     variants: [
       { label: "SIZE", options: ["S", "M", "L", "XL", "XXL"] },
@@ -147,7 +184,15 @@ export const products: Product[] = [
     name: "Aluminium Water Bottle",
     subtitle: "Workshop and trail companion",
     category: "EQUIPMENT",
-    price: 28,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 2800,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+    },
     status: "coming_soon",
     variants: [
       { label: "VOLUME", options: ["500ml", "750ml"] },
@@ -171,7 +216,15 @@ export const products: Product[] = [
     name: "Workshop Mug",
     subtitle: "Heavyweight ceramic — 350ml",
     category: "EQUIPMENT",
-    price: 22,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 2200,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+    },
     status: "coming_soon",
     variants: [
       { label: "COLOUR", options: ["Carbon Black", "Snow White"] },
@@ -193,7 +246,15 @@ export const products: Product[] = [
     name: "Alkota Decal Set",
     subtitle: "Die-cut vinyl — 8 piece",
     category: "ACCESSORIES",
-    price: 12,
+    prices: {
+      uk: {
+        region: "uk",
+        amountMinor: 1200,
+        currency: "GBP",
+        taxIncluded: true,
+        taxRateApplied: 0.20,
+      },
+    },
     status: "coming_soon",
     variants: [
       { label: "FINISH", options: ["Gloss Black", "Matte White", "Clear / White"] },

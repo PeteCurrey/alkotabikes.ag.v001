@@ -1,22 +1,26 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 
-export const metadata: Metadata = {
-  title: "Warranty Policy",
-  description:
-    "Limited chassis warranty and crash replacement policy details from Alkota Cycles. Coverage terms and claims process for original Project 01 owners.",
-  alternates: {
-    canonical: `${siteUrl}/support/warranty`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/support/warranty",
     title: "Warranty Policy",
-    description:
-      "Limited chassis warranty and crash replacement policy details from Alkota Cycles. Coverage terms and claims process for original Project 01 owners.",
-    url: `${siteUrl}/support/warranty`,
-  },
-};
+    description: "Limited chassis warranty and crash replacement policy details from Alkota Cycles. Coverage terms and claims process for original Project 01 owners.",
+  });
+}
 
 export default function WarrantyPage() {
   return (

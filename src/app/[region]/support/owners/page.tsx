@@ -1,24 +1,28 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Owner Documentation",
-  description:
-    "Official owner manuals and technical documentation for Alkota Cycles bicycles. Documentation will be published ahead of first delivery in 2028.",
-  alternates: {
-    canonical: `${siteUrl}/support/owners`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/support/owners",
     title: "Owner Documentation",
-    description:
-      "Official owner manuals and technical documentation for Alkota Cycles bicycles. Documentation will be published ahead of first delivery in 2028.",
-    url: `${siteUrl}/support/owners`,
-  },
-};
+    description: "Official owner manuals and technical documentation for Alkota Cycles bicycles. Documentation will be published ahead of first delivery in 2028.",
+  });
+}
 
 export default function OwnersPage() {
   return (

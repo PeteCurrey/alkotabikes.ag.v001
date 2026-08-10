@@ -1,45 +1,11 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import { getLegalDocument } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
 import { getRegionalCompliance } from "@/lib/product-compliance";
-import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { AlertTriangle, ShieldCheck } from "lucide-react";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "Product Safety & CPSC Compliance (16 CFR Part 1512)"
-    : "Product Safety & Intended Use (EN ISO 4210)";
-  const description = isUS
-    ? "CPSC 16 CFR Part 1512 compliance overview, mandatory reflector set requirements, braking standards, and safety checks for Project 01."
-    : "EN ISO 4210 pre-ride protocols, intended use envelope, carbon inspection, torque guidance, and maintenance for Project 01.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/safety`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/safety`,
-        "en-US": `${siteUrl}/us/safety`,
-        "x-default": `${siteUrl}/us/safety`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/safety`,
-    },
-  };
-}
 
 const TOC = [
   { id: "safe-standard", title: "1. Applicable Safety Standards" },
@@ -51,6 +17,22 @@ const TOC = [
   { id: "safe-carbon", title: "7. Carbon Inspection" },
   { id: "safe-bulletins", title: "8. Technical Recalls & Bulletins" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/safety",
+    title: "1. Applicable Safety Standards",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function SafetyPage({
   params,

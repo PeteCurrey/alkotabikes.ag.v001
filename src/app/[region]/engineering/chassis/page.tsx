@@ -1,23 +1,27 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
 
-export const metadata: Metadata = {
-  title: "Chassis Engineering & Monocoque Architecture",
-  description:
-    "An exhaustive technical analysis of mountain bike chassis design: monocoque vs tube-to-tube construction, fiber orientation, load paths, torsional vs lateral stiffness, BSA threaded interfaces, and pivot bearing selection.",
-  alternates: {
-    canonical: `${siteUrl}/engineering/chassis`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/engineering/chassis",
     title: "Chassis Engineering & Monocoque Architecture",
-    description:
-      "An exhaustive technical analysis of mountain bike chassis design: monocoque vs tube-to-tube construction, fiber orientation, load paths, torsional vs lateral stiffness, BSA threaded interfaces, and pivot bearing selection.",
-    url: `${siteUrl}/engineering/chassis`,
-  },
-};
+    description: "An exhaustive technical analysis of mountain bike chassis design: monocoque vs tube-to-tube construction, fiber orientation, load paths, torsional vs lateral stiffness, BSA threaded interfaces, and pivot bearing selection.",
+  });
+}
 
 export default function ChassisEngineeringPage() {
   const breadcrumbs = [

@@ -1,25 +1,29 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { siteUrl } from "@/lib/env";
 import ConfiguratorClient from "./ConfiguratorClient";
 import { PROJECT_01_SPECIFICATION } from "@/content/project01/specification";
 
-export const metadata: Metadata = {
-  title: "Project 01 Digital Showroom & Configurator",
-  description:
-    "Configure your Project 01 build specification with Alkota Cycles. Explore finish options, component packages, and fit geometry for the R00 development baseline.",
-  alternates: {
-    canonical: `${siteUrl}/configure`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/configure",
     title: "Project 01 Digital Showroom & Configurator",
-    description:
-      "Configure your Project 01 build specification with Alkota Cycles. Explore finish options, component packages, and fit geometry for the R00 development baseline.",
-    url: `${siteUrl}/configure`,
-  },
-};
+    description: "Configure your Project 01 build specification with Alkota Cycles. Explore finish options, component packages, and fit geometry for the R00 development baseline.",
+  });
+}
 
 export default function ConfigurePage() {
   const spec = PROJECT_01_SPECIFICATION;

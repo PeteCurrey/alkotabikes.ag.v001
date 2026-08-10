@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { X, Minus, Plus, ArrowRight, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/store/cartContext";
+import { formatPrice } from "@/lib/pricing";
 
 // Product visual placeholder — SVG-based engineering grid tile
 function ProductThumbnail({ placeholder }: { placeholder: string }) {
@@ -42,8 +43,6 @@ export default function CartDrawer() {
   const { state, closeCart, removeItem, updateQty, totalItems, totalPrice } = useCart();
 
   if (!state.isOpen) return null;
-
-  const formatPrice = (p: number) => `£${p.toFixed(2)}`;
 
   return (
     <>
@@ -148,9 +147,14 @@ export default function CartDrawer() {
                       </div>
                       {/* Price */}
                       <div className="font-mono text-sm text-alkota-white">
-                        {item.product.price !== null
-                          ? formatPrice(item.product.price * item.quantity)
-                          : <span className="text-alkota-slate text-xs">COMING SOON</span>}
+                        {item.product.prices.uk ? (
+                          formatPrice({
+                            ...item.product.prices.uk,
+                            amountMinor: item.product.prices.uk.amountMinor * item.quantity,
+                          })
+                        ) : (
+                          <span className="text-alkota-slate text-xs">UNAVAILABLE</span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -172,7 +176,9 @@ export default function CartDrawer() {
           <div className="border-t border-white/10 px-6 py-5 space-y-4 bg-alkota-black/60">
             <div className="flex items-center justify-between font-mono text-xs text-alkota-slate uppercase tracking-wider">
               <span>Subtotal</span>
-              <span className="text-alkota-white font-semibold text-sm">{formatPrice(totalPrice)}</span>
+              <span className="text-alkota-white font-semibold text-sm">
+                {formatPrice({ region: "uk", amountMinor: totalPrice, currency: "GBP", taxIncluded: true, taxRateApplied: 0.20 })}
+              </span>
             </div>
             <div className="font-mono text-[10px] text-alkota-slate/70 tracking-wide">
               Shipping calculated at checkout. Pre-order items dispatched on release.

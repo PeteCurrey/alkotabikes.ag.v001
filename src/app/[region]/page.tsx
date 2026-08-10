@@ -1,3 +1,6 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
+import { Metadata } from "next";
 import HeroFullBleed from "@/components/sections/HeroFullBleed";
 import HotspotViewer from "@/components/sections/HotspotViewer";
 import ProductPhilosophy from "@/components/sections/ProductPhilosophy";
@@ -13,6 +16,22 @@ import JournalPreviewSection from "@/components/sections/JournalPreviewSection";
 import RoadTo2028Strip from "@/components/editorial/RoadTo2028Strip";
 import FinalStatementSection from "@/components/sections/FinalStatementSection";
 import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "",
+    title: "Alkota Cycles — Performance Engineering",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default function HomePage() {
   return (

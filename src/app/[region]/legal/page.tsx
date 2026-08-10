@@ -1,42 +1,10 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
 import Link from "next/link";
-import siteUrl from "@/lib/env";
-import { REGIONAL_LEGAL_DOCUMENTS, getLegalDocument, type LegalDocumentMetadata } from "@/config/legalDocuments";
+import { REGIONAL_LEGAL_DOCUMENTS, type LegalDocumentMetadata } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
-import type { RegionCode } from "@/lib/regions";
-import { Shield, ArrowRight, AlertTriangle, CheckCircle, Clock } from "lucide-react";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS ? "Legal Centre (US)" : "Legal Centre";
-  const description = isUS
-    ? "Alkota Cycles US legal documentation index: Legal Notice, US Privacy Notice, Terms & Conditions of Sale, Limited Warranty, Returns, Shipping, Cookies, and Accessibility."
-    : "Alkota Cycles UK legal documentation index: Legal Notice, Privacy Policy, Terms & Conditions, Warranty, Returns, Shipping, Cookies, Accessibility, Safety, and Complaints.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/legal`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/legal`,
-        "en-US": `${siteUrl}/us/legal`,
-        "x-default": `${siteUrl}/us/legal`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/legal`,
-    },
-  };
-}
+import { Shield, ArrowRight } from "lucide-react";
 
 const LEGAL_INDEX: {
   group: string;
@@ -77,6 +45,22 @@ const LEGAL_INDEX: {
     ],
   },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/legal",
+    title: "Legal",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function LegalCentrePage({
   params,

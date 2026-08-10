@@ -96,6 +96,14 @@ const FORBIDDEN: ForbiddenPattern[] = [
     description: 'Warranty commitment "LIFETIME" — must be reviewed',
     scope: 'app/support',
   },
+  {
+    regex: /registered\s+or\s+pending/i,
+    description: 'Forbidden trade mark representation "registered or pending" (s.95 TMA 1994 / Lanham Act exposure)',
+  },
+  {
+    regex: /®/,
+    description: 'Forbidden registered trade mark symbol ® — must be backed by a REGISTERED entry in company.ts trademark registry',
+  },
 ];
 
 const SCAN_DIRS = [

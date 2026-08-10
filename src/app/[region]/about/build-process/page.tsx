@@ -1,3 +1,5 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,17 +16,7 @@ import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 import ProcessNav from "./ProcessNav";
 
-export const metadata: Metadata = {
-  title: "The Build Process | From Requirement to Alkota Project 01",
-  description:
-    "Follow the Alkota development process from rider requirement and geometry through carbon engineering, component integration, prototype assembly and validation.",
-  openGraph: {
-    title: "The Build Process | From Requirement to Alkota Project 01",
-    description:
-      "Follow the Alkota development process from rider requirement and geometry through carbon engineering, component integration, prototype assembly and validation.",
-    images: [ALKOTA_STORY_MEDIA.prototypeBuildValidation.src],
-  },
-};
+
 
 /* ─────────────────────────────────────────────────────────
    Reusable helpers
@@ -92,6 +84,22 @@ const GEO_SPECS = [
   { label: "Rear centre", value: "444 mm" },
   { label: "Wheelbase", value: "1278.4 mm" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/about/build-process",
+    title: "The Build Process | From Requirement to Alkota Project 01",
+    description: "Follow the Alkota development process from rider requirement and geometry through carbon engineering, component integration, prototype assembly and validation.",
+  });
+}
 
 export default function BuildProcessPage() {
   return (

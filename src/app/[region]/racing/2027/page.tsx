@@ -1,13 +1,28 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Lock, ArrowRight } from "lucide-react";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 
-export const metadata: Metadata = {
-  title: "2027 Season Programme | Alkota Racing",
-  description: "Alkota Racing 2027 season programme. Currently under development ahead of planned competition validation.",
-};
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/racing/2027",
+    title: "2027 Season Programme | Alkota Racing",
+    description: "Alkota Racing 2027 season programme. Currently under development ahead of planned competition validation.",
+  });
+}
 
 export default function Racing2027Page() {
   return (

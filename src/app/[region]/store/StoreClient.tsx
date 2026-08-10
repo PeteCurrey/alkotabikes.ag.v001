@@ -6,6 +6,8 @@ import { ArrowRight, ShoppingBag } from "lucide-react";
 import { products, categories } from "@/content/store/products";
 import type { Product } from "@/content/store/products";
 import { useCart } from "@/lib/store/cartContext";
+import { useRegion } from "@/components/region/RegionProvider";
+import { formatPrice } from "@/lib/pricing";
 
 // ─── Product Image Placeholder ───────────────────────────────────────────────
 function ProductImage({ placeholder, name }: { placeholder: string; name: string }) {
@@ -61,6 +63,9 @@ function ProductImage({ placeholder, name }: { placeholder: string; name: string
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 function ProductCard({ product }: { product: Product }) {
+  const { regionCode } = useRegion();
+  const price = product.prices[regionCode];
+
   return (
     <Link href={`/store/${product.slug}`} className="group block">
       <div className="relative overflow-hidden border border-alkota-black/10 group-hover:border-alkota-signal/40 transition-colors duration-300">
@@ -85,9 +90,13 @@ function ProductCard({ product }: { product: Product }) {
           {product.name}
         </div>
         <div className="font-mono text-xs text-alkota-slate">{product.subtitle}</div>
-        <div className="font-mono text-sm font-semibold text-alkota-black">
-          {product.price !== null ? `£${product.price.toFixed(2)}` : (
-            <span className="text-alkota-slate text-xs tracking-wider">COMING SOON</span>
+        <div className="font-mono text-xs font-semibold text-alkota-black">
+          {price ? (
+            formatPrice(price)
+          ) : (
+            <span className="text-alkota-slate text-[10px] tracking-wider uppercase font-bold">
+              UNAVAILABLE IN {regionCode.toUpperCase()} MARKET
+            </span>
           )}
         </div>
       </div>

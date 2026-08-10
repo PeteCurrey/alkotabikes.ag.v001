@@ -1,44 +1,10 @@
-import React from "react";
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
 import { getLegalDocument } from "@/config/legalDocuments";
 import { getCompany } from "@/lib/company";
-import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Download } from "lucide-react";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ region: string }>;
-}): Promise<Metadata> {
-  const { region } = await params;
-  const isUS = region === "us";
-  const title = isUS
-    ? "US Returns & Voluntary Refund Policy"
-    : "Returns, Cancellations & Statutory Refunds";
-  const description = isUS
-    ? "US voluntary contractual returns policy, return shipping instructions, item condition rules, and voluntary refund processing."
-    : "Distance-selling change-of-mind rights (14-day statutory cancellation), return conditions, model cancellation form, faulty goods remedies under UK law.";
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `${siteUrl}/${region}/returns`,
-      languages: {
-        "en-GB": `${siteUrl}/uk/returns`,
-        "en-US": `${siteUrl}/us/returns`,
-        "x-default": `${siteUrl}/us/returns`,
-      },
-    },
-    openGraph: {
-      title: `${title} | Alkota Cycles`,
-      description,
-      url: `${siteUrl}/${region}/returns`,
-    },
-  };
-}
 
 const UK_TOC = [
   { id: "ret-1", title: "1. 14-Day Statutory Change-of-Mind Returns" },
@@ -59,6 +25,22 @@ const US_TOC = [
   { id: "us-ret-5", title: "5. Refund Processing" },
   { id: "us-ret-6", title: "6. Damaged or Defective Items" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/returns",
+    title: "1. 14-Day Statutory Change-of-Mind Returns",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
+}
 
 export default async function ReturnsPage({
   params,

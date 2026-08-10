@@ -1,5 +1,6 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import { notFound } from "next/navigation";
 import ArtifactDetailClient from "./ArtifactDetailClient";
 import { getAllPublicArtifacts, getArtifactBySlug } from "@/content/design/archive";
@@ -14,30 +15,23 @@ export async function generateStaticParams() {
   return artifacts.map((a) => ({ artifact: a.slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { artifact: slug } = await params;
-  const artifact = getArtifactBySlug(slug);
 
-  if (!artifact) {
-    return { title: "Artifact Not Found" };
-  }
 
-  const isPlaceholder = artifact.status === "PLACEHOLDER";
-  const title = `${artifact.id}: ${artifact.title} | Alkota Cycles`;
 
-  return {
-    title,
-    description: artifact.caption,
-    alternates: {
-      canonical: `${siteUrl}/project-01/design-archive/${slug}`,
-    },
-    robots: isPlaceholder ? { index: false, follow: false } : { index: true, follow: true },
-    openGraph: {
-      title,
-      description: artifact.caption,
-      url: `${siteUrl}/project-01/design-archive/${slug}`,
-    },
-  };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string; artifact?: string }>;
+}): Promise<Metadata> {
+  const { region, artifact } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  const art = artifact ?? "";
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: `/project-01/design-archive/${art}`,
+    title: "Artifact Not Found",
+    description: "Alkota Cycles performance engineering mountain bikes built as complete integrated systems.",
+  });
 }
 
 export default async function ArtifactDetailPage({ params }: Props) {

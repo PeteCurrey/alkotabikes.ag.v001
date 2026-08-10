@@ -63,7 +63,7 @@ export default function StoreClient() {
                 <td className="px-4 py-3 font-mono text-[9px] text-[#1a73e8] font-bold">{p.id}</td>
                 <td className="px-4 py-3 font-mono text-[9px] text-white">{p.name}</td>
                 <td className="px-4 py-3 font-mono text-[9px] text-white">{p.category}</td>
-                <td className="px-4 py-3 font-mono text-[9px] text-white">{p.price ? `£${p.price}` : 'TBC'}</td>
+                <td className="px-4 py-3 font-mono text-[9px] text-white">{p.prices.uk ? `£${p.prices.uk.amountMinor / 100}` : 'TBC'}</td>
                 <td className="px-4 py-3"><StatusBadge status={p.status} /></td>
                 <td className="px-4 py-3 font-mono text-[8px] text-[#647789]">{p.status === 'coming_soon' ? 'PRICE / INVENTORY / IMAGE / DELIVERY' : ''}</td>
                 <td className="px-4 py-3 text-right"><button onClick={() => alert('Phase 02')} className="text-[#647789] hover:text-white font-mono text-[9px]">EDIT</button></td>

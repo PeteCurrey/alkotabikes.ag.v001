@@ -1,22 +1,26 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import JournalClient from "./JournalClient";
 
-export const metadata: Metadata = {
-  title: "Engineering Journal & Technical Archive",
-  description:
-    "Official unified development journal from Alkota Cycles. Technical dispatches, chassis kinematics papers, materials testing notes, and design archive records.",
-  alternates: {
-    canonical: `${siteUrl}/journal`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/journal",
     title: "Engineering Journal & Technical Archive",
-    description:
-      "Official unified development journal from Alkota Cycles. Technical dispatches, chassis kinematics papers, materials testing notes, and design archive records.",
-    url: `${siteUrl}/journal`,
-  },
-};
+    description: "Official unified development journal from Alkota Cycles. Technical dispatches, chassis kinematics papers, materials testing notes, and design archive records.",
+  });
+}
 
 export default async function JournalPage({
   searchParams,

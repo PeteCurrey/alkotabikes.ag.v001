@@ -1,7 +1,8 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
-import { siteUrl } from "@/lib/env";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { EngineeringSubNav } from "@/components/layout/SubNav";
 import CADViewerPlaceholder from "@/components/engineering/CADViewerPlaceholder";
@@ -11,20 +12,23 @@ import NextStepBanner from "@/components/layout/NextStepBanner";
 import { ENGINEERING_PILLARS } from "@/lib/data/engineeringData";
 import { ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Performance Engineering",
-  description:
-    "Inside the performance engineering methodology at Alkota Cycles. Explore our system-level development process for high-performance mountain bikes.",
-  alternates: {
-    canonical: `${siteUrl}/engineering`,
-  },
-  openGraph: {
+
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/engineering",
     title: "Performance Engineering",
-    description:
-      "Inside the performance engineering methodology at Alkota Cycles. Explore our system-level development process for high-performance mountain bikes.",
-    url: `${siteUrl}/engineering`,
-  },
-};
+    description: "Inside the performance engineering methodology at Alkota Cycles. Explore our system-level development process for high-performance mountain bikes.",
+  });
+}
 
 export default function EngineeringHubPage() {
   return (

@@ -1,6 +1,8 @@
+import { buildRegionalMetadata } from "@/lib/metadata";
+import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import { Metadata } from "next";
-import siteUrl from "@/lib/env";
+import { siteUrl } from "@/lib/env";
 import { LEGAL_DOCUMENTS } from "@/config/legalDocuments";
 import {
   PROJECT01_PAID_RESERVATIONS_ENABLED,
@@ -13,20 +15,7 @@ import {
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import { Lock, ShieldAlert } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Project 01 Reservation Terms",
-  description:
-    "Pre-production reservation rights, deposit conditions, price lock rules, and Build Lock mechanics for Project 01.",
-  alternates: {
-    canonical: `${siteUrl}/legal/reservations`,
-  },
-  openGraph: {
-    title: "Project 01 Reservation Terms",
-    description:
-      "Pre-production reservation rights, deposit conditions, price lock rules, and Build Lock mechanics for Project 01.",
-    url: `${siteUrl}/legal/reservations`,
-  },
-};
+
 
 const TOC = [
   { id: "res-1", title: "1. Purpose" },
@@ -50,6 +39,22 @@ const TOC = [
   { id: "res-19", title: "19. Statutory Consumer Rights" },
   { id: "res-20", title: "20. Contact & Support" },
 ];
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
+  return buildRegionalMetadata({
+    region: regionCode,
+    path: "/legal/reservations",
+    title: "Project 01 Reservation Terms",
+    description: "Pre-production reservation rights, deposit conditions, price lock rules, and Build Lock mechanics for Project 01.",
+  });
+}
 
 export default function ReservationTermsPage() {
   const doc = LEGAL_DOCUMENTS.reservations;
