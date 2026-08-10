@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import SpecificationStatus from "@/components/ui/SpecificationStatus";
 import { PROJECT_01_GEOMETRY } from "@/content/project01/specification";
+import { formatHeightForRegion, formatWeightForRegion } from "@/lib/units";
+import type { RegionCode } from "@/lib/regions";
 import { ArrowRight, Ruler, CheckCircle2, ShieldCheck, Compass, Info } from "lucide-react";
 
 interface FitEngineProps {
@@ -13,14 +15,17 @@ interface FitEngineProps {
     style: string;
   }) => void;
   onNavigateToBuild: () => void;
+  regionCode?: RegionCode;
 }
 
 export default function FitEngine({
   onFitCalculated,
   onNavigateToBuild,
+  regionCode = "uk",
 }: FitEngineProps) {
   // Inputs state
   const [heightCm, setHeightCm] = useState<number>(178);
+  const [weightKg, setWeightKg] = useState<number | null>(null);
   const [insideLegCm, setInsideLegCm] = useState<number>(82);
   const [armSpanCm, setArmSpanCm] = useState<number>(180);
   const [ridingStyle, setRidingStyle] = useState<string>("All Mountain");
@@ -88,7 +93,9 @@ export default function FitEngine({
             <div className="space-y-2 bg-alkota-carbon p-4 border border-white/10">
               <div className="flex justify-between items-center">
                 <span className="text-alkota-slate uppercase">RIDER HEIGHT:</span>
-                <span className="text-alkota-signal font-bold text-sm">{heightCm} CM ({Math.floor(heightCm / 30.48)}' {Math.round((heightCm % 30.48) / 2.54)}")</span>
+                <span className="text-alkota-signal font-bold text-sm">
+                  {formatHeightForRegion(heightCm, regionCode)} ({heightCm} CM)
+                </span>
               </div>
               <input
                 type="range"
@@ -98,6 +105,30 @@ export default function FitEngine({
                 onChange={(e) => setHeightCm(Number(e.target.value))}
                 className="w-full accent-alkota-signal bg-white/10"
               />
+              <p className="font-sans text-[10px] text-alkota-slate font-light leading-relaxed">
+                Used strictly to calculate frame size recommendation and cockpit reach envelope. Stored in canonical metric format (cm).
+              </p>
+            </div>
+
+            {/* Weight slider (Optional) */}
+            <div className="space-y-2 bg-alkota-carbon p-4 border border-white/10">
+              <div className="flex justify-between items-center">
+                <span className="text-alkota-slate uppercase">RIDER WEIGHT (OPTIONAL):</span>
+                <span className="text-white font-bold text-sm">
+                  {weightKg ? `${formatWeightForRegion(weightKg, regionCode)} (${weightKg} KG)` : "UNSET"}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={50}
+                max={120}
+                value={weightKg || 75}
+                onChange={(e) => setWeightKg(Number(e.target.value))}
+                className="w-full accent-alkota-signal bg-white/10"
+              />
+              <p className="font-sans text-[10px] text-alkota-slate font-light leading-relaxed">
+                Optional. Used for initial suspension air spring and damper baseline setup recommendations. Stored in canonical metric format (kg).
+              </p>
             </div>
 
             {/* Inside leg slider */}

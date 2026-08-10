@@ -104,7 +104,9 @@ export function renderEmailTemplate(options: EmailRenderOptions): RenderedEmail 
       bodyHtml = `
         <h1>Welcome to Project 01 Development Register</h1>
         <p>Registration Ref: <strong>${data.registrationRef ?? "R00-PENDING"}</strong></p>
-        <p>Thank you for expressing interest in the Project 01 mountain bike development programme.</p>
+        ${data.savedBuildRef ? `<p>Saved Build Reference: <strong>${data.savedBuildRef}</strong></p>` : ""}
+        ${data.buildSummary ? `<p>Attached Specification: <strong>${data.buildSummary}</strong></p>` : ""}
+        <p>Thank you for expressing interest in the Project 01 mountain bike development programme. Your registration reference secures your priority access position when production reservations open.</p>
       `;
       break;
     case "newsletter_welcome":

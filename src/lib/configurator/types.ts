@@ -1,5 +1,7 @@
-export type FrameSize = "M" | "L" | "XL";
-export type WheelFormat = "29-29" | "MX-29-275";
+import { Project01FrameSize } from "@/lib/constants/project01";
+
+export type FrameSize = Project01FrameSize;
+export type WheelFormat = "29/29" | "MX-29-275" | "MX";
 export type FinishOption = "GLACIER" | "GRAPHITE" | "CARBON" | "LAB";
 
 export interface ComponentOption {

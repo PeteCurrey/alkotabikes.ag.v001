@@ -38,6 +38,8 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: "DASHBOARD", href: "/studio", icon: LayoutDashboard },
   { label: "PROJECT 01", href: "/studio/project-01", icon: Cpu },
+  { label: "↳ COMPONENTS", href: "/studio/components", icon: Cpu },
+  { label: "↳ BUILD MATRIX", href: "/studio/build-matrix", icon: GitBranch },
   { label: "↳ EVIDENCE", href: "/studio/project-01/evidence", icon: ShieldAlert },
   { label: "↳ RELEASE", href: "/studio/project-01/release", icon: GitBranch },
   { label: "COMMERCIAL", href: "/studio/commercial", icon: DollarSign, badge: "C00" },
@@ -47,7 +49,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "REGISTRATIONS", href: "/studio/registrations", icon: Users },
   { label: "RESERVATIONS", href: "/studio/reservations", icon: ClipboardList },
   { label: "PRODUCTION", href: "/studio/production", icon: Factory },
-  { label: "BUILDS + FIT", href: "/studio/builds", icon: Wrench },
+  { label: "BUILDS + DEMAND", href: "/studio/builds", icon: Wrench },
   { label: "RACING", href: "/studio/racing", icon: Flame },
   { label: "PARTNERS", href: "/studio/partners", icon: Building2 },
   { label: "STORE", href: "/studio/store", icon: ShoppingBag },

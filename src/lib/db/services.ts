@@ -13,6 +13,7 @@
 
 import { supabaseAdmin } from "./supabaseAdmin";
 import { generateRegistrationReference } from "./references";
+import { generateBuildId } from "@/lib/configurator/buildIdGenerator";
 
 export interface CreateRegistrationParams {
   fullName: string;
@@ -25,6 +26,20 @@ export interface CreateRegistrationParams {
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+}
+
+export interface SaveBuildParams {
+  buildReference?: string;
+  sessionToken?: string;
+  region?: string;
+  frameSize: string;
+  wheelFormat: string;
+  finish: string;
+  selections: Record<string, string>;
+  fitInputs?: Record<string, any>;
+  email?: string;
+  registrationReference?: string;
+  source?: string;
 }
 
 export interface ConsentLogParams {
@@ -155,6 +170,147 @@ export async function logAuditEvent(params: AuditLogParams) {
     });
   } catch (err) {
     console.error("Audit log error:", err);
+  }
+}
+
+// ─── 2. SAVED BUILDS & BUILD EVENTS ──────────────────────────────────────────
+
+export async function saveBuild(params: SaveBuildParams) {
+  const buildRef = params.buildReference || generateBuildId({
+    frameSize: params.frameSize,
+    wheelFormat: params.wheelFormat,
+    finish: params.finish,
+    selections: params.selections,
+  });
+
+  if (!supabaseAdmin) {
+    return {
+      success: true,
+      buildReference: buildRef,
+      id: null,
+      persisted: false,
+      message: "Build created in transient memory (Database service unavailable).",
+    };
+  }
+
+  try {
+    // 1. Insert saved build
+    const { data: savedBuild, error: buildError } = await supabaseAdmin
+      .from("saved_builds")
+      .insert({
+        build_reference: buildRef,
+        session_token: params.sessionToken ?? null,
+        region: params.region ?? "uk",
+        frame_size: params.frameSize,
+        wheel_format: params.wheelFormat,
+        finish: params.finish,
+        selections: params.selections,
+        fit_inputs: params.fitInputs ?? {},
+        email: params.email ? params.email.toLowerCase().trim() : null,
+        registration_reference: params.registrationReference ?? null,
+        source: params.source ?? "CONFIGURATOR",
+      })
+      .select()
+      .single();
+
+    if (buildError) {
+      console.error("Error inserting saved build:", buildError);
+      throw buildError;
+    }
+
+    // 2. Insert build event
+    await supabaseAdmin.from("build_events").insert({
+      build_id: savedBuild.id,
+      event_type: "CREATED",
+      payload: {
+        build_reference: buildRef,
+        frame_size: params.frameSize,
+        wheel_format: params.wheelFormat,
+        finish: params.finish,
+      },
+    });
+
+    return {
+      success: true,
+      buildReference: buildRef,
+      id: savedBuild.id,
+      persisted: true,
+    };
+  } catch (err: any) {
+    console.error("Failed to save build:", err);
+    return {
+      success: false,
+      buildReference: buildRef,
+      id: null,
+      persisted: false,
+      error: err.message,
+    };
+  }
+}
+
+export async function getBuildByReference(buildReference: string) {
+  if (!supabaseAdmin) return null;
+
+  try {
+    const { data: build, error } = await supabaseAdmin
+      .from("saved_builds")
+      .select(`
+        *,
+        registrations (
+          registration_reference,
+          full_name,
+          email,
+          country,
+          status,
+          created_at
+        )
+      `)
+      .eq("build_reference", buildReference)
+      .single();
+
+    if (error) return null;
+    return build;
+  } catch (err) {
+    console.error("Error fetching saved build by reference:", err);
+    return null;
+  }
+}
+
+export async function attachBuildToRegistration(buildReference: string, registrationReference: string) {
+  if (!supabaseAdmin) return { success: false };
+
+  try {
+    // 1. Link registration reference on saved build
+    const { data: build, error: buildErr } = await supabaseAdmin
+      .from("saved_builds")
+      .update({ registration_reference: registrationReference })
+      .eq("build_reference", buildReference)
+      .select()
+      .single();
+
+    if (buildErr) throw buildErr;
+
+    // 2. Link saved build reference on registration
+    const { error: regErr } = await supabaseAdmin
+      .from("registrations")
+      .update({ saved_build_reference: buildReference })
+      .eq("registration_reference", registrationReference);
+
+    if (regErr) throw regErr;
+
+    // 3. Log event
+    if (build) {
+      await supabaseAdmin.from("build_events").insert({
+        build_id: build.id,
+        event_type: "ATTACHED_TO_REGISTRATION",
+        payload: { registration_reference: registrationReference },
+      });
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error("Error attaching build to registration:", err);
+    return { success: false };
   }
 }
 

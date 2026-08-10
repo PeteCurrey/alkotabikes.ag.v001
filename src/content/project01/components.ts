@@ -149,6 +149,37 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     assetStatus: "AVAILABLE",
     raceDevelopmentRelevant: true,
   },
+  {
+    id: "fork-rockshox-zeb-ultimate",
+    category: "FORK",
+    manufacturer: "RockShox",
+    product: "ZEB Ultimate",
+    variant: "160 mm · Charger 3.1 Damper · Heavy Air · 44 mm offset",
+    status: "UNDER_REVIEW",
+    officialImage: null,
+    integrationImages: [],
+    description:
+      "RockShox ZEB Ultimate 160 mm travel fork with Charger 3.1 damper and ButterCups vibration damping technology under engineering review as an alternative front suspension platform.",
+    whySelected:
+      "Evaluated during R00 engineering study to benchmark chassis compliance, damper hysteresis, and high-frequency trail vibration isolation against the baseline FOX 38 GRIP X2.",
+    technicalData: [
+      { label: "Travel", value: "160 mm" },
+      { label: "Damper", value: "Charger 3.1 RC2" },
+      { label: "Vibration Damping", value: "ButterCups" },
+      { label: "Offset", value: "44 mm" },
+      { label: "Axle", value: "15 × 110 mm Boost" },
+    ],
+    compatibility: ["29 wheel · Boost spacing · Project 01 R00"],
+    developmentNotes: [
+      "Secondary fork specification under active engineering review.",
+      "Requires comparative dyno logging prior to prototype track testing.",
+    ],
+    priceDelta: null,
+    available: false,
+    sourceUrl: "https://www.sram.com/en/rockshox/series/zeb",
+    assetStatus: "UNAVAILABLE",
+    raceDevelopmentRelevant: true,
+  },
 
   // ── REAR SHOCK ────────────────────────────────────────
   {
@@ -182,6 +213,36 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     available: false,
     sourceUrl: "https://www.ridefox.com/fox17/products/bikes/shocks/float-x2.html",
     assetStatus: "AVAILABLE",
+    raceDevelopmentRelevant: true,
+  },
+  {
+    id: "shock-fox-dhx2-factory",
+    category: "REAR_SHOCK",
+    manufacturer: "FOX",
+    product: "DHX2 Factory Coil",
+    variant: "205 × 65 mm · Trunnion Mount · SLS Spring",
+    status: "UNDER_REVIEW",
+    officialImage: null,
+    integrationImages: [],
+    description:
+      "FOX DHX2 Factory coil shock with Super Light Steel (SLS) spring. Trunnion mount. High/low-speed compression and rebound adjustment.",
+    whySelected:
+      "Coil option evaluated for maximum small-bump sensitivity, linear spring rate progression, and thermal dissipation on long continuous alpine downhill descents.",
+    technicalData: [
+      { label: "Size", value: "205 × 65 mm" },
+      { label: "Mount", value: "Trunnion" },
+      { label: "Spring", value: "SLS Steel Coil" },
+      { label: "Adjusters", value: "Independent High & Low Speed Compression / Rebound" },
+    ],
+    compatibility: ["Project 01 R00 · Trunnion mount linkage"],
+    developmentNotes: [
+      "Evaluated against chassis progressivity curve.",
+      "Physical testing required to verify end-stroke bottom-out resistance with coil spring curve.",
+    ],
+    priceDelta: null,
+    available: false,
+    sourceUrl: "https://www.ridefox.com/fox17/products/bikes/shocks/dhx2.html",
+    assetStatus: "UNAVAILABLE",
     raceDevelopmentRelevant: true,
   },
 

@@ -1,7 +1,7 @@
 import { buildRegionalMetadata } from "@/lib/metadata";
 import type { RegionCode } from "@/lib/regions";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import { STORE_MODE } from "@/lib/featureFlags";
 import CartPageClient from "./CartPageClient";
 
@@ -20,10 +20,15 @@ export async function generateMetadata({
   });
 }
 
-export default function CartPage() {
-  // Phase 3-R: cart route must not exist under CATALOGUE mode.
+export default async function CartPage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const { region } = await params;
+  const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
   if (STORE_MODE !== "TRANSACTIONAL") {
-    notFound();
+    redirect(`/${regionCode}/store`);
   }
   return <CartPageClient />;
 }

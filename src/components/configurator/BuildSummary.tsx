@@ -26,17 +26,22 @@ import {
 
 interface BuildSummaryProps {
   config: BuildConfig;
+  initialBuildRef?: string | null;
   onEditBuild: () => void;
 }
 
 export default function BuildSummary({
   config,
+  initialBuildRef,
   onEditBuild,
 }: BuildSummaryProps) {
-  const [savedBuildRef, setSavedBuildRef] = useState<string | null>(null);
+  const [savedBuildRef, setSavedBuildRef] = useState<string | null>(initialBuildRef || null);
   const [savedFitRef, setSavedFitRef] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
   const [showCertPreview, setShowCertPreview] = useState(false);
+  const [isSavingBuild, setIsSavingBuild] = useState(false);
+  const [buildPersisted, setBuildPersisted] = useState(Boolean(initialBuildRef));
+  const [buildSaveError, setBuildSaveError] = useState<string | null>(null);
 
   const heroImage = PROJECT01_MEDIA.getFinishHero(config.finish);
 
@@ -47,11 +52,49 @@ export default function BuildSummary({
   const drivetrain = PROJECT01_COMPONENTS.find((c) => c.id === config.drivetrainId);
   const wheels = PROJECT01_COMPONENTS.find((c) => c.id === config.wheelsId);
 
-  const handleGenerateBuildRef = () => {
-    if (!savedBuildRef) {
+  const handleGenerateBuildRef = async () => {
+    if (savedBuildRef) return; // Already saved — idempotent
+    setIsSavingBuild(true);
+    setBuildSaveError(null);
+
+    try {
+      const selections: Record<string, string> = {};
+      if (config.forkId) selections["fork"] = config.forkId;
+      if (config.shockId) selections["rear-shock"] = config.shockId;
+      if (config.frontBrakeId) selections["brakes-front"] = config.frontBrakeId;
+      if (config.rearBrakeId) selections["brakes-rear"] = config.rearBrakeId;
+      if (config.drivetrainId) selections["drivetrain"] = config.drivetrainId;
+      if (config.wheelsId) selections["wheels"] = config.wheelsId;
+
+      const res = await fetch("/api/builds", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          frameSize: config.size,
+          wheelFormat: config.wheelFormat,
+          finish: config.finish,
+          selections,
+          region: "uk",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.buildReference) {
+        setSavedBuildRef(data.buildReference);
+        setBuildPersisted(data.persisted ?? false);
+      } else {
+        throw new Error(data.error || "No build reference returned from server.");
+      }
+    } catch (err: any) {
+      // Graceful fallback: generate a local reference so the flow isn't blocked
       const hex = Math.floor(Math.random() * 0xffffff).toString(16).toUpperCase().padStart(6, "0");
-      setSavedBuildRef(`P01-CFG-${hex}`);
+      setSavedBuildRef(`AKT-${config.size}-LOCAL-${hex}`);
+      setBuildSaveError(`Build saved locally only — database unavailable. Share link will not resolve. Error: ${err.message}`);
+    } finally {
+      setIsSavingBuild(false);
     }
+
     if (!savedFitRef) {
       const fitHex = Math.floor(Math.random() * 0xffffff).toString(16).toUpperCase().padStart(6, "0");
       setSavedFitRef(`P01-FIT-${fitHex}`);
@@ -142,6 +185,35 @@ export default function BuildSummary({
 
           {/* Certificate & Action buttons */}
           <div className="space-y-3 font-mono text-xs">
+            {/* Save Build Reference */}
+            {!savedBuildRef ? (
+              <button
+                onClick={handleGenerateBuildRef}
+                disabled={isSavingBuild}
+                className="w-full py-3 bg-white/10 border border-white/20 text-white font-bold uppercase hover:border-alkota-signal hover:text-alkota-signal transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <BookmarkPlus className="w-4 h-4" />
+                <span>{isSavingBuild ? "SAVING BUILD…" : "SAVE BUILD REFERENCE"}</span>
+              </button>
+            ) : (
+              <div className={`w-full py-3 border flex items-center justify-center gap-2 ${
+                buildPersisted
+                  ? "border-emerald-500/40 bg-emerald-950/40 text-emerald-300"
+                  : "border-amber-500/40 bg-amber-950/40 text-amber-300"
+              }`}>
+                <Check className="w-4 h-4 flex-shrink-0" />
+                <span className="uppercase font-bold tracking-wider">
+                  {buildPersisted ? `SAVED — ${savedBuildRef}` : `LOCAL ONLY — ${savedBuildRef}`}
+                </span>
+              </div>
+            )}
+
+            {buildSaveError && (
+              <div className="p-3 bg-amber-950/60 border border-amber-500/30 text-amber-200 text-[10px] leading-relaxed">
+                {buildSaveError}
+              </div>
+            )}
+
             <button
               onClick={handleDownloadCertificate}
               className="w-full py-3.5 bg-alkota-signal text-alkota-black font-bold uppercase hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg"
@@ -152,7 +224,9 @@ export default function BuildSummary({
 
             <button
               onClick={handleCopyShareLink}
-              className="w-full py-3 bg-white/10 border border-white/20 text-white font-bold uppercase hover:border-white transition-colors flex items-center justify-center gap-2"
+              disabled={!savedBuildRef}
+              title={!savedBuildRef ? "Save your build reference first to generate a shareable link" : undefined}
+              className="w-full py-3 bg-white/10 border border-white/20 text-white font-bold uppercase hover:border-white transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Copy className="w-4 h-4 text-alkota-signal" />
               <span>{copiedLink ? "SHAREABLE LINK COPIED" : "COPY SHAREABLE BUILD LINK"}</span>

@@ -1,14 +1,53 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import SpecificationStatus from "@/components/ui/SpecificationStatus";
-import { PROJECT01_MEDIA } from "@/content/project01/media";
 import { PROJECT01_COMPONENTS, Project01Component } from "@/content/project01/components";
 import { PROJECT_01_BUILD_MATRIX } from "@/content/project01/buildMatrix";
-import { ArrowRight, Download, Check, Settings, ShieldCheck, Info, Sparkles, ExternalLink } from "lucide-react";
+import { ArrowRight, Info } from "lucide-react";
+
+// Lazy-loaded 3D viewer — ssr:false preserves SSR shell word count
+const SchematicViewerWrapper = dynamic(
+  () => import("@/components/three/SchematicViewerWrapper"),
+  { ssr: false, loading: () => <ViewerSkeleton /> }
+);
+
+function ViewerSkeleton() {
+  return (
+    <div className="w-full h-full min-h-[420px] bg-[#080c10] border border-white/10 flex items-center justify-center tech-grid-dark">
+      <div className="font-mono text-[10px] text-[#647789] uppercase tracking-widest animate-pulse">
+        LOADING SCHEMATIC VIEWER
+      </div>
+    </div>
+  );
+}
+
+// Panel tab → canvas systemId
+const TAB_TO_SYSTEM_ID: Record<string, string | null> = {
+  FINISH:     null,
+  SIZE:       null,
+  SUSPENSION: "fork",
+  BRAKES:     "brakes-front",
+  DRIVETRAIN: "drivetrain",
+  WHEELS:     "wheels",
+  COCKPIT:    "cockpit",
+};
+
+// Canvas systemId → panel tab
+const SYSTEM_ID_TO_TAB: Record<string, string> = {
+  "chassis":      "SUSPENSION",
+  "fork":         "SUSPENSION",
+  "rear-shock":   "SUSPENSION",
+  "brakes-front": "BRAKES",
+  "brakes-rear":  "BRAKES",
+  "drivetrain":   "DRIVETRAIN",
+  "wheels":       "WHEELS",
+  "cockpit":      "COCKPIT",
+  "dropper-post": "COCKPIT",
+};
 
 export const PROJECT01_PRICING_VISIBLE = false;
 
@@ -41,19 +80,62 @@ export default function BuildStage({
   onNavigateToSummary,
   onOpenComponentTheatre,
 }: BuildStageProps) {
-  const [activeTab, setActiveTab] = useState<"FINISH" | "SIZE" | "SUSPENSION" | "BRAKES" | "DRIVETRAIN" | "WHEELS" | "COCKPIT">("FINISH");
-  const [activeWhyThisId, setActiveWhyThisId] = useState<string | null>(null);
+  type TabId = "FINISH" | "SIZE" | "SUSPENSION" | "BRAKES" | "DRIVETRAIN" | "WHEELS" | "COCKPIT";
+  const tabs: { id: TabId; label: string }[] = [
+    { id: "FINISH",     label: "01 FINISH"       },
+    { id: "SIZE",       label: "02 SIZE"         },
+    { id: "SUSPENSION", label: "03 SUSPENSION"   },
+    { id: "BRAKES",     label: "04 BRAKES"       },
+    { id: "DRIVETRAIN", label: "05 TRANSMISSION" },
+    { id: "WHEELS",     label: "06 WHEELS"       },
+    { id: "COCKPIT",    label: "07 COCKPIT"      },
+  ];
 
-  const heroImage = PROJECT01_MEDIA.getFinishHero(config.finish);
+  const [activeTab, setActiveTab] = useState<TabId>("FINISH");
+  const [liveAnnouncement, setLiveAnnouncement] = useState("");
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const selectedFork = PROJECT01_COMPONENTS.find((c) => c.id === config.forkId);
-  const selectedShock = PROJECT01_COMPONENTS.find((c) => c.id === config.shockId);
-  const selectedBrakeFront = PROJECT01_COMPONENTS.find((c) => c.id === config.frontBrakeId);
-  const selectedDrivetrain = PROJECT01_COMPONENTS.find((c) => c.id === config.drivetrainId);
-  const selectedWheels = PROJECT01_COMPONENTS.find((c) => c.id === config.wheelsId);
+  const selectedFork      = PROJECT01_COMPONENTS.find((c) => c.id === config.forkId);
+  const selectedShock     = PROJECT01_COMPONENTS.find((c) => c.id === config.shockId);
+  const selectedBrakeFront= PROJECT01_COMPONENTS.find((c) => c.id === config.frontBrakeId);
+  const selectedDrivetrain= PROJECT01_COMPONENTS.find((c) => c.id === config.drivetrainId);
+  const selectedWheels    = PROJECT01_COMPONENTS.find((c) => c.id === config.wheelsId);
+
+  const focusedSystemId = TAB_TO_SYSTEM_ID[activeTab] ?? null;
+
+  const handleSystemFocusFromCanvas = useCallback((systemId: string) => {
+    const tabId = SYSTEM_ID_TO_TAB[systemId] as TabId | undefined;
+    if (tabId) {
+      setActiveTab(tabId);
+      setLiveAnnouncement(`System selected: ${tabId}`);
+    }
+  }, []);
+
+  const handleTabKeyDown = useCallback((e: React.KeyboardEvent, currentIndex: number) => {
+    let next = currentIndex;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      e.preventDefault();
+      next = (currentIndex + 1) % tabs.length;
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      e.preventDefault();
+      next = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (e.key === "Home") {
+      e.preventDefault(); next = 0;
+    } else if (e.key === "End") {
+      e.preventDefault(); next = tabs.length - 1;
+    } else { return; }
+    tabRefs.current[next]?.focus();
+    setActiveTab(tabs[next].id);
+    setLiveAnnouncement(`${tabs[next].label} panel open`);
+  }, [tabs]);
 
   return (
     <div className="w-full bg-alkota-carbon text-alkota-white min-h-screen p-4 sm:p-6 lg:p-12 space-y-8 tech-grid-dark">
+      {/* Screen-reader live region */}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {liveAnnouncement}
+      </div>
+
       {/* Header */}
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
         <div className="space-y-2">
@@ -62,97 +144,68 @@ export default function BuildStage({
             MAKE IT <span className="text-alkota-signal">YOURS</span>
           </h2>
           <p className="font-sans text-sm text-alkota-snow/80 max-w-xl font-light">
-            Specify finish, development size, and explore baseline options. Real component assets rendered accurately.
+            Specify finish, size, and systems. Schematic viewer and panel are both fully keyboard operable.
           </p>
         </div>
-
         <div className="font-mono text-xs text-alkota-slate uppercase text-right">
           <div className="text-alkota-white font-bold">DEVELOPMENT CONFIGURATION</div>
           <div>PRICING STATUS: TO BE CONFIRMED</div>
         </div>
       </div>
 
-      {/* Main Grid: Bike Visual Stage vs Configurator Options */}
+      {/* Main Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Bike Visual & Active Selection Asset Panel */}
-        <div className="lg:col-span-7 bg-alkota-black border border-white/10 p-4 sm:p-6 space-y-6 shadow-2xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 font-mono text-xs">
+        {/* Left: Schematic 3D Viewer */}
+        <div className="lg:col-span-7 bg-alkota-black border border-white/10 shadow-2xl flex flex-col">
+          <div className="flex items-center justify-between border-b border-white/10 px-4 py-2 font-mono text-xs">
             <span className="text-alkota-signal font-bold uppercase">
-              MASTER CHASSIS: {config.finish === "GLACIER" ? "GLACIER WHITE" : "NAKED CARBON"} ({config.size})
+              PROJECT 01 — {config.finish === "GLACIER" ? "GLACIER WHITE" : "NAKED CARBON"} ({config.size})
             </span>
-            <SpecificationStatus status="DEVELOPMENT_BASELINE" label="BASELINE RENDERING" />
+            <SpecificationStatus status="DEVELOPMENT_BASELINE" label="SCHEMATIC GEOMETRY" />
           </div>
-
-          {/* Master Bike Image (Un-faked master image) */}
-          <div className="relative w-full h-[320px] sm:h-[400px] md:h-[460px] bg-black/60 border border-white/10 flex items-center justify-center overflow-hidden p-4">
-            <Image
-              src={heroImage.src}
-              alt={heroImage.alt}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-contain object-center transition-all duration-500"
+          <div className="h-[420px] sm:h-[500px] w-full">
+            <SchematicViewerWrapper
+              finish={config.finish}
+              wheelFormat={config.wheelFormat}
+              frameSize={config.size}
+              focusedSystemId={focusedSystemId}
+              onSystemFocusFromCanvas={handleSystemFocusFromCanvas}
+              onFinishChange={(f) => {
+                if (f === "GLACIER" || f === "CARBON") {
+                  onUpdateConfig({ finish: f });
+                }
+              }}
             />
           </div>
-
-          {/* Highlighted Selected Component Separate Real Asset Panel */}
-          <div className="bg-alkota-carbon p-4 border border-white/10 space-y-3 font-mono text-xs">
-            <div className="flex justify-between items-center border-b border-white/10 pb-2">
-              <span className="text-alkota-slate text-[10px] uppercase font-bold">SELECTED COMPONENT REAL ASSET:</span>
-              <span className="text-alkota-signal text-[10px] uppercase font-bold">OFFICIAL MANUFACTURER ASSET</span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 items-center">
-              <div className="space-y-1">
-                <span className="text-white font-bold block">
-                  {selectedFork?.manufacturer} {selectedFork?.product}
-                </span>
-                <span className="text-alkota-slate text-[11px] block">
-                  {selectedFork?.variant}
-                </span>
-                {selectedFork && (
-                  <button
-                    onClick={() => onOpenComponentTheatre(selectedFork)}
-                    className="text-alkota-signal hover:text-white uppercase text-[10px] font-bold inline-flex items-center gap-1 pt-1"
-                  >
-                    <span>WHY THIS FORK? →</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="relative w-full h-24 bg-black/80 border border-white/10 flex items-center justify-center p-2">
-                {selectedFork?.officialImage ? (
-                  <Image
-                    src={selectedFork.officialImage}
-                    alt={selectedFork.product}
-                    fill
-                    className="object-contain p-1"
-                  />
-                ) : (
-                  <span className="text-alkota-slate text-[9px] text-center">ASSET PENDING</span>
-                )}
-              </div>
-            </div>
+          <div className="px-4 py-2 border-t border-white/10 font-mono text-[9px] text-[#647789] flex justify-between">
+            <span>CLICK GEOMETRY TO SELECT SYSTEM</span>
+            <span className="hidden sm:block">PANEL BELOW IS PRIMARY INTERFACE</span>
           </div>
         </div>
 
-        {/* Right: Sequential Stage Option Controls */}
+        {/* Right: Configuration Panel */}
         <div className="lg:col-span-5 bg-alkota-black border border-white/10 p-6 md:p-8 space-y-6 shadow-2xl">
-          {/* Tabs */}
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 font-mono text-[10px]">
-            {[
-              { id: "FINISH", label: "01 FINISH" },
-              { id: "SIZE", label: "02 SIZE" },
-              { id: "SUSPENSION", label: "03 SUSPENSION" },
-              { id: "BRAKES", label: "04 BRAKES" },
-              { id: "DRIVETRAIN", label: "05 TRANSMISSION" },
-              { id: "WHEELS", label: "06 WHEELS" },
-              { id: "COCKPIT", label: "07 COCKPIT" },
-            ].map((tab) => (
+          {/* System tabs — keyboard navigable with arrow keys */}
+          <div
+            role="tablist"
+            aria-label="Configuration systems"
+            className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 font-mono text-[10px]"
+          >
+            {tabs.map((tab, i) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`py-2 px-2 border uppercase text-center font-bold transition-all ${
+                id={`config-tab-${tab.id}`}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                aria-controls={`config-panel-${tab.id}`}
+                tabIndex={activeTab === tab.id ? 0 : -1}
+                ref={(el) => { tabRefs.current[i] = el; }}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setLiveAnnouncement(`${tab.label} panel open`);
+                }}
+                onKeyDown={(e) => handleTabKeyDown(e, i)}
+                className={`py-2 px-2 border uppercase text-center font-bold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-alkota-signal ${
                   activeTab === tab.id
                     ? "border-alkota-signal bg-alkota-signal text-alkota-black"
                     : "border-white/10 text-alkota-slate hover:text-white bg-alkota-carbon"

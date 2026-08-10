@@ -158,7 +158,7 @@ export default function BikesLandingPage() {
               {
                 icon: Settings,
                 title: "CONFIGURABLE PLATFORM",
-                desc: "Size M, L, XL. Primary 29/29 wheel architecture with secondary MX study. Two launch finishes.",
+                desc: "Size S, M, L, XL. Primary 29/29 wheel architecture with secondary MX study. Two launch finishes.",
               },
               {
                 icon: ArrowRight,

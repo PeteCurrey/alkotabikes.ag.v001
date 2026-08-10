@@ -147,6 +147,7 @@ export default function OrderClient() {
     purchaseIntent: "I intend to buy when production opens",
     region: regionCode.toUpperCase(),
     customerNotes: "",
+    savedBuildReference: "",
     developmentAcknowledgement: false,
     marketingConsent: false,
   });
@@ -163,6 +164,7 @@ export default function OrderClient() {
           ...prev,
           preferredFinish: finish === "GLACIER" ? "Glacier White" : finish === "CARBON" ? "Naked Carbon" : prev.preferredFinish,
           expectedSize: size || prev.expectedSize,
+          savedBuildReference: buildRef || "",
           customerNotes: buildRef ? `Configured with build reference: ${buildRef}` : prev.customerNotes,
         }));
       }

@@ -12,17 +12,45 @@ import { PROJECT_01_SPECIFICATION } from "@/content/project01/specification";
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ region: string }>;
+  searchParams: Promise<{ build?: string; buildRef?: string; ref?: string }>;
 }): Promise<Metadata> {
   const { region } = await params;
+  const sParams = await searchParams;
+  const buildRef = sParams.build || sParams.buildRef || sParams.ref;
   const regionCode = (region === "uk" ? "uk" : "us") as RegionCode;
-  return buildRegionalMetadata({
+
+  const baseMetadata = buildRegionalMetadata({
     region: regionCode,
     path: "/configure",
-    title: "Project 01 Digital Showroom & Configurator",
-    description: "Configure your Project 01 build specification with Alkota Cycles. Explore finish options, component packages, and fit geometry for the R00 development baseline.",
+    title: buildRef ? `Project 01 Build Specification — ${buildRef}` : "Project 01 Digital Showroom & Configurator",
+    description: buildRef
+      ? `View saved Project 01 build specification (${buildRef}). Explore finish profiles, component packages, and fit parameters.`
+      : "Configure your Project 01 build specification with Alkota Cycles. Explore finish options, component packages, and fit geometry for the R00 development baseline.",
   });
+
+  if (buildRef) {
+    const ogImageUrl = `/api/og/build?ref=${encodeURIComponent(buildRef)}`;
+    return {
+      ...baseMetadata,
+      openGraph: {
+        ...baseMetadata.openGraph,
+        title: `Project 01 Build Specification — ${buildRef}`,
+        description: `View saved Project 01 build specification (${buildRef}) on Alkota Cycles.`,
+        images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `Project 01 Build ${buildRef}` }],
+      },
+      twitter: {
+        ...baseMetadata.twitter,
+        card: "summary_large_image",
+        title: `Project 01 Build Specification — ${buildRef}`,
+        images: [ogImageUrl],
+      },
+    };
+  }
+
+  return baseMetadata;
 }
 
 export default function ConfigurePage() {

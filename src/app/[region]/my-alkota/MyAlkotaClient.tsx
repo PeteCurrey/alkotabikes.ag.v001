@@ -39,6 +39,7 @@ interface PortalSession {
   preferredSize: string;
   fitReference: string | null;
   buildSaved: boolean;
+  savedBuildRef?: string | null;
 }
 
 const DEV_MEMBER_BADGE = "PROJECT 01 DEVELOPMENT MEMBER";
@@ -411,8 +412,16 @@ function Dashboard({
                 <div className="font-mono text-[9px] text-alkota-slate uppercase tracking-widest">
                   Build Saved
                 </div>
-                <div className="font-mono text-xs text-white font-bold uppercase">
-                  {session.buildSaved ? "YES" : "NOT YET CONFIGURED"}
+                <div className="font-mono text-xs text-white font-bold uppercase flex items-center justify-between">
+                  <span>{session.savedBuildRef ? session.savedBuildRef : session.buildSaved ? "YES" : "NOT YET CONFIGURED"}</span>
+                  {session.savedBuildRef && (
+                    <Link
+                      href={`/configure?build=${encodeURIComponent(session.savedBuildRef)}`}
+                      className="text-alkota-signal hover:text-white text-[9px] font-mono underline uppercase"
+                    >
+                      VIEW BUILD
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
