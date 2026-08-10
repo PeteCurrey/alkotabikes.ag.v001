@@ -22,7 +22,7 @@ export interface EmailRecipient {
 }
 
 export interface EmailRenderOptions {
-  templateId: "order_confirmation" | "project01_registration" | "newsletter_welcome" | "safety_bulletin";
+  templateId: "order_confirmation" | "project01_registration" | "newsletter_welcome" | "safety_bulletin" | "partner_application_ack";
   recipient: EmailRecipient;
   data: Record<string, unknown>;
 }
@@ -119,6 +119,20 @@ export function renderEmailTemplate(options: EmailRenderOptions): RenderedEmail 
       bodyHtml = `
         <h1>Mandatory Product Safety Bulletin</h1>
         <p>Important safety information regarding your Alkota chassis / components.</p>
+      `;
+      break;
+    case "partner_application_ack":
+      subject = `Alkota Partner Network Application Acknowledgement — ${data.applicationRef ?? "APN"}`;
+      bodyHtml = `
+        <h1>Alkota Partner Network Application Received</h1>
+        <p>Dear ${data.contactName ?? "Partner Candidate"},</p>
+        <p>Thank you for submitting an application to join the Alkota Partner Network on behalf of <strong>${data.shopName ?? "your shop"}</strong>.</p>
+        <p>Application Reference: <strong>${data.applicationRef ?? "APN-PENDING"}</strong></p>
+        <div style="padding: 15px; background: #f4f4f4; border-left: 3px solid #000; margin: 20px 0;">
+          <p style="margin: 0; font-weight: bold;">DECISION SLA NOTICE</p>
+          <p style="margin: 5px 0 0 0;">Our commercial team reviews every application against our APN-01..04 selection criteria. You will receive a formal response regarding your application status within <strong>10 working days</strong>.</p>
+        </div>
+        <p>If you have any urgent questions in the interim, please contact our legal and partner team at ${company.email.legal ?? "legal@alkotacycles.com"}.</p>
       `;
       break;
   }

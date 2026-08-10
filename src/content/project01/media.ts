@@ -42,7 +42,7 @@ export const glacierWhite = {
 
   /** Showroom presentation image */
   showroom: {
-    src: "/images/story/project01-glacier-white-showroom.png",
+    src: "/images/story/project01-glacier-white-showroom.jpg",
     alt: "Project 01 Glacier White — showroom presentation",
     status: "APPROVED_MASTER" as ImageStatus,
     view: "FRONT_3Q",
@@ -51,7 +51,7 @@ export const glacierWhite = {
 
   /** Standalone white bike — clean background presentation */
   standalone: {
-    src: "/images/story/standalone-white-bike-presentation.png",
+    src: "/images/story/standalone-white-bike-presentation.jpg",
     alt: "Project 01 Glacier White — standalone presentation",
     status: "APPROVED_SECONDARY" as ImageStatus,
     view: "SIDE",
@@ -60,7 +60,7 @@ export const glacierWhite = {
 
   /** Pete inspecting the Glacier White — detail context */
   inspection: {
-    src: "/images/story/pete-currey-glacier-white-presentation.png",
+    src: "/images/story/pete-currey-glacier-white-presentation.jpg",
     alt: "Pete Currey with Project 01 Glacier White",
     status: "APPROVED_SECONDARY" as ImageStatus,
     view: "DETAIL",
@@ -69,7 +69,7 @@ export const glacierWhite = {
 
   /** Static PNG version of hero */
   heroPng: {
-    src: "/images/project01-glacier-white.png",
+    src: "/images/project01-glacier-white.jpg",
     alt: "Project 01 Glacier White — hero PNG",
     status: "APPROVED_SECONDARY" as ImageStatus,
     view: "SIDE",
@@ -103,7 +103,7 @@ export const nakedCarbon = {
 
   /** Standalone dark bike */
   standalone: {
-    src: "/images/story/standalone-black-bike-presentation.png",
+    src: "/images/story/standalone-black-bike-presentation.jpg",
     alt: "Project 01 Naked Carbon — standalone presentation",
     status: "APPROVED_SECONDARY" as ImageStatus,
     view: "SIDE",
@@ -112,7 +112,7 @@ export const nakedCarbon = {
 
   /** Pete inspecting the Naked Carbon frame */
   inspection: {
-    src: "/images/story/pete-currey-naked-carbon-inspection.png",
+    src: "/images/story/pete-currey-naked-carbon-inspection.jpg",
     alt: "Pete Currey inspecting Naked Carbon frame detail",
     status: "APPROVED_SECONDARY" as ImageStatus,
     view: "DETAIL",
@@ -128,7 +128,7 @@ export const environmentImages = {
   /**
    * Alpine testing context — ASSET PENDING
    * Original file (project01-alpine-testing.png) was byte-identical to
-   * engineering-workshop.png and has been deleted (defect 4a, 2026-08-09).
+   * engineering-workshop.jpg and has been deleted (defect 4a, 2026-08-09).
    * Genuine field imagery planned for 2027 prototype programme.
    */
   alpineTesting: {
@@ -140,7 +140,7 @@ export const environmentImages = {
 
   /** Lab stress / fatigue bench */
   labFatigue: {
-    src: "/images/story/laboratory-stress-fatigue-bench.png",
+    src: "/images/story/laboratory-stress-fatigue-bench.jpg",
     alt: "Project 01 chassis on laboratory stress fatigue bench",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -148,7 +148,7 @@ export const environmentImages = {
 
   /** CAD / engineering material */
   cadEngineering: {
-    src: "/images/story/technical-cad-engineering-material.png",
+    src: "/images/story/technical-cad-engineering-material.jpg",
     alt: "Project 01 CAD engineering documentation",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -156,7 +156,7 @@ export const environmentImages = {
 
   /** Kinematic analysis */
   kinematicAnalysis: {
-    src: "/images/story/kinematic-dynamics-analysis.png",
+    src: "/images/story/kinematic-dynamics-analysis.jpg",
     alt: "Project 01 kinematic dynamics analysis",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -164,7 +164,7 @@ export const environmentImages = {
 
   /** Reverse engineering telemetry */
   telemetry: {
-    src: "/images/story/reverse-engineering-telemetry.png",
+    src: "/images/story/reverse-engineering-telemetry.jpg",
     alt: "Project 01 reverse engineering telemetry data",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -172,7 +172,7 @@ export const environmentImages = {
 
   /** Workshop chassis assembly */
   workshopAssembly: {
-    src: "/images/story/workshop-chassis-assembly.png",
+    src: "/images/story/workshop-chassis-assembly.jpg",
     alt: "Project 01 chassis in workshop assembly",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -180,7 +180,7 @@ export const environmentImages = {
 
   /** Carbon fibre layup development */
   carbonLayup: {
-    src: "/images/story/carbon-fiber-layup-development.png",
+    src: "/images/story/carbon-fiber-layup-development.jpg",
     alt: "Carbon fibre layup development process",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -188,7 +188,7 @@ export const environmentImages = {
 
   /** Complete machine integration */
   completeMachine: {
-    src: "/images/story/complete-machine-integration.png",
+    src: "/images/story/complete-machine-integration.jpg",
     alt: "Project 01 complete machine integration",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,
@@ -196,7 +196,7 @@ export const environmentImages = {
 
   /** Component development bench */
   componentBench: {
-    src: "/images/story/component-development-bench.png",
+    src: "/images/story/component-development-bench.jpg",
     alt: "Component development bench testing",
     status: "APPROVED_MASTER" as ImageStatus,
     finish: "BOTH" as const,

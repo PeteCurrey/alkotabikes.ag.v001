@@ -30,8 +30,8 @@ export interface MediaAsset {
 export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   "p01-glacier-white": {
     id: "p01-glacier-white",
-    filename: "project01-glacier-white.png",
-    publicPath: "/images/project01-glacier-white.png",
+    filename: "project01-glacier-white.jpg",
+    publicPath: "/images/project01-glacier-white.jpg",
     assetType: "PRODUCT_HERO",
     product: "PROJECT 01",
     brand: "ALKOTA",
@@ -58,8 +58,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "fox-38-dark": {
     id: "fox-38-dark",
-    filename: "fox-38-factory-dark.png",
-    publicPath: "/images/components/fox-38-factory-dark.png",
+    filename: "fox-38-factory-dark.jpg",
+    publicPath: "/images/components/fox-38-factory-dark.jpg",
     assetType: "COMPONENT_DARK",
     product: "38 FACTORY GRIP X2",
     brand: "FOX",
@@ -72,8 +72,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "fox-38-alpine": {
     id: "fox-38-alpine",
-    filename: "fox-38-factory-alpine.png",
-    publicPath: "/images/components/fox-38-factory-alpine.png",
+    filename: "fox-38-factory-alpine.jpg",
+    publicPath: "/images/components/fox-38-factory-alpine.jpg",
     assetType: "COMPONENT_ALPINE",
     product: "38 FACTORY GRIP X2",
     brand: "FOX",
@@ -86,8 +86,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "hope-v6ti-dark": {
     id: "hope-v6ti-dark",
-    filename: "hope-evo-v6ti-dark.png",
-    publicPath: "/images/components/hope-evo-v6ti-dark.png",
+    filename: "hope-evo-v6ti-dark.jpg",
+    publicPath: "/images/components/hope-evo-v6ti-dark.jpg",
     assetType: "COMPONENT_DARK",
     product: "EVO V6Ti",
     brand: "HOPE TECHNOLOGY",
@@ -100,8 +100,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "sram-xx-dark": {
     id: "sram-xx-dark",
-    filename: "sram-xx-eagle-axs-dark.png",
-    publicPath: "/images/components/sram-xx-eagle-axs-dark.png",
+    filename: "sram-xx-eagle-axs-dark.jpg",
+    publicPath: "/images/components/sram-xx-eagle-axs-dark.jpg",
     assetType: "COMPONENT_DARK",
     product: "XX EAGLE AXS TRANSMISSION",
     brand: "SRAM",
@@ -114,8 +114,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "dt-swiss-dark": {
     id: "dt-swiss-dark",
-    filename: "dt-swiss-exc-1200-dark.png",
-    publicPath: "/images/components/dt-swiss-exc-1200-dark.png",
+    filename: "dt-swiss-exc-1200-dark.jpg",
+    publicPath: "/images/components/dt-swiss-exc-1200-dark.jpg",
     assetType: "COMPONENT_DARK",
     product: "EXC 1200 CLASSIC",
     brand: "DT SWISS",
@@ -128,8 +128,8 @@ export const MEDIA_REGISTRY: Record<string, MediaAsset> = {
   },
   "maxxis-assegai-dark": {
     id: "maxxis-assegai-dark",
-    filename: "maxxis-assegai-dark.png",
-    publicPath: "/images/components/maxxis-assegai-dark.png",
+    filename: "maxxis-assegai-dark.jpg",
+    publicPath: "/images/components/maxxis-assegai-dark.jpg",
     assetType: "COMPONENT_DARK",
     product: "ASSEGAI TAN WALL",
     brand: "MAXXIS",

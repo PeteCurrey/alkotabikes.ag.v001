@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import siteUrl from "@/lib/env";
 import type { RegionCode } from "@/lib/regions";
-import DealersClient from "../dealers/DealersClient";
+import PartnerRecruitmentClient from "./PartnerRecruitmentClient";
 
 export async function generateMetadata({
   params,
@@ -30,7 +30,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: `${title} | Alkota Cycles`,
+      title,
       description,
       url: `${siteUrl}/${region}/partners`,
     },
@@ -59,7 +59,7 @@ export default async function PartnersPage({
           <li>APN-04: BRAND ALIGNMENT</li>
         </ul>
       </div>
-      <DealersClient />
+      <PartnerRecruitmentClient />
     </>
   );
 }

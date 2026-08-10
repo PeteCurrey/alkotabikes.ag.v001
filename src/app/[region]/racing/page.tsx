@@ -31,7 +31,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${title} | Alkota Cycles`,
       description,
-      images: ["/images/story/mountain-event-paddock-environment.png"],
+      images: ["/images/story/mountain-event-paddock-environment.jpg"],
     },
   };
 }

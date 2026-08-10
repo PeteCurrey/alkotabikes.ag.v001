@@ -84,10 +84,10 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "Project 01",
     variant: "Full Carbon Development Chassis",
     status: "BASELINE",
-    officialImage: "/images/story/workshop-chassis-assembly.png",
+    officialImage: "/images/story/workshop-chassis-assembly.jpg",
     integrationImages: [
-      "/images/story/carbon-fiber-layup-development.png",
-      "/images/story/chassis-engineering-review.png",
+      "/images/story/carbon-fiber-layup-development.jpg",
+      "/images/story/chassis-engineering-review.jpg",
     ],
     description:
       "Full-carbon all-mountain chassis. Low-pivot four-bar / Horst-style rear suspension family. 160 mm front / 150 mm rear development targets.",
@@ -122,9 +122,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "38 Factory",
     variant: "160 mm · GRIP X2 Damper · Kashima Coat · 44 mm offset",
     status: "BASELINE",
-    officialImage: "/images/components/fox-38-factory-dark.png",
+    officialImage: "/images/components/fox-38-factory-dark.jpg",
     integrationImages: [
-      "/images/components/fox-38-factory-alpine.png",
+      "/images/components/fox-38-factory-alpine.jpg",
     ],
     description:
       "FOX 38 Factory 160 mm travel fork with GRIP X2 damper. Kashima coated stanchions. 44 mm offset. The current development baseline for Project 01 front suspension.",
@@ -158,9 +158,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "FLOAT X2 Factory",
     variant: "205 × 65 mm · Trunnion Mount · VVC · EVOL Air Sleeve",
     status: "BASELINE",
-    officialImage: "/images/components/fox-float-x2-dark.png",
+    officialImage: "/images/components/fox-float-x2-dark.jpg",
     integrationImages: [
-      "/images/components/fox-float-x2-alpine.png",
+      "/images/components/fox-float-x2-alpine.jpg",
     ],
     description:
       "FOX FLOAT X2 Factory rear shock. Trunnion mount. VVC (Variable Volume Chamber) rebound and compression. EVOL Air Sleeve. Current development baseline for Project 01 rear suspension.",
@@ -193,10 +193,10 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "EVO V6Ti",
     variant: "Front · 6-Piston · Titanium Hardware",
     status: "BASELINE",
-    officialImage: "/images/components/hope-evo-v6ti-dark.png",
+    officialImage: "/images/components/hope-evo-v6ti-dark.jpg",
     integrationImages: [
-      "/images/components/hope-evo-v6ti-alpine.png",
-      "/images/components/hope-evo-v6ti-angle-dark.png",
+      "/images/components/hope-evo-v6ti-alpine.jpg",
+      "/images/components/hope-evo-v6ti-angle-dark.jpg",
     ],
     description:
       "Hope EVO V6Ti front brake. 6-piston titanium hardware. Hope's flagship downhill and enduro brake. UK-manufactured CNC precision.",
@@ -228,7 +228,7 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "TR4",
     variant: "Rear · 4-Piston · CNC Silver",
     status: "BASELINE",
-    officialImage: "/images/components/hope-tr4-silver-alpine.png",
+    officialImage: "/images/components/hope-tr4-silver-alpine.jpg",
     integrationImages: [],
     description:
       "Hope TR4 rear brake. 4-piston CNC aluminium. Asymmetric pairing with the EVO V6Ti front. UK-manufactured.",
@@ -259,9 +259,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "EXC 1200",
     variant: "Carbon · 29 inch · Boost · Centre-Lock",
     status: "BASELINE",
-    officialImage: "/images/components/dt-swiss-exc-1200-dark.png",
+    officialImage: "/images/components/dt-swiss-exc-1200-dark.jpg",
     integrationImages: [
-      "/images/components/dt-swiss-exc-1200-alpine.png",
+      "/images/components/dt-swiss-exc-1200-alpine.jpg",
     ],
     description:
       "DT Swiss EXC 1200 carbon enduro wheels. 29 inch. Boost spacing. Centre-Lock disc interface. Current development baseline for Project 01 wheel platform.",
@@ -293,9 +293,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "Assegai",
     variant: "Front · 29 × 2.5 · MaxTerra · Exo+ · Tubeless Ready",
     status: "BASELINE",
-    officialImage: "/images/components/maxxis-assegai-dark.png",
+    officialImage: "/images/components/maxxis-assegai-dark.jpg",
     integrationImages: [
-      "/images/components/maxxis-assegai-alpine.png",
+      "/images/components/maxxis-assegai-alpine.jpg",
     ],
     description:
       "Maxxis Assegai front tyre. 29 × 2.5 inch. MaxTerra compound. Exo+ carcass. Tubeless ready.",
@@ -327,9 +327,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "Minion DHR II",
     variant: "Rear · 29 × 2.4 · MaxTerra · Exo+ · Tubeless Ready · Tan Wall",
     status: "BASELINE",
-    officialImage: "/images/components/maxxis-minion-dhr-dark.png",
+    officialImage: "/images/components/maxxis-minion-dhr-dark.jpg",
     integrationImages: [
-      "/images/components/maxxis-minion-dhr-alpine.png",
+      "/images/components/maxxis-minion-dhr-alpine.jpg",
     ],
     description:
       "Maxxis Minion DHR II rear tyre. 29 × 2.4 inch. MaxTerra compound. Exo+ carcass. Tan wall treatment. Tubeless ready.",
@@ -363,9 +363,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "XX Eagle AXS Transmission",
     variant: "12-Speed · Wireless · Hangerless · Full Mount",
     status: "BASELINE",
-    officialImage: "/images/components/sram-xx-eagle-axs-dark.png",
+    officialImage: "/images/components/sram-xx-eagle-axs-dark.jpg",
     integrationImages: [
-      "/images/components/sram-xx-eagle-axs-alpine.png",
+      "/images/components/sram-xx-eagle-axs-alpine.jpg",
     ],
     description:
       "SRAM XX Eagle AXS Transmission. 12-speed wireless electronic shifting. Hangerless direct-mount derailleur. Full mount interface eliminates the derailleur hanger.",
@@ -397,9 +397,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "Fatbar Carbon",
     variant: "35 mm · 800 mm width · Development Rise TBC",
     status: "BASELINE",
-    officialImage: "/images/components/renthal-fatbar-dark.png",
+    officialImage: "/images/components/renthal-fatbar-dark.jpg",
     integrationImages: [
-      "/images/components/renthal-fatbar-alpine.png",
+      "/images/components/renthal-fatbar-alpine.jpg",
     ],
     description:
       "Renthal Fatbar Carbon handlebar. 35 mm clamp diameter. 800 mm width as development baseline. Rise to be confirmed alongside final cockpit geometry.",
@@ -431,9 +431,9 @@ export const PROJECT01_COMPONENTS: Project01Component[] = [
     product: "GE1 Evo",
     variant: "Enduro · Small or Large",
     status: "PLANNED",
-    officialImage: "/images/components/ergon-ge1-evo-dark.png",
+    officialImage: "/images/components/ergon-ge1-evo-dark.jpg",
     integrationImages: [
-      "/images/components/ergon-ge1-evo-alpine.png",
+      "/images/components/ergon-ge1-evo-alpine.jpg",
     ],
     description:
       "Ergon GE1 Evo enduro grip. Ergonomic wing shape designed for one or two-finger braking position. Rubber compound selected for durability and feel.",

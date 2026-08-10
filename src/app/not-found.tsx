@@ -6,6 +6,10 @@ import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 export const metadata = {
   title: "404 Route Not Found",
   description: "The requested route does not exist in the Alkota Cycles platform index.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function NotFound() {

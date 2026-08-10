@@ -8,7 +8,7 @@ import { Compass, ImageOff } from "lucide-react";
  * ASSET DEFECT RESOLUTION — 2026-08-09
  *
  * The asset previously used here (project01-alpine-testing.png) was byte-identical
- * to public/images/engineering-workshop.png — a workshop photograph, not alpine
+ * to public/images/engineering-workshop.jpg — a workshop photograph, not alpine
  * terrain. It has been deleted. This component renders an explicit awaiting-asset
  * state until a genuine field image is supplied.
  *

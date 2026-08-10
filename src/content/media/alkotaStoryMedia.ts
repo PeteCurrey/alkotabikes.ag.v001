@@ -40,7 +40,7 @@ export interface StoryMediaAsset {
 export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   peteFounderPortrait: {
     id: "pete-founder-portrait",
-    src: "/images/story/pete-currey-founder-portrait.png",
+    src: "/images/story/pete-currey-founder-portrait.jpg",
     category: "founder",
     subjects: ["Pete Currey", "Founder"],
     bikeFinish: "NONE",
@@ -53,7 +53,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   peteWorkshopLab: {
     id: "pete-workshop-lab",
-    src: "/images/story/pete-currey-workshop-laboratory.png",
+    src: "/images/story/pete-currey-workshop-laboratory.jpg",
     category: "workshop",
     subjects: ["Pete Currey", "Workshop", "CAD"],
     bikeFinish: "CARBON",
@@ -66,7 +66,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   peteGlacierWhite: {
     id: "pete-glacier-white",
-    src: "/images/story/pete-currey-glacier-white-presentation.png",
+    src: "/images/story/pete-currey-glacier-white-presentation.jpg",
     category: "founder",
     subjects: ["Pete Currey", "Project 01", "Glacier White"],
     bikeFinish: "GLACIER",
@@ -79,7 +79,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   peteNakedCarbon: {
     id: "pete-naked-carbon",
-    src: "/images/story/pete-currey-naked-carbon-inspection.png",
+    src: "/images/story/pete-currey-naked-carbon-inspection.jpg",
     category: "founder",
     subjects: ["Pete Currey", "Project 01", "Naked Carbon"],
     bikeFinish: "CARBON",
@@ -92,7 +92,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   peteAlpineArchitectural: {
     id: "pete-alpine-architectural",
-    src: "/images/story/pete-currey-alpine-architectural.png",
+    src: "/images/story/pete-currey-alpine-architectural.jpg",
     category: "alpine",
     subjects: ["Pete Currey", "Alpine"],
     bikeFinish: "NONE",
@@ -104,7 +104,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   peteRidingHistory: {
     id: "pete-riding-history",
-    src: "/images/story/pete-currey-riding-history-origin.png",
+    src: "/images/story/pete-currey-riding-history-origin.jpg",
     category: "origin",
     subjects: ["Pete Currey", "Riding History"],
     bikeFinish: "NONE",
@@ -116,7 +116,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   paddockEnvironment: {
     id: "paddock-environment",
-    src: "/images/story/mountain-event-paddock-environment.png",
+    src: "/images/story/mountain-event-paddock-environment.jpg",
     category: "event",
     subjects: ["Paddock", "Races", "Culture"],
     bikeFinish: "NONE",
@@ -128,7 +128,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   tradeShowPresentation: {
     id: "trade-show-presentation",
-    src: "/images/story/trade-show-paddock-presentation.png",
+    src: "/images/story/trade-show-paddock-presentation.jpg",
     category: "industry",
     subjects: ["Trade Show", "Industry"],
     bikeFinish: "GLACIER",
@@ -140,7 +140,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   founderRiderDialogue: {
     id: "founder-rider-dialogue",
-    src: "/images/story/founder-rider-dialogue-session.png",
+    src: "/images/story/founder-rider-dialogue-session.jpg",
     category: "racing",
     subjects: ["Pete Currey", "Rider Dialogue", "Feedback"],
     bikeFinish: "PROTOTYPE",
@@ -152,7 +152,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   engineeringDesignMeeting: {
     id: "engineering-design-meeting",
-    src: "/images/story/engineering-design-meeting.png",
+    src: "/images/story/engineering-design-meeting.jpg",
     category: "design",
     subjects: ["Design Meeting", "CAD", "Kinematics"],
     bikeFinish: "NONE",
@@ -164,7 +164,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   chassisEngineeringReview: {
     id: "chassis-engineering-review",
-    src: "/images/story/chassis-engineering-review.png",
+    src: "/images/story/chassis-engineering-review.jpg",
     category: "engineering",
     subjects: ["Chassis", "Engineering", "CAD"],
     bikeFinish: "CARBON",
@@ -176,7 +176,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   carbonLayupDevelopment: {
     id: "carbon-layup-development",
-    src: "/images/story/carbon-fiber-layup-development.png",
+    src: "/images/story/carbon-fiber-layup-development.jpg",
     category: "carbon",
     subjects: ["Carbon Fiber", "Layup", "Composite"],
     bikeFinish: "CARBON",
@@ -188,7 +188,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   componentDevelopmentBench: {
     id: "component-development-bench",
-    src: "/images/story/component-development-bench.png",
+    src: "/images/story/component-development-bench.jpg",
     category: "component",
     subjects: ["Components", "CNC", "Brakes"],
     bikeFinish: "NONE",
@@ -200,7 +200,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   workshopChassisAssembly: {
     id: "workshop-chassis-assembly",
-    src: "/images/story/workshop-chassis-assembly.png",
+    src: "/images/story/workshop-chassis-assembly.jpg",
     category: "workshop",
     subjects: ["Assembly", "Build", "Workshop"],
     bikeFinish: "GLACIER",
@@ -212,7 +212,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   standaloneWhiteBike: {
     id: "standalone-white-bike",
-    src: "/images/story/standalone-white-bike-presentation.png",
+    src: "/images/story/standalone-white-bike-presentation.jpg",
     category: "product",
     subjects: ["Project 01", "Glacier White"],
     bikeFinish: "GLACIER",
@@ -224,7 +224,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   standaloneBlackBike: {
     id: "standalone-black-bike",
-    src: "/images/story/standalone-black-bike-presentation.png",
+    src: "/images/story/standalone-black-bike-presentation.jpg",
     category: "product",
     subjects: ["Project 01", "Naked Carbon"],
     bikeFinish: "CARBON",
@@ -236,7 +236,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   technicalCadMaterial: {
     id: "technical-cad-material",
-    src: "/images/story/technical-cad-engineering-material.png",
+    src: "/images/story/technical-cad-engineering-material.jpg",
     category: "engineering",
     subjects: ["CAD", "Blueprint"],
     bikeFinish: "NONE",
@@ -248,7 +248,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   frameDevelopmentMould: {
     id: "frame-development-mould",
-    src: "/images/story/frame-development-mould-tooling.png",
+    src: "/images/story/frame-development-mould-tooling.jpg",
     category: "carbon",
     subjects: ["Mould", "Tooling", "Manufacturing"],
     bikeFinish: "NONE",
@@ -260,7 +260,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   reverseEngineeringTelemetry: {
     id: "reverse-engineering-telemetry",
-    src: "/images/story/reverse-engineering-telemetry.png",
+    src: "/images/story/reverse-engineering-telemetry.jpg",
     category: "testing",
     subjects: ["Telemetry", "Reverse Engineering"],
     bikeFinish: "PROTOTYPE",
@@ -272,7 +272,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   kinematicDynamicsAnalysis: {
     id: "kinematic-dynamics-analysis",
-    src: "/images/story/kinematic-dynamics-analysis.png",
+    src: "/images/story/kinematic-dynamics-analysis.jpg",
     category: "design",
     subjects: ["Kinematics", "Dynamics"],
     bikeFinish: "NONE",
@@ -284,7 +284,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   prototypeBuildValidation: {
     id: "prototype-build-validation",
-    src: "/images/story/prototype-build-validation.png",
+    src: "/images/story/prototype-build-validation.jpg",
     category: "workshop",
     subjects: ["Prototype", "Validation"],
     bikeFinish: "PROTOTYPE",
@@ -296,7 +296,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   completeMachineIntegration: {
     id: "complete-machine-integration",
-    src: "/images/story/complete-machine-integration.png",
+    src: "/images/story/complete-machine-integration.jpg",
     category: "product",
     subjects: ["Complete Machine", "Integration"],
     bikeFinish: "GLACIER",
@@ -308,7 +308,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   hauteSavoieAlpineTest: {
     id: "haute-savoie-alpine-test",
-    src: "/images/story/haute-savoie-alpine-field-test.png",
+    src: "/images/story/haute-savoie-alpine-field-test.jpg",
     category: "testing",
     subjects: ["Haute-Savoie", "Alpine", "Field Test"],
     bikeFinish: "GLACIER",
@@ -320,7 +320,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   laboratoryStressFatigue: {
     id: "laboratory-stress-fatigue",
-    src: "/images/story/laboratory-stress-fatigue-bench.png",
+    src: "/images/story/laboratory-stress-fatigue-bench.jpg",
     category: "testing",
     subjects: ["Laboratory", "Fatigue", "Stress Test"],
     bikeFinish: "CARBON",
@@ -332,7 +332,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   alpineTrailTestingAction: {
     id: "alpine-trail-testing-action",
-    src: "/images/story/alpine-trail-testing-action.png",
+    src: "/images/story/alpine-trail-testing-action.jpg",
     category: "alpine",
     subjects: ["Trail", "Action", "Riding"],
     bikeFinish: "GLACIER",

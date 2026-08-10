@@ -20,48 +20,48 @@ export const brandAssets = {
   // Environment & Engineering Photography
   // NOTE: project01AlpineTesting removed 2026-08-09 — was byte-identical to engineeringWorkshop.
   // TerrainBench renders awaiting-asset state pending genuine field imagery (planned 2027).
-  engineeringWorkshop: "/images/engineering-workshop.png",
+  engineeringWorkshop: "/images/engineering-workshop.jpg",
 
   // Social Sharing Card
   ogImage: "/og-image.png",
 } as const;
 
 export const componentAssets = {
-  overviewGrid: "/images/components/component-overview-grid.png",
+  overviewGrid: "/images/components/component-overview-grid.jpg",
   
   // Brakes (Hope EVO V6Ti Front / Hope TR4 Rear)
-  hopeEvoDark: "/images/components/hope-evo-v6ti-dark.png",
-  hopeEvoAngleDark: "/images/components/hope-evo-v6ti-angle-dark.png",
-  hopeEvoAlpine: "/images/components/hope-evo-v6ti-alpine.png",
-  hopeTr4SilverAlpine: "/images/components/hope-tr4-silver-alpine.png",
+  hopeEvoDark: "/images/components/hope-evo-v6ti-dark.jpg",
+  hopeEvoAngleDark: "/images/components/hope-evo-v6ti-angle-dark.jpg",
+  hopeEvoAlpine: "/images/components/hope-evo-v6ti-alpine.jpg",
+  hopeTr4SilverAlpine: "/images/components/hope-tr4-silver-alpine.jpg",
   
   // Suspension (FOX 38 Factory Fork / FOX Float X2 Rear Shock)
-  fox38Dark: "/images/components/fox-38-factory-dark.png",
-  fox38Alpine: "/images/components/fox-38-factory-alpine.png",
-  foxFloatX2Dark: "/images/components/fox-float-x2-dark.png",
-  foxFloatX2Alpine: "/images/components/fox-float-x2-alpine.png",
+  fox38Dark: "/images/components/fox-38-factory-dark.jpg",
+  fox38Alpine: "/images/components/fox-38-factory-alpine.jpg",
+  foxFloatX2Dark: "/images/components/fox-float-x2-dark.jpg",
+  foxFloatX2Alpine: "/images/components/fox-float-x2-alpine.jpg",
 
   // Drivetrain (SRAM XX Eagle AXS Transmission)
-  sramXxEagleDark: "/images/components/sram-xx-eagle-axs-dark.png",
-  sramXxEagleAlpine: "/images/components/sram-xx-eagle-axs-alpine.png",
+  sramXxEagleDark: "/images/components/sram-xx-eagle-axs-dark.jpg",
+  sramXxEagleAlpine: "/images/components/sram-xx-eagle-axs-alpine.jpg",
 
   // Wheels (DT Swiss EXC 1200 Carbon)
-  dtSwissExc1200Dark: "/images/components/dt-swiss-exc-1200-dark.png",
-  dtSwissExc1200Alpine: "/images/components/dt-swiss-exc-1200-alpine.png",
+  dtSwissExc1200Dark: "/images/components/dt-swiss-exc-1200-dark.jpg",
+  dtSwissExc1200Alpine: "/images/components/dt-swiss-exc-1200-alpine.jpg",
 
   // Tyres (Maxxis Assegai Front / Maxxis Minion DHR II Rear Tan Wall)
-  maxxisAssegaiDark: "/images/components/maxxis-assegai-dark.png",
-  maxxisAssegaiAlpine: "/images/components/maxxis-assegai-alpine.png",
-  maxxisMinionDhrDark: "/images/components/maxxis-minion-dhr-dark.png",
-  maxxisMinionDhrAlpine: "/images/components/maxxis-minion-dhr-alpine.png",
+  maxxisAssegaiDark: "/images/components/maxxis-assegai-dark.jpg",
+  maxxisAssegaiAlpine: "/images/components/maxxis-assegai-alpine.jpg",
+  maxxisMinionDhrDark: "/images/components/maxxis-minion-dhr-dark.jpg",
+  maxxisMinionDhrAlpine: "/images/components/maxxis-minion-dhr-alpine.jpg",
 
   // Cockpit (Renthal Fatbar Carbon & Apex Stem)
-  renthalFatbarDark: "/images/components/renthal-fatbar-dark.png",
-  renthalFatbarAlpine: "/images/components/renthal-fatbar-alpine.png",
+  renthalFatbarDark: "/images/components/renthal-fatbar-dark.jpg",
+  renthalFatbarAlpine: "/images/components/renthal-fatbar-alpine.jpg",
 
   // Touchpoints (Ergon GE1 Evo Grips)
-  ergonGe1Dark: "/images/components/ergon-ge1-evo-dark.png",
-  ergonGe1Alpine: "/images/components/ergon-ge1-evo-alpine.png",
+  ergonGe1Dark: "/images/components/ergon-ge1-evo-dark.jpg",
+  ergonGe1Alpine: "/images/components/ergon-ge1-evo-alpine.jpg",
 } as const;
 
 export type BrandAssetKey = keyof typeof brandAssets;

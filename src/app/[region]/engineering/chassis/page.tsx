@@ -92,54 +92,90 @@ export default function ChassisEngineeringPage() {
           </div>
 
           {/* Deep Content Body */}
-          <div className="space-y-8 font-sans text-sm sm:text-base text-[#9ab0c4] leading-relaxed font-light">
+          <div className="space-y-10 font-sans text-sm sm:text-base text-[#9ab0c4] leading-relaxed font-light">
             <section className="space-y-4">
               <h2 className="font-display text-2xl text-white uppercase tracking-tight">1. MONOCOQUE VS TUBE-TO-TUBE CONSTRUCTION</h2>
               <p>
                 Two primary manufacturing paradigms govern carbon fiber chassis production: full monocoque molding and bonded tube-to-tube assembly. 
                 In a monocoque architecture, the front triangle (or complete frame) is laid up inside a single continuous aluminum female mold cavity using expandable internal bladders. 
-                This eliminates mechanical joints, continuous fibers flow unimpeded around critical stress nodes (such as the headtube junction and bottom bracket core), and structural wall thickness can be continuous without bond gaps.
+                This eliminates mechanical joints, continuous fibers flow unimpeded around critical stress nodes (such as the headtube junction and bottom bracket core), and structural wall thickness can be continuous without bond gaps or artificial thickness transitions.
               </p>
               <p>
                 Conversely, tube-to-tube construction relies on pre-cured carbon tubes bonded together with wrapped joint overwraps. 
-                While tube-to-tube allows rapid geometry customization for custom one-off frames, it introduces lap joints that create stress concentrations and add parasitic adhesive weight. 
-                For aggressive all-mountain chassis applications, full monocoque construction yields superior strength-to-weight ratios and structural reliability under fatigue loading.
+                While tube-to-tube allows rapid geometry customization for custom one-off frames without investing in expensive aluminum toolsets, it introduces lap joints that create severe stress concentration points and add parasitic adhesive weight. 
+                For aggressive all-mountain chassis applications subject to high impact velocity, full monocoque construction yields vastly superior strength-to-weight ratios and structural reliability under high-cycle fatigue loading.
+              </p>
+              <p>
+                Furthermore, monocoque molding enables variable internal mandrel bladder pressure up to 12 bar during cure. This high compaction ratio consolidates prepreg layers, expelling void pockets and resin-rich zones that otherwise act as crack initiation sites under cyclic stress.
               </p>
             </section>
 
             <section className="space-y-4">
               <h2 className="font-display text-2xl text-white uppercase tracking-tight">2. FIBER ORIENTATION &amp; LOAD PATH ALIGNMENT</h2>
               <p>
-                Unidirectional (UD) carbon fiber possesses exceptional tensile strength strictly along the direction of its fibers. 
-                Consequently, chassis engineering requires mapping complex multi-axis load cases into precise ply orientation schedules. 
-                Fibers laid at 0° relative to the tube axis resist axial bending; fibers laid at ±45° provide torsional resistance against twisting moments during out-of-saddle sprinting and hard cornering; 
-                and 90° hoop plies prevent structural crushing under localized impact loads.
+                Unidirectional (UD) carbon fiber possesses exceptional tensile strength strictly along the direction of its constituent filaments. 
+                Consequently, chassis engineering requires mapping complex multi-axis load cases into precise ply orientation schedules across every millimeter of the frame surface. 
+                Fibers laid at 0° relative to the tube axis resist axial bending under heavy braking and landing compressions; fibers laid at ±45° provide torsional resistance against twisting moments during out-of-saddle sprinting and hard off-camber cornering; 
+                and 90° hoop plies prevent structural crushing under localized rock strike impacts.
               </p>
               <p>
-                By layering different ply angles in specific sequences—placing high-tensile 0° fibers along the top of the downtube and bottom of the toptube—the chassis is optimized for real-world impact vectors without adding unnecessary material where stress is minimal.
+                By layering different ply angles in specific sequences—placing high-modulus 0° fibers along the top of the downtube and bottom of the toptube where tension forces peak—the chassis is optimized for real-world impact vectors without adding unnecessary dead material where stress is minimal.
+              </p>
+              <p>
+                In high-stress transition regions such as the shock mount cradle and main pivot junction, multi-axial plies (0°/45°/-45°/90°) are interleaved to distribute point loads into the surrounding wall structure seamlessly, preventing inter-laminar shear failure under shock bottom-out spikes.
               </p>
             </section>
 
             <section className="space-y-4">
               <h2 className="font-display text-2xl text-white uppercase tracking-tight">3. TORSIONAL VS LATERAL RIGIDITY &amp; TUNED COMPLIANCE</h2>
               <p>
-                A common misconception in bicycle design is that maximum stiffness in all planes equals maximum performance. In truth, an infinitely stiff frame deflects violently off off-camber roots and rocks, resulting in rider fatigue and loss of traction.
+                A common misconception in mountain bicycle frame design is that maximum stiffness in all planes equals maximum performance. In truth, an infinitely stiff frame deflects violently off off-camber roots and wet rock gardens, resulting in severe rider fatigue, arm pump, and loss of directional control.
               </p>
               <p>
-                The engineering objective is asymmetric compliance: maximizing torsional rigidity between the headtube and rear axle to keep wheels tracking accurately in deep ruts, 
-                while engineering controlled lateral and vertical flex into the seatstays. Controlled vertical compliance allows the chassis to deform slightly under lateral impact, keeping the tire patch planted on uneven terrain.
+                The primary engineering objective is asymmetric compliance: maximizing torsional rigidity between the headtube and rear axle to keep wheels tracking accurately in deep ruts, 
+                while engineering controlled lateral and vertical flex into the seatstays and upper rocker link. Controlled vertical compliance allows the chassis to deform slightly under high lateral impact, keeping the tire contact patch planted on uneven terrain.
+              </p>
+              <p>
+                Achieving this dynamic equilibrium requires separate structural tuning of the top tube and seatstays. Flattened tube profiles with thin wall plies along the vertical plane allow micro-deflection under chassis chatter, acting as an unsprung structural damper that works in harmony with the rear shock absorber.
               </p>
             </section>
 
             <section className="space-y-4">
               <h2 className="font-display text-2xl text-white uppercase tracking-tight">4. THREADED BSA INTERFACES &amp; PIVOT BEARING SELECTION</h2>
               <p>
-                Press-fit bottom bracket standards (such as BB92 or PF30) rely on tight manufacturing tolerances inside carbon shells. Over time, micro-deformations under pedaling torque lead to creaking and bearing looseness. 
-                A threaded BSA 73mm bottom bracket interface utilizes a co-molded or bonded aluminum insert with precision threads. This guarantees zero creaking, extends bearing life, and allows straightforward workshop maintenance with standard tools.
+                Press-fit bottom bracket standards (such as BB92 or PF30) rely on tight manufacturing tolerances inside composite shells. Over time, micro-deformations under pedaling torque lead to shell wall wear, creaking, and accelerated bearing looseness. 
+                A threaded BSA 73mm bottom bracket interface utilizes a co-molded or bonded aluminum insert with precision threads. This guarantees zero creaking, extends bearing life, and allows straightforward workshop maintenance with standard shop tools.
               </p>
               <p>
                 Similarly, suspension pivot architecture demands full-complement (MAX) sealed cartridge bearings with no ball retainers, allowing for 30–40% higher static load capacity compared to standard radial bearings. 
                 Dual-sealed pivot hardware with collet-expanding axle pins prevents shaft wear and eliminates lateral pivot slop under heavy G-out compressions.
+              </p>
+              <p>
+                By housing bearings inside precision-machined aluminum caps recessed into carbon pivot bosses, bearing press fits are completely isolated from composite tolerances, ensuring silky rotation and zero frame bore ovalization throughout years of hard riding.
+              </p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="font-display text-2xl text-white uppercase tracking-tight">5. STRUCTURAL ANALYSIS &amp; FEA MESH CONVERGENCE</h2>
+              <p>
+                Before physical molds are cut, Finite Element Analysis (FEA) models subject digital chassis representations to simulated real-world ISO 4210 load cases alongside extreme over-test impact vectors. 
+                Von Mises stress distribution maps identify structural stress concentrations, guiding ply additions and relief cutouts prior to physical prototype layup.
+              </p>
+              <p>
+                Mesh convergence testing ensures that stress predictions around small-radius transitions—such as internal cable routing ports and brake mount posts—reflect realistic strain gradients rather than mathematical artifacts. 
+                Simulated drop tests at 1.5x EN safety standards validate total structural energy absorption capacity before physical fatigue rig testing commences.
+              </p>
+            </section>
+
+            <section className="space-y-4">
+              <h2 className="font-display text-2xl text-white uppercase tracking-tight">6. COMPOSITE IMPACT DYNAMICS &amp; GALVANIC ISOLATION</h2>
+              <p>
+                Carbon fiber composites excel under fatigue and high-cycle tensile loads but require protection against localized rock strike impacts on the downtube belly. 
+                Co-curing outer protective scrim layers containing high-impact woven glass or aramid fibers disperses strike energy across a broader surface area, preventing outer laminate delamination.
+              </p>
+              <p>
+                Furthermore, direct contact between carbon fiber and aluminum hardware creates a galvanic potential difference that induces rapid aluminum corrosion in wet, salty environments. 
+                Engineered fiberglass barrier plies (non-conductive 0.1mm glass cloth) are interleaved at all metallic insertion points—such as bottle cage rivnuts, brake mounts, and pivot bearing sleeves—completely isolating carbon fibers from metal hardware.
               </p>
             </section>
           </div>

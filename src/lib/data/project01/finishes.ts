@@ -20,7 +20,7 @@ export const CANONICAL_FINISHES: FinishColorway[] = [
     name: "GLACIER WHITE",
     subtitle: "Alpine Precision Finish",
     description: "Sculpted alpine white finish designed to emphasize carbon tube profiles and titanium hardware accents.",
-    imagePath: "/images/project01-glacier-white.png",
+    imagePath: "/images/project01-glacier-white.jpg",
     swatchHex: "#F4F6F7",
     borderHex: "#A8C6D8",
   },
