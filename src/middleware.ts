@@ -71,8 +71,11 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/icon") ||
     pathname.startsWith("/apple-icon") ||
     pathname.startsWith("/og-") ||
+    pathname.startsWith("/images") ||
+    pathname.startsWith("/brand") ||
     pathname === "/sitemap.xml" ||
-    pathname === "/robots.txt"
+    pathname === "/robots.txt" ||
+    /\.(?:jpg|jpeg|png|webp|gif|svg|ico|avif)$/i.test(pathname)
   ) {
     const res = NextResponse.next();
     if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
@@ -155,5 +158,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|images/|brand/|.*\\.(?:jpg|jpeg|png|webp|gif|svg|ico|avif)).*)",
+  ],
 };
