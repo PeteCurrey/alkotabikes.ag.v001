@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { brandAssets } from "@/lib/assets";
 
@@ -11,8 +12,6 @@ export default function ProductPhilosophy() {
     { label: "FRAME STIFFNESS", text: "Tuned torsional compliance prevents arm fatigue over high-frequency chatter." },
     { label: "INTEGRATION", text: "Clean hardware packaging ensures intuitive workshop serviceability." },
   ];
-
-  const [imgSrc, setImgSrc] = useState<string>(brandAssets.project01DevelopmentSheet);
 
   return (
     <section className="w-full bg-alkota-white text-alkota-black py-24 px-4 sm:px-6 lg:px-8 border-b border-black/10">
@@ -47,19 +46,13 @@ export default function ProductPhilosophy() {
         {/* Right Column Technical Development Blueprint Visual */}
         <div className="lg:col-span-6 space-y-3">
           <div className="relative w-full h-[380px] sm:h-[460px] bg-alkota-white border border-black/10 overflow-hidden shadow-2xl group flex items-center justify-center p-2">
-            <img
-              src={imgSrc}
+            <Image
+              src={brandAssets.project01DevelopmentSheet}
               alt="ALKOTA Project 01 Pre-Production Development Sheet Technical Drawing"
-              className="max-w-full max-h-full object-contain group-hover:scale-[1.01] transition-transform duration-500 ease-out"
-              onError={() => {
-                if (imgSrc === brandAssets.project01DevelopmentSheet) {
-                  setImgSrc("/images/project01-development-sheet.png");
-                } else if (imgSrc === "/images/project01-development-sheet.png") {
-                  setImgSrc("/project01-development-sheet.jpg");
-                } else if (imgSrc === "/project01-development-sheet.jpg") {
-                  setImgSrc("/project01-development-sheet.png");
-                }
-              }}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-contain p-1 group-hover:scale-[1.01] transition-transform duration-500 ease-out"
+              priority
             />
           </div>
           <div className="font-mono text-[10px] text-alkota-slate flex items-center justify-between uppercase border-t border-black/10 pt-2">
