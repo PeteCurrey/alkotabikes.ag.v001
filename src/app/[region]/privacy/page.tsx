@@ -6,6 +6,7 @@ import { getCompany } from "@/lib/company";
 import type { RegionCode } from "@/lib/regions";
 import LegalPageLayout from "@/components/legal/LegalPageLayout";
 import Link from "next/link";
+import { DATA_PROCESSORS } from "@/lib/processors";
 
 export async function generateMetadata({
   params,
@@ -157,6 +158,20 @@ export default async function PrivacyPolicyPage({
             <p>
               We disclose personal information to service providers strictly as necessary to support operations (e.g. cloud infrastructure, payment processors, transactional email, and logistics). All service providers are bound by contractual confidentiality obligations.
             </p>
+            <div className="mt-4 border border-black/10 divide-y divide-black/10">
+              {DATA_PROCESSORS.map((processor) => (
+                <div key={processor.id} className="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                  <div className="md:col-span-1 font-bold text-alkota-black">{processor.name}</div>
+                  <div className="md:col-span-3 space-y-1">
+                    <div className="flex gap-2 text-xs font-mono text-black/60">
+                      <span className="bg-alkota-snow px-1.5 py-0.5">{processor.category}</span>
+                    </div>
+                    <p className="text-black/80">{processor.purpose}</p>
+                    <p className="text-black/50 text-xs mt-1">Data shared: {processor.dataTypes.join(", ")}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </section>
 
           <section id="us-5" className="space-y-3">
@@ -360,6 +375,22 @@ export default async function PrivacyPolicyPage({
             09. WHO WE SHARE INFORMATION WITH
           </h2>
           <p>Hosting providers, payment processors, transactional email services, and logistics partners under strict data processor contracts.</p>
+          <div className="mt-4 border border-black/10 divide-y divide-black/10">
+            {DATA_PROCESSORS.map((processor) => (
+              <div key={processor.id} className="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                <div className="md:col-span-1 font-bold text-alkota-black">{processor.name}</div>
+                <div className="md:col-span-3 space-y-1">
+                  <div className="flex flex-wrap gap-2 text-xs font-mono text-black/60">
+                    <span className="bg-alkota-snow px-1.5 py-0.5">{processor.category}</span>
+                    <span className="bg-alkota-snow px-1.5 py-0.5">{processor.country}</span>
+                    <span className="bg-alkota-snow px-1.5 py-0.5">{processor.transferBasis}</span>
+                  </div>
+                  <p className="text-black/80">{processor.purpose}</p>
+                  <p className="text-black/50 text-xs mt-1">Data shared: {processor.dataTypes.join(", ")}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section id="p-10" className="space-y-3">

@@ -15,7 +15,19 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       rules: {
         userAgent: "*",
         allow: "/",
-        disallow: ["/partners/portal", "/my-alkota", "/cart", "/api"],
+        disallow: [
+          "/api",
+          "/studio",
+          "/cart",
+          "/uk/cart",
+          "/us/cart",
+          "/my-alkota",
+          "/uk/my-alkota",
+          "/us/my-alkota",
+          "/partners/portal",
+          "/uk/partners/portal",
+          "/us/partners/portal",
+        ],
       },
       sitemap: `${siteUrl}/sitemap.xml`,
     };

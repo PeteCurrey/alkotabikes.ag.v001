@@ -197,6 +197,7 @@ export function isCompanyIdentityComplete(region: RegionCode = "uk"): boolean {
       entity.email.privacy !== null
     );
   } else {
+    if (entity.legalEntityName === null) return false;
     return (
       !entity.legalEntityName.includes("PLACEHOLDER — ") &&
       !entity.registeredAgent.includes("PLACEHOLDER — ") &&

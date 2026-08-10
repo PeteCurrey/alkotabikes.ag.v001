@@ -2,30 +2,46 @@ import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import siteUrl from "@/lib/env";
-import { LEGAL_DOCUMENTS, type LegalDocumentMetadata } from "@/config/legalDocuments";
-import { company } from "@/lib/company";
+import { REGIONAL_LEGAL_DOCUMENTS, getLegalDocument, type LegalDocumentMetadata } from "@/config/legalDocuments";
+import { getCompany } from "@/lib/company";
+import type { RegionCode } from "@/lib/regions";
 import { Shield, ArrowRight, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Legal Centre",
-  description:
-    "Alkota Cycles legal documentation index: Legal Notice, Privacy Policy, Terms & Conditions, Warranty, Returns, Shipping, Cookies, Accessibility, Safety, and Complaints.",
-  alternates: {
-    canonical: `${siteUrl}/legal`,
-  },
-  openGraph: {
-    title: "Legal Centre",
-    description:
-      "Complete legal documentation for alkotacycles.com — operator particulars, policies, and terms.",
-    url: `${siteUrl}/legal`,
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const isUS = region === "us";
+  const title = isUS ? "Legal Centre (US)" : "Legal Centre";
+  const description = isUS
+    ? "Alkota Cycles US legal documentation index: Legal Notice, US Privacy Notice, Terms & Conditions of Sale, Limited Warranty, Returns, Shipping, Cookies, and Accessibility."
+    : "Alkota Cycles UK legal documentation index: Legal Notice, Privacy Policy, Terms & Conditions, Warranty, Returns, Shipping, Cookies, Accessibility, Safety, and Complaints.";
 
-// ── Document groups for the index ────────────────────────────────────────────
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${region}/legal`,
+      languages: {
+        "en-GB": `${siteUrl}/uk/legal`,
+        "en-US": `${siteUrl}/us/legal`,
+        "x-default": `${siteUrl}/us/legal`,
+      },
+    },
+    openGraph: {
+      title: `${title} | Alkota Cycles`,
+      description,
+      url: `${siteUrl}/${region}/legal`,
+    },
+  };
+}
+
 const LEGAL_INDEX: {
   group: string;
   desc: string;
-  docs: { key: keyof typeof LEGAL_DOCUMENTS; href: string }[];
+  docs: { key: string; href: string }[];
 }[] = [
   {
     group: "WEBSITE GOVERNANCE",
@@ -43,94 +59,70 @@ const LEGAL_INDEX: {
     ],
   },
   {
-    group: "DATA & PRIVACY",
-    desc: "How we collect, use, protect, and manage your personal data.",
-    docs: [
-      { key: "privacy", href: "/privacy" },
-      { key: "cookies", href: "/cookies" },
-    ],
-  },
-  {
-    group: "PRODUCT & SAFETY",
-    desc: "Warranty framework, product safety guidance, and complaints procedure.",
+    group: "WARRANTY & SAFETY",
+    desc: "Commercial warranty framework and product safety protocols.",
     docs: [
       { key: "warranty", href: "/warranty" },
       { key: "safety", href: "/safety" },
-      { key: "complaints", href: "/complaints" },
     ],
   },
   {
-    group: "ACCESSIBILITY",
-    desc: "Our WCAG 2.2 AA commitment and accessibility reporting.",
-    docs: [{ key: "accessibility", href: "/accessibility" }],
+    group: "PRIVACY & COMPLIANCE",
+    desc: "Data protection, cookie consent, accessibility, and rider rights.",
+    docs: [
+      { key: "privacy", href: "/privacy" },
+      { key: "cookies", href: "/cookies" },
+      { key: "accessibility", href: "/accessibility" },
+      { key: "complaints", href: "/complaints" },
+    ],
   },
 ];
 
-function StatusBadge({ status }: { status: LegalDocumentMetadata["status"] }) {
-  if (status === "APPROVED") {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest bg-emerald-500/10 border border-emerald-600 text-emerald-700">
-        <CheckCircle className="w-3 h-3" />
-        APPROVED
-      </span>
-    );
-  }
-  if (status === "LEGAL_REVIEW") {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest bg-blue-500/10 border border-blue-600 text-blue-700">
-        <Clock className="w-3 h-3" />
-        UNDER REVIEW
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 border border-amber-600 text-amber-800">
-      <AlertTriangle className="w-3 h-3" />
-      DRAFT
-    </span>
-  );
-}
-
-export default function LegalCentrePage() {
-  const allDocs = Object.values(LEGAL_DOCUMENTS);
-  const draftCount = allDocs.filter((d) => d.status === "DRAFT" || d.status === "LEGAL_REVIEW").length;
-  const approvedCount = allDocs.filter((d) => d.status === "APPROVED").length;
+export default async function LegalCentrePage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const resolvedParams = await params;
+  const regionCode = (
+    resolvedParams.region === "uk" ? "uk" : "us"
+  ) as RegionCode;
+  const company = getCompany(regionCode);
+  const regionalDocs = REGIONAL_LEGAL_DOCUMENTS[regionCode];
 
   return (
-    <div className="w-full bg-alkota-white text-alkota-black min-h-screen pt-28 pb-24 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-5xl mx-auto space-y-12">
-
-        {/* ── Header ── */}
-        <div className="border-b border-black/10 pb-8 space-y-4">
-          <div className="flex items-center gap-2 font-mono text-[10px] text-alkota-slate tracking-widest uppercase">
-            <Shield className="w-3.5 h-3.5" />
-            <span>LEGAL DOCUMENTATION CENTRE</span>
+    <div className="w-full bg-alkota-snow text-alkota-black pt-28 pb-24 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Header */}
+        <div className="border-b border-black/10 pb-8 space-y-3">
+          <div className="flex items-center gap-2 text-alkota-signal font-mono text-xs font-bold tracking-widest uppercase">
+            <Shield className="w-4 h-4" />
+            <span>GOVERNANCE &amp; POLICY INDEX ({regionCode.toUpperCase()})</span>
           </div>
-          <h1 className="font-display font-bold text-4xl sm:text-5xl uppercase tracking-tight text-alkota-black leading-tight">
+          <h1 className="font-display font-bold text-4xl sm:text-6xl uppercase tracking-tight text-alkota-black">
             LEGAL CENTRE
           </h1>
-          <p className="font-sans text-sm text-alkota-slate leading-relaxed max-w-2xl">
-            All legal, policy, and compliance documentation for {company.tradingName} and alkotacycles.com.
-            Every document carries a version number, status, and effective date.
+          <p className="font-sans text-base text-alkota-slate max-w-2xl">
+            All legal, policy, and compliance documentation for {company.tradingName} and alkotacycles.com/{regionCode}.
           </p>
         </div>
 
-        {/* ── Operator Identity Panel ── */}
-        <div className="p-5 bg-alkota-snow border border-black/10 font-mono text-xs space-y-3">
+        {/* Operator Identity Panel */}
+        <div className="p-5 bg-white border border-black/10 font-mono text-xs space-y-3 shadow-sm">
           <div className="font-bold text-[10px] tracking-widest uppercase text-alkota-slate">
-            SITE OPERATOR
+            SITE OPERATOR ({regionCode.toUpperCase()})
           </div>
           {company.legalEntityName ? (
             <div className="space-y-1 text-alkota-black/80">
               <div>{company.legalEntityName} trading as {company.tradingName}</div>
-              {company.companyNumber && <div>Company No. {company.companyNumber}</div>}
-              {company.registeredIn && <div>Registered in {company.registeredIn}</div>}
-              {company.registeredOffice && <div>{company.registeredOffice}</div>}
+              {"companyNumber" in company && company.companyNumber && <div>Company No. {company.companyNumber}</div>}
+              {"registeredIn" in company && company.registeredIn && <div>Registered in {company.registeredIn}</div>}
+              {"registeredOffice" in company && company.registeredOffice && <div>{company.registeredOffice}</div>}
+              {"principalPlaceOfBusiness" in company && company.principalPlaceOfBusiness && <div>{company.principalPlaceOfBusiness}</div>}
             </div>
           ) : (
             <div className="text-alkota-slate/60 italic">
               {company.tradingName} · Legal entity registration pending.
-              Operator particulars will be completed prior to commercial trading.
             </div>
           )}
           {company.email.legal && (
@@ -143,61 +135,41 @@ export default function LegalCentrePage() {
           )}
         </div>
 
-        {/* ── Status Summary ── */}
-        {draftCount > 0 && (
-          <div className="p-4 bg-amber-50 border-l-4 border-amber-500 flex items-start gap-3 font-mono text-xs">
-            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <div className="font-bold uppercase tracking-wider text-amber-900">
-                PRE-PRODUCTION DOCUMENTATION STATUS
-              </div>
-              <p className="font-sans text-xs text-amber-800 leading-relaxed">
-                {approvedCount} of {allDocs.length} documents are APPROVED.{" "}
-                {draftCount} document{draftCount !== 1 ? "s" : ""} remain in DRAFT or UNDER REVIEW.
-                Documents in DRAFT status must pass legal review before being relied upon in live commercial transactions.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* ── Document Groups ── */}
-        <div className="space-y-10">
+        {/* Document Index Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {LEGAL_INDEX.map((group) => (
             <div key={group.group} className="space-y-4">
-              <div className="border-b border-black/10 pb-3 space-y-1">
-                <h2 className="font-display font-bold text-sm uppercase tracking-widest text-alkota-black">
+              <div className="border-b border-black/10 pb-2">
+                <h2 className="font-mono text-xs font-bold text-alkota-black tracking-widest uppercase">
                   {group.group}
                 </h2>
-                <p className="font-sans text-xs text-alkota-slate">{group.desc}</p>
+                <p className="font-sans text-xs text-alkota-slate mt-0.5">{group.desc}</p>
               </div>
 
-              <div className="space-y-2">
-                {group.docs.map(({ key, href }) => {
-                  const doc = LEGAL_DOCUMENTS[key];
-                  if (!doc) return null;
+              <div className="space-y-3">
+                {group.docs.map((docRef) => {
+                  const meta = regionalDocs[docRef.key];
+                  if (!meta) return null;
+
                   return (
                     <Link
-                      key={key}
-                      href={href}
-                      className="group flex items-center justify-between p-4 border border-black/8 hover:border-black/25 hover:bg-alkota-snow transition-all"
+                      key={meta.id}
+                      href={`/${regionCode}${docRef.href}`}
+                      className="block p-4 bg-white border border-black/10 hover:border-black/30 transition-all group"
                     >
-                      <div className="space-y-1.5 flex-1 min-w-0">
-                        <div className="flex items-center gap-3 flex-wrap">
-                          <span className="font-mono font-bold text-sm text-alkota-black group-hover:text-alkota-black">
-                            {doc.title}
-                          </span>
-                          <StatusBadge status={doc.status} />
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-1">
+                          <div className="font-mono text-xs font-bold text-alkota-black group-hover:text-alkota-signal transition-colors">
+                            {meta.title}
+                          </div>
+                          <p className="font-sans text-xs text-alkota-slate line-clamp-2">{meta.description}</p>
                         </div>
-                        <div className="font-sans text-xs text-alkota-slate leading-relaxed">
-                          {doc.description}
-                        </div>
-                        <div className="flex items-center gap-4 font-mono text-[10px] text-alkota-slate/60">
-                          <span>ID: {doc.id}</span>
-                          <span>v{doc.version}</span>
-                          <span>Effective: {doc.effectiveDate}</span>
-                        </div>
+                        <ArrowRight className="w-4 h-4 text-alkota-slate group-hover:text-alkota-black shrink-0 mt-1 transition-transform group-hover:translate-x-0.5" />
                       </div>
-                      <ArrowRight className="w-4 h-4 text-alkota-slate group-hover:text-alkota-black shrink-0 ml-4 transition-colors" />
+                      <div className="mt-3 pt-2 border-t border-black/5 flex items-center justify-between font-mono text-[10px] text-alkota-slate/70">
+                        <span>{meta.id}</span>
+                        <span>v{meta.version}</span>
+                      </div>
                     </Link>
                   );
                 })}
@@ -205,15 +177,6 @@ export default function LegalCentrePage() {
             </div>
           ))}
         </div>
-
-        {/* ── Footer note ── */}
-        <div className="pt-8 border-t border-black/10 font-mono text-[10px] text-alkota-slate/60 space-y-1">
-          <div>Legal Centre · {company.tradingName} · {company.websiteUrl}</div>
-          <div>
-            Trademarks: ALKOTA, ALKOTA CYCLES and PROJECT 01 are registered or pending brand identifiers of {company.legalEntityName ?? company.tradingName}.
-          </div>
-        </div>
-
       </div>
     </div>
   );

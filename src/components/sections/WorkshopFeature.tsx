@@ -4,7 +4,7 @@ import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ArrowRight, Wrench, CheckCircle2 } from "lucide-react";
 import { brandAssets } from "@/lib/assets";
-import { claim } from "../../../lib/claims";
+import { claim } from "@/lib/editorial-claims";
 
 export default function WorkshopFeature() {
   const workshopPoints = [

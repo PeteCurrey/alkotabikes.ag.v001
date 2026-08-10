@@ -2,29 +2,59 @@ import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { siteUrl } from "@/lib/env";
+import { getCompany } from "@/lib/company";
+import { buildRegionalPath, type RegionCode } from "@/lib/regions";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { ShieldCheck, FileText, Wrench, ArrowRight, UserCheck, HelpCircle } from "lucide-react";
+import { ShieldCheck, FileText, Wrench, ArrowRight, UserCheck } from "lucide-react";
 import BreadcrumbSchema from "@/components/schema/BreadcrumbSchema";
 
-export const metadata: Metadata = {
-  title: "Ownership & Support Hub",
-  description:
-    "The official Alkota Cycles ownership hub. Discover what ownership will include, access technical documentation, warranty policies, and service network plans ahead of 2028 delivery.",
-  alternates: {
-    canonical: `${siteUrl}/ownership`,
-  },
-  openGraph: {
-    title: "Ownership & Support Hub",
-    description:
-      "The official Alkota Cycles ownership hub. Discover what ownership will include, access technical documentation, warranty policies, and service network plans ahead of 2028 delivery.",
-    url: `${siteUrl}/ownership`,
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}): Promise<Metadata> {
+  const { region } = await params;
+  const isUS = region === "us";
+  const title = isUS
+    ? "US Ownership & Support Hub"
+    : "UK Ownership & Support Hub";
+  const description = isUS
+    ? "Official Alkota Cycles US ownership hub. Regional warrantor identity, technical support routes, and partner network plans ahead of 2028 delivery."
+    : "Official Alkota Cycles UK ownership hub. UK warrantor identity, technical support routes, and partner network plans ahead of 2028 delivery.";
 
-export default function OwnershipPage() {
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${region}/ownership`,
+      languages: {
+        "en-GB": `${siteUrl}/uk/ownership`,
+        "en-US": `${siteUrl}/us/ownership`,
+        "x-default": `${siteUrl}/us/ownership`,
+      },
+    },
+    openGraph: {
+      title: `${title} | Alkota Cycles`,
+      description,
+      url: `${siteUrl}/${region}/ownership`,
+    },
+  };
+}
+
+export default async function OwnershipPage({
+  params,
+}: {
+  params: Promise<{ region: string }>;
+}) {
+  const resolvedParams = await params;
+  const regionCode = (
+    resolvedParams.region === "uk" ? "uk" : "us"
+  ) as RegionCode;
+  const company = getCompany(regionCode);
+
   const breadcrumbs = [
-    { name: "Home", path: "/" },
-    { name: "Ownership", path: "/ownership" },
+    { name: "Home", path: `/${regionCode}` },
+    { name: "Ownership", path: `/${regionCode}/ownership` },
   ];
 
   return (
@@ -34,13 +64,13 @@ export default function OwnershipPage() {
         <div className="max-w-5xl mx-auto space-y-12">
           {/* Header Block */}
           <div className="border-b border-white/10 pb-8 space-y-4">
-            <TechnicalAnnotation label="OWNERSHIP PROGRAMME" value="PRE-PRODUCTION" variant="signal" />
+            <TechnicalAnnotation label="OWNERSHIP PROGRAMME" value={regionCode.toUpperCase()} variant="signal" />
             <h1 className="font-display font-bold text-4xl sm:text-6xl uppercase tracking-tight text-white leading-none">
-              OWNERSHIP &amp; SUPPORT HUB
+              OWNERSHIP &amp; SUPPORT HUB ({regionCode.toUpperCase()})
             </h1>
             <p className="font-sans text-base sm:text-lg text-[#9ab0c4] max-w-3xl font-light leading-relaxed">
-              Every Alkota machine is engineered as a complete long-term ownership system. 
-              Discover what ownership includes, review technical policies, and track customer support infrastructure ahead of 2028 production deliveries.
+              Every Alkota machine is engineered as a complete long-term ownership system.
+              Support, warrantor identity, and technical service infrastructure are managed by <strong>{company.legalEntityName ?? company.tradingName}</strong>.
             </p>
           </div>
 
@@ -57,7 +87,7 @@ export default function OwnershipPage() {
                 </p>
               </div>
               <Link
-                href="/my-alkota"
+                href={buildRegionalPath("/my-alkota", regionCode)}
                 className="inline-flex items-center gap-2 font-mono text-xs text-alkota-signal hover:text-white font-bold uppercase transition-colors"
               >
                 <span>ACCESS MY ALKOTA</span>
@@ -70,13 +100,13 @@ export default function OwnershipPage() {
                 <div className="p-2.5 w-fit bg-alkota-signal/10 border border-alkota-signal text-alkota-signal">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
-                <h2 className="font-mono text-sm font-bold text-white uppercase tracking-wider">WARRANTY POLICY</h2>
+                <h2 className="font-mono text-sm font-bold text-white uppercase tracking-wider">REGIONAL WARRANTY POLICY</h2>
                 <p className="font-sans text-xs text-[#9ab0c4] leading-relaxed">
-                  Review official structural chassis warranty coverage, crash replacement terms, and component supplier service commitments.
+                  Review structural chassis warranty coverage, crash replacement terms, and supplier service commitments for the {regionCode.toUpperCase()} market.
                 </p>
               </div>
               <Link
-                href="/warranty"
+                href={buildRegionalPath("/warranty", regionCode)}
                 className="inline-flex items-center gap-2 font-mono text-xs text-alkota-signal hover:text-white font-bold uppercase transition-colors"
               >
                 <span>VIEW WARRANTY POLICY</span>
@@ -95,7 +125,7 @@ export default function OwnershipPage() {
                 </p>
               </div>
               <Link
-                href="/partners"
+                href={buildRegionalPath("/partners", regionCode)}
                 className="inline-flex items-center gap-2 font-mono text-xs text-alkota-signal hover:text-white font-bold uppercase transition-colors"
               >
                 <span>EXPLORE PARTNER NETWORK</span>
@@ -109,12 +139,12 @@ export default function OwnershipPage() {
             <div className="flex items-center gap-3">
               <FileText className="w-5 h-5 text-alkota-signal" />
               <h3 className="font-mono text-xs font-bold text-white uppercase tracking-widest">
-                TECHNICAL MANUALS &amp; TORQUE SPECIFICATIONS
+                TECHNICAL MANUALS &amp; SERVICE SUPPORT
               </h3>
             </div>
             <p className="font-sans text-xs text-[#9ab0c4] leading-relaxed max-w-3xl">
-              Complete chassis user guides, pivot bearing service schedules, and component torque matrices are actively maintained within our engineering database. 
-              Official downloadable PDFs will be published ahead of first delivery. Confirmed reservation holders will be provided direct digital access.
+              Complete chassis user guides, pivot bearing service schedules, and component torque matrices are actively maintained within our engineering database.
+              Contact customer support at <a href={`mailto:${company.email.customerService}`} className="underline font-mono text-white">{company.email.customerService}</a>.
             </p>
           </div>
         </div>

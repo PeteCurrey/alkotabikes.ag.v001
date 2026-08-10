@@ -8,7 +8,8 @@ import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
 import RoadTo2028Strip from "@/components/editorial/RoadTo2028Strip";
 import { brandAssets } from "@/lib/assets";
-import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
+import { useRegion } from "@/components/region/RegionProvider";
+import { toCanonicalHeightCm, toCanonicalWeightKg } from "@/lib/units";
 
 // Commercial Flag
 export const ENABLE_PROJECT01_RESERVATIONS = false;
@@ -119,15 +120,21 @@ const FAQS = [
 ];
 
 export default function OrderClient() {
+  const { regionCode } = useRegion();
+  const isUS = regionCode === "us";
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    country: "United Kingdom",
+    country: isUS ? "United States" : "United Kingdom",
     postcode: "",
     heightCm: "",
+    heightFt: "",
+    heightIn: "",
     weightKg: "",
+    weightLb: "",
     ridingStyle: "All Mountain",
     terrain: "Steep technical",
     currentBike: "",
@@ -137,7 +144,7 @@ export default function OrderClient() {
     expectedSize: "L",
     productInterest: "Complete bike",
     purchaseIntent: "I intend to buy when production opens",
-    region: "UK",
+    region: regionCode.toUpperCase(),
     customerNotes: "",
     developmentAcknowledgement: false,
     marketingConsent: false,
@@ -189,10 +196,35 @@ export default function OrderClient() {
     setLoading(true);
 
     try {
+      // Calculate canonical metric values at boundary
+      let canonicalHeight = form.heightCm;
+      let canonicalWeight = form.weightKg;
+
+      if (isUS || form.heightFt || form.heightIn) {
+        const feet = parseFloat(form.heightFt || "0");
+        const inches = parseFloat(form.heightIn || "0");
+        if (feet > 0 || inches > 0) {
+          canonicalHeight = `${toCanonicalHeightCm({ region: "us", feet, inches })} cm`;
+        }
+      }
+      if (isUS || form.weightLb) {
+        const lb = parseFloat(form.weightLb || "0");
+        if (lb > 0) {
+          canonicalWeight = `${toCanonicalWeightKg({ region: "us", lb })} kg`;
+        }
+      }
+
+      const payload = {
+        ...form,
+        heightCm: canonicalHeight || form.heightCm,
+        weightKg: canonicalWeight || form.weightKg,
+        region: regionCode.toUpperCase(),
+      };
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -599,34 +631,80 @@ export default function OrderClient() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
-                  <div className="space-y-2">
-                    <label className="text-alkota-slate uppercase tracking-wider block">
-                      RIDER HEIGHT (CM) *
-                    </label>
-                    <input
-                      type="text"
-                      name="heightCm"
-                      required
-                      value={form.heightCm}
-                      onChange={handleChange}
-                      placeholder="e.g. 182 cm"
-                      className="w-full bg-alkota-carbon border border-white/15 px-4 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
-                    />
-                  </div>
+                  {isUS ? (
+                    <>
+                      <div className="space-y-2">
+                        <label className="text-alkota-slate uppercase tracking-wider block">
+                          RIDER HEIGHT (FT / IN) *
+                        </label>
+                        <div className="flex gap-2">
+                          <input
+                            type="number"
+                            name="heightFt"
+                            required
+                            placeholder="Ft (e.g. 5)"
+                            value={form.heightFt}
+                            onChange={handleChange}
+                            className="w-1/2 bg-alkota-carbon border border-white/15 px-3 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
+                          />
+                          <input
+                            type="number"
+                            name="heightIn"
+                            required
+                            placeholder="In (e.g. 11)"
+                            value={form.heightIn}
+                            onChange={handleChange}
+                            className="w-1/2 bg-alkota-carbon border border-white/15 px-3 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
+                          />
+                        </div>
+                      </div>
 
-                  <div className="space-y-2">
-                    <label className="text-alkota-slate uppercase tracking-wider block">
-                      WEIGHT (KG, OPTIONAL)
-                    </label>
-                    <input
-                      type="text"
-                      name="weightKg"
-                      value={form.weightKg}
-                      onChange={handleChange}
-                      placeholder="e.g. 80 kg"
-                      className="w-full bg-alkota-carbon border border-white/15 px-4 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
-                    />
-                  </div>
+                      <div className="space-y-2">
+                        <label className="text-alkota-slate uppercase tracking-wider block">
+                          WEIGHT (LB, OPTIONAL)
+                        </label>
+                        <input
+                          type="number"
+                          name="weightLb"
+                          value={form.weightLb}
+                          onChange={handleChange}
+                          placeholder="e.g. 165 lb"
+                          className="w-full bg-alkota-carbon border border-white/15 px-4 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-2">
+                        <label className="text-alkota-slate uppercase tracking-wider block">
+                          RIDER HEIGHT (CM) *
+                        </label>
+                        <input
+                          type="text"
+                          name="heightCm"
+                          required
+                          value={form.heightCm}
+                          onChange={handleChange}
+                          placeholder="e.g. 182 cm"
+                          className="w-full bg-alkota-carbon border border-white/15 px-4 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-alkota-slate uppercase tracking-wider block">
+                          WEIGHT (KG, OPTIONAL)
+                        </label>
+                        <input
+                          type="text"
+                          name="weightKg"
+                          value={form.weightKg}
+                          onChange={handleChange}
+                          placeholder="e.g. 80 kg"
+                          className="w-full bg-alkota-carbon border border-white/15 px-4 py-3 text-white focus:border-alkota-signal focus:outline-none placeholder:text-alkota-slate/50"
+                        />
+                      </div>
+                    </>
+                  )}
 
                   <div className="space-y-2">
                     <label className="text-alkota-slate uppercase tracking-wider block">
