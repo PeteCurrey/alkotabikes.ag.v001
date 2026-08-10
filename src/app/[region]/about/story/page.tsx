@@ -8,6 +8,7 @@ import ChapterTransition from "@/components/story/ChapterTransition";
 import VisualWorldSection from "@/components/story/VisualWorldSection";
 import FounderNote from "@/components/editorial/FounderNote";
 import DevelopmentLedger from "@/components/editorial/DevelopmentLedger";
+import PlaceIdentity from "@/components/editorial/PlaceIdentity";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
@@ -645,6 +646,10 @@ export default function OurStoryPage() {
           </div>
         </div>
       </VisualWorldSection>
+
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 py-6">
+        <PlaceIdentity />
+      </div>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           FINAL CTA — REVERSE ENGINEERING THE RIDE

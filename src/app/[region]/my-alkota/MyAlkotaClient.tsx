@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
+import PublishingCadence from "@/components/editorial/PublishingCadence";
 
 // ─── Authentication state (passwordless / local-first placeholder) ────────────
 // This is a pre-production portal. Full authentication (e.g. email magic link)
@@ -31,6 +32,7 @@ import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
 
 interface PortalSession {
   registrationRef: string;
+  foundingNumber?: number;
   email: string;
   registeredAt: string;
   preferredFinish: "CARBON" | "GLACIER WHITE";
@@ -337,26 +339,45 @@ function Dashboard({
               </div>
             </div>
 
-            {/* Registration reference */}
-            <div className="bg-alkota-carbon border border-white/10 p-4 space-y-1">
-              <div className="font-mono text-[9px] text-alkota-slate uppercase tracking-widest">
-                Registration Reference
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-sm text-alkota-signal font-bold tracking-widest">
-                  {session.registrationRef}
-                </span>
-                <button
-                  onClick={copyRef}
-                  className="text-alkota-slate hover:text-white transition-colors"
-                  aria-label="Copy reference"
-                >
-                  {copied ? (
-                    <Check className="w-3.5 h-3.5 text-alkota-signal" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Founding Number */}
+              <div className="bg-alkota-carbon border border-alkota-signal/40 p-4 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[9px] text-alkota-signal font-bold uppercase tracking-widest">
+                    FOUNDER POSITION
+                  </span>
+                  {(session.foundingNumber ?? 42) <= 500 && (
+                    <span className="font-mono text-[8px] px-1.5 py-0.5 bg-alkota-signal/20 border border-alkota-signal/50 text-alkota-signal uppercase font-bold">
+                      FOUNDING ERA
+                    </span>
                   )}
-                </button>
+                </div>
+                <div className="font-mono text-xl text-white font-bold tracking-wider">
+                  FOUNDER #{String(session.foundingNumber ?? 42).padStart(4, "0")}
+                </div>
+              </div>
+
+              {/* Registration reference */}
+              <div className="bg-alkota-carbon border border-white/10 p-4 space-y-1">
+                <div className="font-mono text-[9px] text-alkota-slate uppercase tracking-widest">
+                  Registration Reference
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-sm text-alkota-signal font-bold tracking-widest">
+                    {session.registrationRef}
+                  </span>
+                  <button
+                    onClick={copyRef}
+                    className="text-alkota-slate hover:text-white transition-colors"
+                    aria-label="Copy reference"
+                  >
+                    {copied ? (
+                      <Check className="w-3.5 h-3.5 text-alkota-signal" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -558,6 +579,9 @@ function Dashboard({
             ))}
           </div>
         </div>
+
+        {/* Cadence commitment */}
+        <PublishingCadence />
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { brandAssets } from "@/lib/assets";
 
 export default function ProductPhilosophy() {
   const points = [
@@ -43,41 +44,20 @@ export default function ProductPhilosophy() {
         </div>
 
         {/* Right Column Close-Up Architectural Visual */}
-        <div className="lg:col-span-6">
-          <div className="relative w-full h-[450px] bg-alkota-carbon text-alkota-white p-8 border border-white/10 tech-grid-dark flex flex-col justify-between overflow-hidden shadow-2xl">
-            <div className="flex justify-between items-center z-10">
-              <TechnicalAnnotation label="MACRO CHASSIS DETAIL" variant="signal" />
-              <span className="font-mono text-[10px] text-alkota-slate uppercase">UD CARBON LAYUP</span>
-            </div>
-
-            {/* Graphic Monocoque Node Schematic */}
-            <div className="relative my-auto flex items-center justify-center">
-              <svg viewBox="0 0 400 300" className="w-full max-w-md h-auto">
-                <path
-                  d="M 50 250 C 150 150, 250 120, 350 50"
-                  fill="none"
-                  stroke="#F4F6F7"
-                  strokeWidth="28"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 50 250 L 350 250"
-                  fill="none"
-                  stroke="#737C84"
-                  strokeWidth="16"
-                />
-                <circle cx="50" cy="250" r="20" fill="#647789" />
-                <circle cx="350" cy="50" r="16" fill="#88929A" />
-                <text x="80" y="240" fill="#647789" fontSize="10" fontFamily="monospace">
-                  BB NODE / BSA 73MM
-                </text>
-              </svg>
-            </div>
-
-            <div className="border-t border-white/10 pt-4 z-10 font-mono text-[11px] text-alkota-slate flex items-center justify-between">
-              <span>PROJECT / 01 CHASSIS NODE</span>
-              <span>REV 001</span>
-            </div>
+        <div className="lg:col-span-6 space-y-3">
+          <div className="relative w-full aspect-[4/3] bg-alkota-carbon border border-black/10 overflow-hidden shadow-2xl group">
+            <Image
+              src={brandAssets.project01DevelopmentSheet}
+              alt="ALKOTA Project 01 Pre-Production Development Sheet Technical Drawing"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-contain p-1 group-hover:scale-[1.02] transition-transform duration-500 ease-out"
+              priority
+            />
+          </div>
+          <div className="font-mono text-[10px] text-alkota-slate flex items-center justify-between uppercase">
+            <span>PROJECT 01 · FRAME DESIGN DEVELOPMENT SHEET</span>
+            <span>REV 001</span>
           </div>
         </div>
       </div>

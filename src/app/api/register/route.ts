@@ -46,9 +46,11 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       reference: result.reference,
+      foundingNumber: result.foundingNumber,
       persisted: result.persisted,
       record: {
         registrationReference: result.reference,
+        foundingNumber: result.foundingNumber,
         firstName,
         email,
         createdAt: new Date().toISOString(),

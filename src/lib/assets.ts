@@ -16,6 +16,7 @@ export const brandAssets = {
   // Canonical Project 01 Hero Imagery (Glacier White & Naked Carbon)
   project01WhiteHero: "/images/project01-glacier-white-hero.jpg",
   project01CarbonHero: "/images/project01-naked-carbon-hero.jpg",
+  project01DevelopmentSheet: "/images/project01-development-sheet.jpg",
 
   // Environment & Engineering Photography
   // NOTE: project01AlpineTesting removed 2026-08-09 — was byte-identical to engineeringWorkshop.

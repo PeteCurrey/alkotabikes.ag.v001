@@ -109,13 +109,18 @@ export async function saveRegistration(params: CreateRegistrationParams) {
         newState: { reference: ref, country: params.country },
       });
 
-      return { success: true, reference: ref, persisted: true };
+      return {
+        success: true,
+        reference: ref,
+        foundingNumber: reg?.founding_number ?? 42,
+        persisted: true,
+      };
     } catch (err) {
       console.error("Failed database registration:", err);
     }
   }
 
-  return { success: true, reference: ref, persisted: false };
+  return { success: true, reference: ref, foundingNumber: 42, persisted: false };
 }
 
 export async function logConsentEvent(params: ConsentLogParams) {

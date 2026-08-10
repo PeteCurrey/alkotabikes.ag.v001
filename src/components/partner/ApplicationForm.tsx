@@ -97,7 +97,7 @@ export default function ApplicationForm() {
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        setPhotoError("Each photograph must be smaller than 5 MB.");
+        setPhotoError("Each photograph must be smaller than 5,000 KB.");
         return;
       }
       validFiles.push(file);
@@ -474,7 +474,7 @@ export default function ApplicationForm() {
         <div className="space-y-4">
           <div className="p-4 bg-alkota-black border border-white/20 space-y-3">
             <label className="text-alkota-slate uppercase tracking-widest block">
-              UPLOAD WORKSHOP &amp; RETAIL PHOTOGRAPHS (MAX 5 IMAGES, MAX 5MB EACH)
+              UPLOAD WORKSHOP &amp; RETAIL PHOTOGRAPHS (MAX 5 IMAGES, MAX 5,000 KB EACH)
             </label>
             <div className="flex items-center gap-4">
               <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 bg-alkota-carbon border border-white/30 text-white hover:border-alkota-signal transition-colors text-xs font-bold uppercase">

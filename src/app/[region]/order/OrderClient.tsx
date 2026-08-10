@@ -7,6 +7,7 @@ import { ArrowRight, Check, AlertCircle, ChevronDown, Lock, ShieldCheck, Layers,
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
 import RoadTo2028Strip from "@/components/editorial/RoadTo2028Strip";
+import PublishingCadence from "@/components/editorial/PublishingCadence";
 import { brandAssets } from "@/lib/assets";
 import { useRegion } from "@/components/region/RegionProvider";
 import { toCanonicalHeightCm, toCanonicalWeightKg } from "@/lib/units";
@@ -171,6 +172,7 @@ export default function OrderClient() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successRef, setSuccessRef] = useState<string | null>(null);
+  const [foundingNumber, setFoundingNumber] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -234,6 +236,7 @@ export default function OrderClient() {
       }
 
       setSuccessRef(data.reference);
+      setFoundingNumber(data.foundingNumber || 42);
       setLoading(false);
     } catch (err: any) {
       setErrorMsg(err.message || "An unexpected error occurred. Please try again.");
@@ -453,22 +456,38 @@ export default function OrderClient() {
                 <span className="text-alkota-signal">PROJECT 01.</span>
               </h2>
 
-              <div className="bg-alkota-carbon border border-white/10 p-5 font-mono text-sm space-y-1">
-                <span className="text-alkota-slate uppercase text-[10px] block">
-                  DEVELOPMENT REGISTER REFERENCE:
-                </span>
-                <span className="text-alkota-signal font-bold text-xl tracking-wider block">
-                  {successRef}
-                </span>
-                <span className="text-alkota-slate text-[10px] block pt-1">
-                  Non-commercial register record. Holds your priority allocation notification position.
-                </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-alkota-carbon border border-alkota-signal/50 p-5 font-mono text-sm space-y-1">
+                  <span className="text-alkota-signal uppercase text-[10px] font-bold tracking-widest block">
+                    PERMANENT FOUNDING NUMBER:
+                  </span>
+                  <span className="text-white font-bold text-3xl tracking-wider block">
+                    FOUNDER #{String(foundingNumber ?? 42).padStart(4, "0")}
+                  </span>
+                  <span className="text-alkota-slate text-[10px] block pt-1">
+                    Permanent human-facing sequential founding position.
+                  </span>
+                </div>
+
+                <div className="bg-alkota-carbon border border-white/10 p-5 font-mono text-sm space-y-1">
+                  <span className="text-alkota-slate uppercase text-[10px] block">
+                    DEVELOPMENT REGISTER REFERENCE:
+                  </span>
+                  <span className="text-alkota-signal font-bold text-xl tracking-wider block">
+                    {successRef}
+                  </span>
+                  <span className="text-alkota-slate text-[10px] block pt-1">
+                    Non-commercial register record. Holds your priority allocation notification position.
+                  </span>
+                </div>
               </div>
 
               <p className="font-sans text-base text-alkota-snow/90 leading-relaxed font-light">
                 You are now on the development register. We will keep you informed as the programme moves through engineering, prototype development, racing and production.
               </p>
             </div>
+
+            <PublishingCadence variant="compact" />
 
             <div className="border-t border-white/10 pt-8 space-y-4">
               <span className="font-mono text-[10px] text-alkota-signal uppercase tracking-widest font-bold block">
