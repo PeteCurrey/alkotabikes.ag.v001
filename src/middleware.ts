@@ -60,15 +60,11 @@ function mapLegacyPath(pathname: string, search: string): string {
   return pathname + search;
 }
 
+/** True only when explicitly enabled. Default: false (pre-launch). */
+const ALLOW_INDEXING = process.env.ALLOW_INDEXING === "true";
+
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
-  const host = (request.headers.get("host") || "").split(":")[0].toLowerCase();
-  const isProductionHost =
-    host === "alkotacycles.avorria.com" ||
-    host === "alkotabikes.com" ||
-    host === "www.alkotabikes.com" ||
-    host === "alkotacycles.com" ||
-    host === "www.alkotacycles.com";
 
   // Bypass non-regional internal assets / endpoints
   if (
@@ -85,7 +81,7 @@ export function middleware(request: NextRequest) {
     /\.(?:jpg|jpeg|png|webp|gif|svg|ico|avif)$/i.test(pathname)
   ) {
     const res = NextResponse.next();
-    if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+    if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
     return res;
   }
 
@@ -98,17 +94,17 @@ export function middleware(request: NextRequest) {
       if (hasAdminSession) {
         const from = request.nextUrl.searchParams.get("from") || "/admin/leads";
         const res = NextResponse.redirect(new URL(from, request.url));
-        if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+        if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
         return res;
       }
       const res = NextResponse.next();
-      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
     if (pathname.startsWith("/api/admin/")) {
       const res = NextResponse.next();
-      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
@@ -116,12 +112,12 @@ export function middleware(request: NextRequest) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       const res = NextResponse.redirect(loginUrl);
-      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
     const res = NextResponse.next();
-    if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+    if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
     return res;
   }
 
@@ -134,17 +130,17 @@ export function middleware(request: NextRequest) {
       if (hasStudioSession) {
         const from = request.nextUrl.searchParams.get("from") || "/studio";
         const res = NextResponse.redirect(new URL(from, request.url));
-        if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+        if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
         return res;
       }
       const res = NextResponse.next();
-      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
     if (pathname.startsWith("/api/studio/")) {
       const res = NextResponse.next();
-      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
@@ -152,7 +148,7 @@ export function middleware(request: NextRequest) {
       const loginUrl = new URL("/studio/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       const res = NextResponse.redirect(loginUrl);
-      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
@@ -161,7 +157,7 @@ export function middleware(request: NextRequest) {
       if (pathname.startsWith(route) && !allowedRoles.includes(role)) {
         const res = NextResponse.redirect(new URL("/studio", request.url));
         res.headers.set("X-Alkota-Denied", "INSUFFICIENT_ROLE");
-        if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+        if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
         return res;
       }
     }
@@ -169,7 +165,7 @@ export function middleware(request: NextRequest) {
     const headers = new Headers(request.headers);
     headers.set("x-alkota-studio-role", role);
     const res = NextResponse.next({ request: { headers } });
-    if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+    if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
     return res;
   }
 
@@ -180,16 +176,16 @@ export function middleware(request: NextRequest) {
   // 1. Explicit locale prefix (/uk/... or /us/...) -> ALWAYS serve directly, never redirect
   if (firstSegment === "uk" || firstSegment === "us") {
     const res = NextResponse.next();
-    if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+    if (!ALLOW_INDEXING) res.headers.set("X-Robots-Tag", "noindex, nofollow");
     return res;
   }
 
   // 2. Unprefixed bare route or legacy route -> 302 Redirect to locale-prefixed target (ONE hop)
   const targetRegion = detectRegion(request);
   const mappedSubPath = mapLegacyPath(pathname, search);
-  
+
   const targetUrl = new URL(`/${targetRegion}${mappedSubPath === "/" ? "" : mappedSubPath}`, request.url);
-  
+
   // Create 302 Redirect
   const response = NextResponse.redirect(targetUrl, 302);
 
@@ -197,7 +193,7 @@ export function middleware(request: NextRequest) {
   response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
   response.headers.set("Vary", "Cookie, x-vercel-ip-country");
 
-  if (!isProductionHost) {
+  if (!ALLOW_INDEXING) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
 

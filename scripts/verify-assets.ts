@@ -249,6 +249,36 @@ async function checkDatabaseIntegrity(): Promise<void> {
         ok("No dangling media references in content_slots.");
       }
     }
+
+    // Gate 4: Check provenance + claim rule on content_slots
+    const { data: claimSlots } = await supabase
+      .from("content_slots")
+      .select("page_key, slot_key, media_assets!inner(filename, provenance, claim)")
+      .not("media_id", "is", null);
+
+    if (claimSlots && claimSlots.length > 0) {
+      const invalidSlots = claimSlots.filter((s) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const ma = s.media_assets as any;
+        return (
+          ["unknown", "ai_generated", "licensed_stock"].includes(ma?.provenance) &&
+          ma?.claim === true
+        );
+      });
+
+      if (invalidSlots.length > 0) {
+        fail(
+          `PROVENANCE BUILD GATE FAILURE: Published content_slot(s) reference asset(s) with unverified operational claims:\n` +
+            invalidSlots
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .map((s) => `      - Slot '${s.page_key}/${s.slot_key}' -> asset '${(s.media_assets as any)?.filename}' (provenance: ${(s.media_assets as any)?.provenance}, claim: true)`)
+              .join("\n") +
+            `\n      Assets with provenance in ('unknown','ai_generated','licensed_stock') and claim = true cannot be bound to content_slots.`
+        );
+      } else {
+        ok("No published content slots reference unverified claim imagery.");
+      }
+    }
   } catch (err: unknown) {
     warn(`Database check encountered an error: ${err instanceof Error ? err.message : String(err)}`);
   }

@@ -135,6 +135,24 @@ async function runSeed() {
 
     const altText = `Alkota Cycles ${path.basename(img.filename, img.ext).replace(/[-_]/g, " ")}`;
 
+    // Determine provenance and claim based on exact filename audit rules
+    const fn = img.filename.toLowerCase();
+    const rel = img.relPath.toLowerCase().replace(/\\/g, "/");
+
+    let provenance: "own_alkota" | "own_generic" | "licensed_stock" | "ai_generated" | "unknown" = "unknown";
+    let claim = true;
+
+    if (fn.includes("brand-emblem") || fn.includes("development-sheet")) {
+      provenance = "own_alkota";
+      claim = false;
+    } else if (rel.startsWith("components/")) {
+      provenance = "unknown";
+      claim = false;
+    } else {
+      provenance = "unknown";
+      claim = true;
+    }
+
     // Upsert into media_assets table
     const { data: asset, error: dbErr } = await supabase
       .from("media_assets")
@@ -150,6 +168,8 @@ async function runSeed() {
           alt_text: altText,
           is_decorative: false,
           licence: "owned",
+          provenance,
+          claim,
           focal_x: 0.5,
           focal_y: 0.5,
           content_hash: contentHash,

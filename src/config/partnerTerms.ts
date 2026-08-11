@@ -19,6 +19,7 @@
  */
 
 import type { RegionCode } from "@/lib/regions";
+import { SITE_URL } from "@/lib/env";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -162,9 +163,10 @@ export function assertPartnerTermsApproved(region: RegionCode): void {
   const vercelEnv = process.env.VERCEL_ENV ?? "";
   const strict = process.env.STRICT_PLACEHOLDERS === "true";
 
+  const siteHost = new URL(SITE_URL).hostname;
   const isProduction =
     (vercelEnv === "production" && !vercelUrl.includes("vercel.app")) ||
-    vercelProjectProdUrl.includes("alkotacycles.com") ||
+    vercelProjectProdUrl.includes(siteHost) ||
     strict;
 
   if (!isProduction) return; // Allow DRAFT in preview/dev

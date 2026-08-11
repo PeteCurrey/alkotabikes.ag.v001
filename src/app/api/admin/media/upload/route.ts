@@ -159,6 +159,8 @@ export async function POST(request: Request) {
         caption,
         credit,
         licence,
+        provenance: (formData.get("provenance") as string) || "unknown",
+        claim: formData.get("claim") === "true",
         focal_x: 0.5,
         focal_y: 0.5,
         content_hash: contentHash,

@@ -4,8 +4,9 @@ import { headers } from "next/headers";
 import { cookies } from "next/headers";
 import Logo from "@/components/brand/Logo";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { Users, FileText, Database, Shield, LogOut, BarChart3, Mail, Layers, Image as ImageIcon } from "lucide-react";
+import { Users, FileText, Database, Shield, LogOut, BarChart3, Mail, Layers, Image as ImageIcon, Activity } from "lucide-react";
 import { ADMIN_COOKIE, verifyAdminAuth } from "@/lib/auth/adminAuth";
+import { SITE_URL } from "@/lib/env";
 
 export default async function AdminLayout({
   children,
@@ -14,6 +15,11 @@ export default async function AdminLayout({
 }) {
   const session = await verifyAdminAuth();
   const isLoginPage = (await headers()).get("x-invoke-path")?.includes("/admin/login");
+
+  const vercelUrl = process.env.VERCEL_URL || "";
+  const gitCommitSha = (process.env.VERCEL_GIT_COMMIT_SHA || "").slice(0, 7);
+  const allowIndexing = process.env.ALLOW_INDEXING === "true";
+  const siteHost = new URL(SITE_URL).hostname;
 
   // Render children directly for login page or if session present
   return (
@@ -27,8 +33,23 @@ export default async function AdminLayout({
               ADMIN / OPS
             </span>
           </Link>
-          <div className="hidden md:flex items-center gap-2 text-xs text-alkota-slate border-l border-white/10 pl-6">
-            <TechnicalAnnotation label="ENVIRONMENT" value={process.env.NODE_ENV.toUpperCase()} variant="signal" />
+          <div className="hidden lg:flex items-center gap-3 text-xs text-alkota-slate border-l border-white/10 pl-6">
+            <TechnicalAnnotation label="SITE_URL" value={siteHost} variant="signal" />
+            {gitCommitSha && (
+              <TechnicalAnnotation label="SHA" value={gitCommitSha} />
+            )}
+            <div className="flex items-center gap-1.5 font-mono text-[10px]">
+              <span className="text-alkota-slate">CRAWL GATE:</span>
+              {allowIndexing ? (
+                <span className="bg-green-500/20 text-green-400 border border-green-500/40 px-1.5 py-0.5 font-bold uppercase tracking-wider">
+                  INDEXING
+                </span>
+              ) : (
+                <span className="bg-red-500/20 text-red-400 border border-red-500/40 px-1.5 py-0.5 font-bold uppercase tracking-wider">
+                  NOINDEX
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -82,6 +103,17 @@ export default async function AdminLayout({
                     <span>MEDIA LIBRARY</span>
                   </div>
                   <span className="text-[10px] bg-green-500/10 text-green-400 px-1.5 py-0.5 font-bold">LIVE</span>
+                </Link>
+
+                <Link
+                  href="/admin/health"
+                  className="flex items-center justify-between px-3 py-2.5 border border-white/10 hover:border-alkota-signal text-alkota-slate hover:text-alkota-signal text-xs font-bold uppercase tracking-wider transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Activity className="w-4 h-4 text-alkota-signal" />
+                    <span>HEALTH & GATE</span>
+                  </div>
+                  <span className="text-[10px] bg-alkota-signal/20 text-alkota-signal px-1.5 py-0.5 font-bold">LIVE</span>
                 </Link>
 
                 <Link

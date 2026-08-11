@@ -5,6 +5,8 @@
  * and JSON payload for Project 01 Development Build Certificates.
  */
 
+import { SITE_URL } from "@/lib/env";
+
 export interface CertificateData {
   buildReference: string;
   fitReference: string;
@@ -54,7 +56,7 @@ export function createCertificateData(
       grips: "Ergon GE1 Evo Enduro Grips",
     },
     pricingStatus: "FINAL PRICING TO BE CONFIRMED",
-    buildUrl: `https://alkotabikes.com/configure?build=${buildRef}`,
+    buildUrl: `${SITE_URL}/configure?build=${buildRef}`,
   };
 }
 

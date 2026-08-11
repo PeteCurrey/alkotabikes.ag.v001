@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS public.media_assets (
   credit         text,
   licence        text NOT NULL DEFAULT 'owned'
                    CHECK (licence IN ('owned','licensed','cc-by','unknown')),
+  provenance     text NOT NULL DEFAULT 'unknown'
+                   CHECK (provenance IN ('own_alkota','own_generic','licensed_stock','ai_generated','unknown')),
+  claim          boolean NOT NULL DEFAULT false,
   licence_expiry date,
   focal_x        numeric NOT NULL DEFAULT 0.5 CHECK (focal_x >= 0 AND focal_x <= 1),
   focal_y        numeric NOT NULL DEFAULT 0.5 CHECK (focal_y >= 0 AND focal_y <= 1),

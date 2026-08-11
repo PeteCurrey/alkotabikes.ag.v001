@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
   },
+  robots:
+    process.env.ALLOW_INDEXING === "true"
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
   icons: {
     icon: "/icon.png",
     shortcut: "/favicon.ico",

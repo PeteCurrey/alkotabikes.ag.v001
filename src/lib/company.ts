@@ -13,6 +13,7 @@
  */
 
 import type { RegionCode } from "./regions";
+import { SITE_URL } from "@/lib/env";
 import {
   LEGAL_TRADING_NAME,
   LEGAL_ENTITY_NAME,
@@ -144,8 +145,8 @@ export const COMPANY_ENTITIES: Record<RegionCode, CompanyEntity> = {
     },
     telephone: resolved(CUSTOMER_SERVICE_PHONE),
     returnsAddress: resolved(RETURNS_ADDRESS),
-    domain: "alkotacycles.com",
-    websiteUrl: "https://alkotacycles.com",
+    domain: new URL(SITE_URL).hostname,
+    websiteUrl: SITE_URL,
   },
 
   us: {
@@ -170,8 +171,8 @@ export const COMPANY_ENTITIES: Record<RegionCode, CompanyEntity> = {
     },
     telephone: null,
     returnsAddress: "PLACEHOLDER — US Returns Address",
-    domain: "alkotacycles.com",
-    websiteUrl: "https://alkotacycles.com/us",
+    domain: new URL(SITE_URL).hostname,
+    websiteUrl: `${SITE_URL}/us`,
   },
 };
 

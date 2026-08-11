@@ -8,6 +8,7 @@ import { checkRateLimit } from "@/lib/leads/ratelimit";
 import { verifyTurnstile } from "@/lib/leads/turnstile";
 import { readUtmFromCookieString } from "@/lib/leads/utm";
 import { sendEmail } from "@/lib/email/transport";
+import { SITE_URL } from "@/lib/env";
 
 export type LeadType =
   | "newsletter"
@@ -223,7 +224,7 @@ export async function captureLead(rawInput: LeadInput): Promise<LeadResult> {
     });
 
     // 9. Send Double Opt-in or Transactional Email
-    const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://alkotacycles.com";
+    const siteBaseUrl = SITE_URL;
 
     if (requiresDoubleOptIn && optinToken) {
       const confirmUrl = `${siteBaseUrl}/api/leads/confirm?token=${optinToken}`;
