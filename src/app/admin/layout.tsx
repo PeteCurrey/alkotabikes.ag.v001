@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { headers } from "next/headers";
 import Logo from "@/components/brand/Logo";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import {
@@ -39,7 +38,6 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await verifyAdminAuth();
-  const isLoginPage = (await headers()).get("x-invoke-path")?.includes("/admin/login");
 
   const vercelEnv = process.env.VERCEL_ENV || process.env.NODE_ENV || "development";
   const gitCommitSha =
