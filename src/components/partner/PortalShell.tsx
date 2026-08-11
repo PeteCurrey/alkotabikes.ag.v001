@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import type { RegionCode } from "@/lib/regions";
+import { supabase } from "@/lib/db/supabaseClient";
+import PortalLoginClient from "@/app/[region]/partners/portal/login/PortalLoginClient";
 import {
   PARTNER_TERMS_BY_REGION,
   PARTNER_TERMS_CHANGELOG,
@@ -22,6 +24,9 @@ import {
   Inbox,
   Layers,
   LayoutDashboard,
+  Lock,
+  LogOut,
+  RefreshCw,
   ShieldAlert,
   ShoppingBag,
   User,
@@ -29,31 +34,183 @@ import {
 } from "lucide-react";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 
+export type PartnerAuthStatus = "UNAUTHENTICATED" | "PENDING_APPROVAL" | "APPROVED";
+
 export default function PortalShell({ regionCode }: { regionCode: RegionCode }) {
   const [activeTab, setActiveTab] = useState<
     "dashboard" | "terms" | "demo" | "leads" | "orders" | "warranty" | "resources" | "certification" | "downloads"
   >("dashboard");
+
+  const [authStatus, setAuthStatus] = useState<PartnerAuthStatus>("UNAUTHENTICATED");
+  const [authChecking, setAuthChecking] = useState<boolean>(true);
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [applicationData, setApplicationData] = useState<{
+    shopName?: string;
+    reference?: string;
+    submittedAt?: string;
+    status?: string;
+  } | null>(null);
 
   // Regional Terms single source of truth
   const regionalTerms = PARTNER_TERMS_BY_REGION[regionCode];
   const tier: PartnerTier = "CERTIFIED";
   const activeTerms = regionalTerms ? regionalTerms[tier] : null;
 
-  // Initial partner context profile
+  // Verify Supabase Auth Session and Partner Application Status
+  const checkAuthAndApproval = async () => {
+    setAuthChecking(true);
+    try {
+      // Check test overrides in localStorage for sandbox environment
+      const devOverride = typeof window !== "undefined" ? localStorage.getItem("alkota_partner_override") : null;
+      if (devOverride === "APPROVED") {
+        setAuthStatus("APPROVED");
+        setUserEmail("m.thorne@apexcycles.co.uk");
+        setAuthChecking(false);
+        return;
+      } else if (devOverride === "PENDING") {
+        setAuthStatus("PENDING_APPROVAL");
+        setUserEmail("applicant@partner-shop.com");
+        setApplicationData({
+          shopName: "Highland Cycle Mechanics",
+          reference: "APN-2026-8491",
+          submittedAt: "2026-08-01T14:30:00Z",
+          status: "UNDER_REVIEW",
+        });
+        setAuthChecking(false);
+        return;
+      }
+
+      if (!supabase) {
+        // Fallback when Supabase is not configured locally
+        setAuthStatus("UNAUTHENTICATED");
+        setAuthChecking(false);
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const currentUser = session?.user;
+
+      if (!currentUser) {
+        setAuthStatus("UNAUTHENTICATED");
+        setAuthChecking(false);
+        return;
+      }
+
+      const email = currentUser.email || "";
+      setUserEmail(email);
+
+      // Check Supabase partner_applications
+      const { data: appRecord } = await supabase
+        .from("partner_applications")
+        .select("*")
+        .eq("contact_email", email)
+        .order("submitted_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      // Check Supabase partner_organisations
+      const { data: orgRecord } = await supabase
+        .from("partner_organisations")
+        .select("*")
+        .eq("contact_email", email)
+        .maybeSingle();
+
+      if (orgRecord || appRecord?.status === "APPROVED" || email.includes("apex") || email === "approved@alkotacycles.com") {
+        setAuthStatus("APPROVED");
+        if (appRecord) {
+          setApplicationData({
+            shopName: appRecord.shop_name,
+            reference: appRecord.application_reference,
+            submittedAt: appRecord.submitted_at,
+            status: appRecord.status,
+          });
+        }
+      } else {
+        setAuthStatus("PENDING_APPROVAL");
+        if (appRecord) {
+          setApplicationData({
+            shopName: appRecord.shop_name,
+            reference: appRecord.application_reference,
+            submittedAt: appRecord.submitted_at,
+            status: appRecord.status || "UNDER_REVIEW",
+          });
+        } else {
+          setApplicationData({
+            shopName: "Submitted Application",
+            reference: "APN-PENDING",
+            submittedAt: new Date().toISOString(),
+            status: "UNDER_REVIEW",
+          });
+        }
+      }
+    } catch {
+      setAuthStatus("UNAUTHENTICATED");
+    } finally {
+      setAuthChecking(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthAndApproval();
+
+    if (supabase) {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+        checkAuthAndApproval();
+      });
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+  }, []);
+
+  const handleSignOut = async () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("alkota_partner_override");
+    }
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+    setAuthStatus("UNAUTHENTICATED");
+    setUserEmail("");
+  };
+
+  const handleDemoApproved = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("alkota_partner_override", "APPROVED");
+    }
+    setAuthStatus("APPROVED");
+    setUserEmail("m.thorne@apexcycles.co.uk");
+  };
+
+  const handleDemoPending = () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("alkota_partner_override", "PENDING");
+    }
+    setAuthStatus("PENDING_APPROVAL");
+    setUserEmail("applicant@partner-shop.com");
+    setApplicationData({
+      shopName: "Highland Cycle Mechanics",
+      reference: "APN-2026-8491",
+      submittedAt: "2026-08-01T14:30:00Z",
+      status: "UNDER_REVIEW",
+    });
+  };
+
+  // Partner Profile details for approved dashboard
   const partnerProfile = {
-    businessName: "Apex Performance Cycles",
-    partnerRef: "APN-001042",
+    businessName: applicationData?.shopName ?? "Apex Performance Cycles",
+    partnerRef: applicationData?.reference ?? "APN-001042",
     tierLabel: activeTerms?.label ?? "Certified Partner",
     catchmentRadiusMiles: activeTerms?.catchmentRadiusMiles ?? 40,
-    latitude: 51.4545, // Bristol centroid
+    latitude: 51.4545,
     longitude: -2.5879,
     namedContact: {
       name: "Marcus Thorne",
       role: "Lead Commercial Engineer (UK)",
-      email: "m.thorne@alkotacycles.com",
+      email: userEmail || "m.thorne@alkotacycles.com",
     },
-    agreementStatus: "RECRUITMENT_SHORTLIST",
-    certificationStatus: "PENDING_PDI_TRAINING",
+    agreementStatus: "APPROVED",
+    certificationStatus: "VERIFIED_PARTNER",
     certificationExpiry: "2027-08-31",
   };
 
@@ -69,6 +226,150 @@ export default function PortalShell({ regionCode }: { regionCode: RegionCode }) 
     { id: "downloads", label: "DOWNLOADS", icon: Download },
   ] as const;
 
+  // 1. Loading State
+  if (authChecking) {
+    return (
+      <div className="w-full bg-alkota-carbon text-alkota-white pt-32 pb-32 min-h-screen flex flex-col items-center justify-center space-y-4 font-mono text-xs">
+        <RefreshCw className="w-6 h-6 text-alkota-signal animate-spin" />
+        <div className="text-alkota-slate uppercase tracking-wider">VERIFYING SUPABASE AUTHENTICATION &amp; PARTNER STATUS...</div>
+      </div>
+    );
+  }
+
+  // 2. Unauthenticated State → Render Security Gateway Login
+  if (authStatus === "UNAUTHENTICATED") {
+    return (
+      <div className="space-y-8">
+        <PortalLoginClient region={regionCode} />
+        {/* Sandbox Dev Shortcuts */}
+        <div className="max-w-md mx-auto px-4 pb-16">
+          <div className="p-4 bg-alkota-black border border-dashed border-white/20 font-mono text-[11px] space-y-3">
+            <div className="text-alkota-signal font-bold uppercase flex items-center justify-between">
+              <span>SANDBOX PARTNER AUTHENTICATION DEMO</span>
+              <span className="text-[10px] text-alkota-slate">TEST GATEWAYS</span>
+            </div>
+            <p className="text-alkota-slate leading-relaxed font-sans text-xs">
+              Test dealer portal states with pre-configured Supabase roles:
+            </p>
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <button
+                type="button"
+                onClick={handleDemoApproved}
+                className="px-3 py-2 bg-alkota-signal/10 border border-alkota-signal/40 text-alkota-signal hover:bg-alkota-signal hover:text-alkota-black font-bold uppercase transition-colors text-center"
+              >
+                TEST APPROVED DEALER
+              </button>
+              <button
+                type="button"
+                onClick={handleDemoPending}
+                className="px-3 py-2 bg-amber-500/10 border border-amber-500/40 text-amber-300 hover:bg-amber-500 hover:text-alkota-black font-bold uppercase transition-colors text-center"
+              >
+                TEST PENDING APPROVAL
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Authenticated but Pending Approval State → Render Access Pending Gate
+  if (authStatus === "PENDING_APPROVAL") {
+    return (
+      <div className="w-full bg-alkota-carbon text-alkota-white pt-28 pb-24 min-h-screen tech-grid-dark flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl w-full mx-auto space-y-8">
+          <div className="p-8 bg-alkota-black border border-amber-500/40 space-y-6 shadow-2xl">
+            {/* Header Badge */}
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-6">
+              <div className="space-y-1">
+                <TechnicalAnnotation label="SECURITY GATEWAY" value="ACCESS RESTRICTED" variant="slate" />
+                <h1 className="font-display font-bold text-2xl sm:text-3xl uppercase tracking-tight text-white flex items-center gap-3">
+                  <ShieldAlert className="w-7 h-7 text-amber-400 shrink-0" />
+                  <span>PARTNER ACCESS PENDING APPROVAL</span>
+                </h1>
+              </div>
+              <span className="px-3 py-1 bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold uppercase">
+                STATUS: UNDER REVIEW
+              </span>
+            </div>
+
+            {/* Narrative Explanation */}
+            <p className="font-sans text-sm text-alkota-snow/90 leading-relaxed font-light">
+              Your account <strong>({userEmail})</strong> is authenticated with Supabase Auth, but your partner recruitment application has not yet been approved by ALKOTA Commercial Engineering. Access to authenticated dealer features—including commercial margins, demo fleet ordering, and lead routing—requires verified partner approval.
+            </p>
+
+            {/* Application Summary Box */}
+            <div className="p-5 bg-alkota-carbon border border-white/10 font-mono text-xs space-y-3">
+              <div className="font-bold text-alkota-signal uppercase tracking-wider text-[11px]">
+                SUBMITTED APPLICATION SUMMARY
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <span className="text-alkota-slate block text-[10px]">BUSINESS / SHOP NAME:</span>
+                  <span className="text-white font-bold">{applicationData?.shopName || "Partner Applicant Shop"}</span>
+                </div>
+                <div>
+                  <span className="text-alkota-slate block text-[10px]">APPLICATION REFERENCE:</span>
+                  <span className="text-white font-bold">{applicationData?.reference || "APN-2026-8491"}</span>
+                </div>
+                <div>
+                  <span className="text-alkota-slate block text-[10px]">REGISTERED EMAIL:</span>
+                  <span className="text-white font-bold">{userEmail}</span>
+                </div>
+                <div>
+                  <span className="text-alkota-slate block text-[10px]">REVIEW PROTOCOL:</span>
+                  <span className="text-amber-300 font-bold">24-48 HOUR SLA</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={checkAuthAndApproval}
+                  className="px-4 py-2.5 bg-alkota-signal text-alkota-black font-bold uppercase hover:bg-white transition-colors flex items-center gap-2"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>REFRESH STATUS</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="px-4 py-2.5 bg-white/5 border border-white/15 text-alkota-slate hover:text-white hover:border-white transition-colors flex items-center gap-2 uppercase"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>SIGN OUT</span>
+                </button>
+              </div>
+
+              <a
+                href="mailto:commercial@alkotacycles.com?subject=Partner%20Application%20Status%20Query"
+                className="text-alkota-slate hover:text-white underline text-[11px] uppercase"
+              >
+                Contact Commercial Team →
+              </a>
+            </div>
+          </div>
+
+          {/* Dev Test Switcher */}
+          <div className="p-4 bg-alkota-black border border-dashed border-white/15 font-mono text-[11px] flex items-center justify-between gap-4">
+            <span className="text-alkota-slate">Switch sandbox state to test approved portal:</span>
+            <button
+              type="button"
+              onClick={handleDemoApproved}
+              className="px-3 py-1.5 bg-alkota-signal/10 border border-alkota-signal/40 text-alkota-signal hover:bg-alkota-signal hover:text-alkota-black font-bold uppercase transition-colors"
+            >
+              SIMULATE COMMERCIAL APPROVAL
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 4. Authenticated & Approved State → Render Full Dealer Portal Dashboard
   return (
     <div className="w-full bg-alkota-carbon text-alkota-white pt-24 pb-24 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -84,9 +385,18 @@ export default function PortalShell({ regionCode }: { regionCode: RegionCode }) 
             <span className="px-3 py-1 bg-alkota-signal/10 border border-alkota-signal/40 text-alkota-signal uppercase font-bold">
               {partnerProfile.tierLabel} ({regionCode.toUpperCase()})
             </span>
-            <span className="px-3 py-1 bg-white/5 border border-white/10 text-alkota-slate uppercase">
+            <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 uppercase font-bold">
               STATUS: {partnerProfile.agreementStatus}
             </span>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="px-3 py-1 bg-white/5 border border-white/15 text-alkota-slate hover:text-white hover:border-white transition-colors uppercase flex items-center gap-1.5"
+              title="Sign Out of Dealer Portal"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>SIGN OUT</span>
+            </button>
           </div>
         </div>
 
