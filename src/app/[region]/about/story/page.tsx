@@ -604,11 +604,11 @@ export default function OurStoryPage() {
         <ChapterStrip num="08" label="ALKOTA" />
 
         <div className="space-y-12">
-          {/* Wide hero image — Pete + white or black bike */}
+          {/* Wide hero image — Project 01 complete system integration */}
           <StoryImage
-            src={ALKOTA_STORY_MEDIA.peteNakedCarbon.src}
-            alt="Pete Currey with Project 01 Naked Carbon"
-            label="PETE CURREY · PROJECT 01 NAKED CARBON · ALKOTA PERFORMANCE ENGINEERING"
+            src={ALKOTA_STORY_MEDIA.completeMachineIntegration.src}
+            alt="Project 01 complete machine integration"
+            label="PROJECT 01 · COMPLETE MACHINE INTEGRATION · ALKOTA PERFORMANCE ENGINEERING"
             height="h-[460px] sm:h-[540px]"
           />
 

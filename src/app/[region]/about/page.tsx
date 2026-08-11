@@ -22,8 +22,8 @@ const CHAPTER_EXPLORER_TILES = [
     title: "OUR STORY",
     descriptor: "From fifteen-year-old bike-shop employee to Project 01.",
     href: "/about/story",
-    img: ALKOTA_STORY_MEDIA.peteRidingHistory.src,
-    alt: "Pete Currey riding history",
+    img: ALKOTA_STORY_MEDIA.workshopChassisAssembly.src,
+    alt: "Workshop chassis assembly R&D",
   },
   {
     num: "02",
@@ -38,7 +38,7 @@ const CHAPTER_EXPLORER_TILES = [
     title: "BUILD PROCESS",
     descriptor: "From requirements and geometry to hardware.",
     href: "/about/build-process",
-    img: ALKOTA_STORY_MEDIA.workshopChassisAssembly.src,
+    img: ALKOTA_STORY_MEDIA.prototypeBuildValidation.src,
     alt: "Build process chassis assembly",
   },
   {
@@ -118,7 +118,7 @@ export default function AboutPage() {
     { src: ALKOTA_STORY_MEDIA.componentDevelopmentBench.src, alt: "CNC components", label: "03 CNC COMPONENTS" },
     { src: ALKOTA_STORY_MEDIA.paddockEnvironment.src, alt: "Event paddock", label: "04 EVENT PADDOCK" },
     { src: ALKOTA_STORY_MEDIA.standaloneWhiteBike.src, alt: "Project 01 bike", label: "05 PROJECT 01" },
-    { src: ALKOTA_STORY_MEDIA.peteFounderPortrait.src, alt: "Pete Currey", label: "06 PETE CURREY" },
+    { src: ALKOTA_STORY_MEDIA.frameDevelopmentMould.src, alt: "Monocoque mould tooling", label: "06 MOULD TOOLING" },
   ];
 
   return (
@@ -376,14 +376,14 @@ export default function AboutPage() {
             <div className="space-y-4">
               <div className="relative w-full h-[360px] bg-alkota-carbon border border-white/10 overflow-hidden shadow-2xl">
                 <Image
-                  src={ALKOTA_STORY_MEDIA.founderRiderDialogue.src}
-                  alt="Pete Currey debriefing with rider at event"
+                  src={ALKOTA_STORY_MEDIA.hauteSavoieAlpineTest.src}
+                  alt="Real terrain alpine field testing in Haute-Savoie"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-center"
                 />
               </div>
-              <span className="font-mono text-xs text-alkota-slate uppercase block">HUMAN INSTINCT • PADDOCK DEBRIEF</span>
+              <span className="font-mono text-xs text-alkota-slate uppercase block">REAL TERRAIN VALIDATION • HAUTE-SAVOIE 2,400M</span>
             </div>
 
             <div className="space-y-4">
