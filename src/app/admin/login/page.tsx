@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { Lock, ArrowRight, ShieldCheck } from "lucide-react";
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("from") || "/admin/leads";
+
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,8 +27,7 @@ export default function AdminLoginPage() {
 
       const data = await res.json();
       if (res.ok && data.success) {
-        router.push("/admin/leads");
-        router.refresh();
+        window.location.href = redirectTo;
       } else {
         setError(data.error || "Authentication failed.");
       }
@@ -95,5 +96,13 @@ export default function AdminLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-alkota-carbon flex items-center justify-center text-white font-mono text-xs">LOADING...</div>}>
+      <AdminLoginForm />
+    </Suspense>
   );
 }

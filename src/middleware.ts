@@ -84,14 +84,28 @@ export function middleware(request: NextRequest) {
 
   // Handle Admin Auth Routes
   if (pathname.startsWith("/admin")) {
-    if (pathname === "/admin/login" || pathname.startsWith("/api/admin/")) {
+    const adminSession = request.cookies.get("alkota-admin-session");
+    const hasAdminSession = Boolean(adminSession?.value && adminSession.value.startsWith("alkota-admin:"));
+
+    if (pathname === "/admin/login") {
+      if (hasAdminSession) {
+        const from = request.nextUrl.searchParams.get("from") || "/admin/leads";
+        const res = NextResponse.redirect(new URL(from, request.url));
+        if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+        return res;
+      }
       const res = NextResponse.next();
       if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
-    const session = request.cookies.get("alkota-admin-session");
-    if (!session?.value || !session.value.startsWith("alkota-admin:")) {
+    if (pathname.startsWith("/api/admin/")) {
+      const res = NextResponse.next();
+      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return res;
+    }
+
+    if (!hasAdminSession) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       const res = NextResponse.redirect(loginUrl);
@@ -106,27 +120,31 @@ export function middleware(request: NextRequest) {
 
   // Handle Studio Auth Routes
   if (pathname.startsWith("/studio")) {
-    if (pathname === "/studio/login" || pathname.startsWith("/api/studio/")) {
+    const studioSession = request.cookies.get(STUDIO_COOKIE);
+    const { valid: hasStudioSession, role } = parseSession(studioSession?.value || "");
+
+    if (pathname === "/studio/login") {
+      if (hasStudioSession) {
+        const from = request.nextUrl.searchParams.get("from") || "/studio";
+        const res = NextResponse.redirect(new URL(from, request.url));
+        if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+        return res;
+      }
       const res = NextResponse.next();
       if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
-    const session = request.cookies.get(STUDIO_COOKIE);
-    if (!session?.value) {
-      const loginUrl = new URL("/studio/login", request.url);
-      loginUrl.searchParams.set("from", pathname);
-      const res = NextResponse.redirect(loginUrl);
+    if (pathname.startsWith("/api/studio/")) {
+      const res = NextResponse.next();
       if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
 
-    const { valid, role } = parseSession(session.value);
-    if (!valid) {
+    if (!hasStudioSession) {
       const loginUrl = new URL("/studio/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       const res = NextResponse.redirect(loginUrl);
-      res.cookies.delete(STUDIO_COOKIE);
       if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
       return res;
     }
