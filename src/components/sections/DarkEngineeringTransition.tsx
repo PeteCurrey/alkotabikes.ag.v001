@@ -8,11 +8,11 @@ import { ENGINEERING_PILLARS } from "@/lib/data/engineeringData";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
-// Mapping pillars: 1 card features Pete Currey in the development workshop, 3 feature Project 01 technical/engineering visuals
+// Mapping pillars: 1 card features Pete Currey inspecting chassis, 3 feature distinct Project 01 technical/engineering visuals
 const PILLAR_BACKGROUND_IMAGES: Record<string, string> = {
-  chassis: ALKOTA_STORY_MEDIA.peteWorkshopLab.src,
-  kinematics: ALKOTA_STORY_MEDIA.kinematicDynamicsAnalysis.src,
-  materials: ALKOTA_STORY_MEDIA.carbonLayupDevelopment.src,
+  chassis: ALKOTA_STORY_MEDIA.peteNakedCarbon.src,
+  kinematics: ALKOTA_STORY_MEDIA.technicalCadMaterial.src,
+  materials: ALKOTA_STORY_MEDIA.frameDevelopmentMould.src,
   testing: ALKOTA_STORY_MEDIA.laboratoryStressFatigue.src,
 };
 
@@ -57,10 +57,10 @@ export default function DarkEngineeringTransition() {
                       alt={`ALKOTA Project 01 ${pillar.title} engineering visualization`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover object-center opacity-20 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700 ease-out"
+                      className="object-cover object-center opacity-40 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 ease-out"
                     />
                     {/* Gradient Overlay for Text Readability & Cinematic Contrast */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-alkota-black via-alkota-black/80 to-alkota-black/50 group-hover:via-alkota-black/70 group-hover:to-alkota-black/30 transition-colors duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-alkota-black via-alkota-black/70 to-alkota-black/30 group-hover:via-alkota-black/50 group-hover:to-alkota-black/10 transition-colors duration-700" />
                   </div>
                 )}
 

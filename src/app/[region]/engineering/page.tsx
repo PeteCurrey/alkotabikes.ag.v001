@@ -2,6 +2,7 @@ import { buildRegionalMetadata } from "@/lib/metadata";
 import type { RegionCode } from "@/lib/regions";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { EngineeringSubNav } from "@/components/layout/SubNav";
@@ -10,10 +11,15 @@ import KinematicChart from "@/components/engineering/KinematicChart";
 import WorkshopFeature from "@/components/sections/WorkshopFeature";
 import NextStepBanner from "@/components/layout/NextStepBanner";
 import { ENGINEERING_PILLARS } from "@/lib/data/engineeringData";
+import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
-
-
+const PILLAR_BACKGROUND_IMAGES: Record<string, string> = {
+  chassis: ALKOTA_STORY_MEDIA.peteNakedCarbon.src,
+  kinematics: ALKOTA_STORY_MEDIA.technicalCadMaterial.src,
+  materials: ALKOTA_STORY_MEDIA.frameDevelopmentMould.src,
+  testing: ALKOTA_STORY_MEDIA.laboratoryStressFatigue.src,
+};
 
 export async function generateMetadata({
   params,
@@ -68,30 +74,47 @@ export default function EngineeringHubPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ENGINEERING_PILLARS.map((p) => (
-              <Link
-                key={p.id}
-                href={p.route}
-                className="group p-6 bg-alkota-black border border-white/10 hover:border-alkota-signal transition-all space-y-6 flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-sm font-bold text-alkota-signal">{p.number}</span>
-                    <ArrowRight className="w-4 h-4 text-alkota-slate group-hover:text-alkota-signal group-hover:translate-x-1 transition-all" />
-                  </div>
-                  <h2 className="font-display text-xl font-bold text-alkota-white uppercase tracking-tight group-hover:text-alkota-signal transition-colors">
-                    {p.title}
-                  </h2>
-                  <p className="font-sans text-xs text-alkota-slate font-light leading-relaxed">
-                    {p.description}
-                  </p>
-                </div>
+            {ENGINEERING_PILLARS.map((p) => {
+              const bgImage = PILLAR_BACKGROUND_IMAGES[p.id];
+              return (
+                <Link
+                  key={p.id}
+                  href={p.route}
+                  className="group p-6 bg-alkota-black border border-white/10 hover:border-alkota-signal transition-all duration-500 flex flex-col justify-between space-y-6 relative overflow-hidden shadow-xl"
+                >
+                  {/* Reveal-on-hover Background Image */}
+                  {bgImage && (
+                    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                      <Image
+                        src={bgImage}
+                        alt={`ALKOTA ${p.title} engineering visualization`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover object-center opacity-40 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-alkota-black via-alkota-black/70 to-alkota-black/30 group-hover:via-alkota-black/50 group-hover:to-alkota-black/10 transition-colors duration-700" />
+                    </div>
+                  )}
 
-                <div className="border-t border-white/10 pt-3 font-mono text-[10px] text-alkota-slate">
-                  <span>EXPLORE {p.title} →</span>
-                </div>
-              </Link>
-            ))}
+                  <div className="space-y-3 relative z-10">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-sm font-bold text-alkota-signal">{p.number}</span>
+                      <ArrowRight className="w-4 h-4 text-alkota-slate group-hover:text-alkota-signal group-hover:translate-x-1 transition-all" />
+                    </div>
+                    <h2 className="font-display text-xl font-bold text-alkota-white uppercase tracking-tight group-hover:text-alkota-signal transition-colors">
+                      {p.title}
+                    </h2>
+                    <p className="font-sans text-xs text-alkota-slate font-light leading-relaxed group-hover:text-alkota-snow transition-colors">
+                      {p.description}
+                    </p>
+                  </div>
+
+                  <div className="border-t border-white/10 pt-3 font-mono text-[10px] text-alkota-slate relative z-10">
+                    <span>EXPLORE {p.title} →</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
