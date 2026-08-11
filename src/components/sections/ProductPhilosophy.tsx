@@ -35,9 +35,23 @@ export default function ProductPhilosophy() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 font-mono text-xs">
             {points.map((p) => (
-              <div key={p.label} className="p-3 bg-alkota-snow border border-black/10 space-y-1">
-                <div className="font-bold text-alkota-black uppercase">{p.label}</div>
-                <div className="font-sans text-[11px] text-alkota-slate">{p.text}</div>
+              <div
+                key={p.label}
+                className="relative p-[1px] overflow-hidden group border border-black/10 transition-all duration-500 hover:border-[#D4AF37]/60 hover:shadow-[0_0_20px_rgba(212,175,55,0.25)]"
+              >
+                {/* Gold Border Beam Glow Animation */}
+                <div
+                  className="absolute inset-[-200%] animate-border-beam gold-beam-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
+                  aria-hidden="true"
+                />
+                {/* Card Content */}
+                <div className="relative z-10 p-3 bg-alkota-snow space-y-1 h-full">
+                  <div className="font-bold text-alkota-black uppercase tracking-wider flex items-center justify-between">
+                    <span>{p.label}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
+                  </div>
+                  <div className="font-sans text-[11px] text-alkota-slate">{p.text}</div>
+                </div>
               </div>
             ))}
           </div>

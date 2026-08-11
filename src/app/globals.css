@@ -96,3 +96,28 @@
   outline: 2px solid var(--alkota-signal);
   outline-offset: 2px;
 }
+
+/* Gold Border Beam Glow Animation */
+@keyframes border-beam-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam-spin 4s linear infinite;
+}
+
+.gold-beam-gradient {
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0%,
+    transparent 70%,
+    #D4AF37 85%,
+    #FFF8DC 94%,
+    transparent 100%
+  );
+}
