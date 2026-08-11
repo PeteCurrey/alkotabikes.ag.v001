@@ -1,5 +1,5 @@
 import React from "react";
-import { AdminCard, StatRow } from "../AdminCard";
+import { AdminCard, CardUnavailable, StatRow } from "../AdminCard";
 import { fetchSeoStats } from "@/lib/admin/dashboardData";
 import { Globe, ShieldCheck } from "lucide-react";
 
@@ -7,7 +7,7 @@ export default async function SeoCard() {
   const result = fetchSeoStats();
 
   if (!result.ok) {
-    return <AdminCard title="SEO & CRAWL GATE" state="unavailable" />;
+    return <CardUnavailable title="SEO & CRAWL GATE" error={result.error} />;
   }
 
   const { allowIndexing, canonicalHost, sitemapRouteCount } = result.data;
