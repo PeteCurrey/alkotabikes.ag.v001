@@ -27,18 +27,18 @@ export default function RacingClient() {
           HERO — Race Paddock Backdrop
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section className="relative w-full min-h-[90vh] flex flex-col justify-between pt-20 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden bg-alkota-black border-b border-white/10 tech-grid-dark">
-        {/* Race Paddock Background Photo */}
+        {/* Race Action Hero Background Photo */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={ALKOTA_STORY_MEDIA.paddockEnvironment.src}
-            alt="ALKOTA Performance Engineering paddock environment at alpine mountain event"
+            src={ALKOTA_STORY_MEDIA.racingHeroAction.src}
+            alt="ALKOTA Project 01 high-speed alpine descent during race validation"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center opacity-45 scale-[1.01]"
+            className="object-cover object-center opacity-55 scale-[1.01]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-alkota-carbon via-alkota-carbon/85 to-transparent w-full md:w-3/4" />
-          <div className="absolute inset-0 bg-gradient-to-t from-alkota-carbon via-transparent to-alkota-carbon/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-alkota-carbon via-alkota-carbon/80 to-transparent w-full md:w-3/4" />
+          <div className="absolute inset-0 bg-gradient-to-t from-alkota-carbon via-transparent to-alkota-carbon/60" />
         </div>
 
         {/* Top Status Bar */}

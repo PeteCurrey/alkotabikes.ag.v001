@@ -126,6 +126,18 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
     alt: "ALKOTA paddock environment at alpine mountain event",
     caption: "Paddock presence — learning directly from rider feedback",
   },
+  racingHeroAction: {
+    id: "racing-hero-action",
+    src: "/images/racing/alkota-racing-hero-action.jpg",
+    category: "racing",
+    subjects: ["Racing", "Project 01", "Alpine Descent"],
+    bikeFinish: "GLACIER",
+    orientation: "landscape",
+    environment: "TERRAIN_HUMAN",
+    priority: 1,
+    alt: "ALKOTA Project 01 high-speed alpine descent during race validation",
+    caption: "ALKOTA Racing — Project 01 alpine descent validation",
+  },
   tradeShowPresentation: {
     id: "trade-show-presentation",
     src: "/images/story/trade-show-paddock-presentation.jpg",
