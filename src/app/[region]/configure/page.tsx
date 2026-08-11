@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ConfiguratorClient from "./ConfiguratorClient";
 import { PROJECT_01_SPECIFICATION } from "@/content/project01/specification";
+import CmsImage from "@/components/cms/CmsImage";
 
 
 
@@ -133,9 +134,9 @@ export default function ConfigurePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
           <div className="border border-white/10 bg-white/5 p-4 space-y-3">
             <div className="relative aspect-[16/9] w-full bg-black/60 overflow-hidden border border-white/10">
-              <Image
-                src="/images/project01-glacier-white-hero.jpg"
-                alt="Project 01 Glacier White Finish"
+              <CmsImage
+                pageKey="configure"
+                slotKey="glacier_white_image"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -151,9 +152,9 @@ export default function ConfigurePage() {
 
           <div className="border border-white/10 bg-white/5 p-4 space-y-3">
             <div className="relative aspect-[16/9] w-full bg-black/60 overflow-hidden border border-white/10">
-              <Image
-                src="/images/project01-naked-carbon-hero.jpg"
-                alt="Project 01 Naked Carbon Finish"
+              <CmsImage
+                pageKey="configure"
+                slotKey="naked_carbon_image"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
