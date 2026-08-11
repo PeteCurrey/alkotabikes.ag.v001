@@ -42,7 +42,7 @@ export const glacierWhite = {
 
   /** Showroom presentation image */
   showroom: {
-    src: "/images/story/project01-glacier-white-showroom.jpg",
+    src: "/images/project01-glacier-white.jpg",
     alt: "Project 01 Glacier White — showroom presentation",
     status: "APPROVED_MASTER" as ImageStatus,
     view: "FRONT_3Q",

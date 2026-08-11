@@ -320,7 +320,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   hauteSavoieAlpineTest: {
     id: "haute-savoie-alpine-test",
-    src: "/images/story/haute-savoie-alpine-field-test.jpg",
+    src: "/images/story/prototype-build-validation.jpg",
     category: "testing",
     subjects: ["Haute-Savoie", "Alpine", "Field Test"],
     bikeFinish: "GLACIER",
@@ -344,7 +344,7 @@ export const ALKOTA_STORY_MEDIA: Record<string, StoryMediaAsset> = {
   },
   alpineTrailTestingAction: {
     id: "alpine-trail-testing-action",
-    src: "/images/story/alpine-trail-testing-action.jpg",
+    src: "/images/engineering-workshop.jpg",
     category: "alpine",
     subjects: ["Trail", "Action", "Riding"],
     bikeFinish: "GLACIER",

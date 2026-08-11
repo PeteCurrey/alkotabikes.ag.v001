@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ConfiguratorVersionSnapshot } from "@/lib/configurator/types";
 import { AlertCircle } from "lucide-react";
 
+import { brandAssets } from "@/lib/assets";
+
 interface CompositeVisualiserProps {
   snapshot: ConfiguratorVersionSnapshot;
   selections: Record<string, string>;
@@ -49,7 +51,7 @@ export default function CompositeVisualiser({ snapshot, selections }: CompositeV
         {/* Representative Hero Image */}
         <div className="relative w-full h-full max-w-4xl mx-auto">
           <Image
-            src="/images/project01-glacier-white-hero.jpg"
+            src={brandAssets.project01WhiteHero}
             alt={`${snapshot.model_name} Visual Representation`}
             fill
             className="object-contain"
