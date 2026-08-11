@@ -74,6 +74,7 @@ const ALLOWED_PRICING_FILES = [
   "src/components/partner/PortalShell.tsx",
   "src/components/partner/pdf/PartnerPackDocument.tsx",
   "src/app/[region]/warranty/page.tsx",
+  "src/app/admin/configurator/[model]/builds/page.tsx",
   "scripts/validate-prices.ts",
 ];
 
