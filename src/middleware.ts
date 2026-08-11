@@ -63,7 +63,12 @@ function mapLegacyPath(pathname: string, search: string): string {
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const host = (request.headers.get("host") || "").split(":")[0].toLowerCase();
-  const isProductionHost = host === "alkotacycles.com" || host === "www.alkotacycles.com";
+  const isProductionHost =
+    host === "alkotacycles.avorria.com" ||
+    host === "alkotabikes.com" ||
+    host === "www.alkotabikes.com" ||
+    host === "alkotacycles.com" ||
+    host === "www.alkotacycles.com";
 
   // Bypass non-regional internal assets / endpoints
   if (

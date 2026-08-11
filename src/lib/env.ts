@@ -20,10 +20,10 @@ if (!sanitized || sanitized.includes("vercel.app")) {
   if (sanitized.includes("vercel.app")) {
     console.warn(
       `[ALKOTA ENV WARNING] NEXT_PUBLIC_SITE_URL contains "vercel.app" (${sanitized}). ` +
-        `Falling back to canonical domain "https://alkotabikes.com".`
+        `Falling back to staging domain "https://alkotacycles.avorria.com".`
     );
   }
-  sanitized = "https://alkotabikes.com";
+  sanitized = "https://alkotacycles.avorria.com";
 }
 
 export const siteUrl: string = sanitized;
