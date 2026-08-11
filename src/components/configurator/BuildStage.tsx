@@ -129,6 +129,40 @@ export default function BuildStage({
     setLiveAnnouncement(`${tabs[next].label} panel open`);
   }, [tabs]);
 
+  // Live build reference generator: A01-{SIZE}-{WHEEL}-{HASH}
+  const liveBuildRef = React.useMemo(() => {
+    const finishChar = config.finish === "GLACIER" ? "G" : "C";
+    const wheelChar = config.wheelFormat === "MX" ? "MX" : "29";
+    const hashSeed = `${config.size}-${config.finish}-${config.wheelFormat}-${config.forkId}-${config.shockId}-${config.wheelsId}`;
+    let hash = 0;
+    for (let i = 0; i < hashSeed.length; i++) {
+      hash = (hash << 5) - hash + hashSeed.charCodeAt(i);
+      hash |= 0;
+    }
+    const code = Math.abs(hash).toString(36).toUpperCase().padStart(4, "0").substring(0, 4);
+    return `A01-${config.size}-${finishChar}${wheelChar}-${code}`;
+  }, [config]);
+
+  // Compute total system weight from real component technicalData (omit if unset, no 0g)
+  const totalWeightGrams = React.useMemo(() => {
+    const items = [selectedFork, selectedShock, selectedBrakeFront, selectedDrivetrain, selectedWheels];
+    let total = 0;
+    let count = 0;
+    for (const item of items) {
+      if (item?.technicalData) {
+        const weightEntry = item.technicalData.find((t) => t.label.toLowerCase().includes("weight"));
+        if (weightEntry) {
+          const match = weightEntry.value.match(/(\d+)\s*g/i);
+          if (match) {
+            total += parseInt(match[1], 10);
+            count++;
+          }
+        }
+      }
+    }
+    return count > 0 ? total : null;
+  }, [selectedFork, selectedShock, selectedBrakeFront, selectedDrivetrain, selectedWheels]);
+
   return (
     <div className="w-full bg-alkota-carbon text-alkota-white min-h-screen p-4 sm:p-6 lg:p-12 space-y-8 tech-grid-dark">
       {/* Screen-reader live region */}
@@ -136,34 +170,41 @@ export default function BuildStage({
         {liveAnnouncement}
       </div>
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
+      {/* Header — CAD Workstation Header */}
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
         <div className="space-y-2">
-          <TechnicalAnnotation label="MODE 04" value="PROJECT 01 CONFIGURATION" variant="signal" />
-          <h2 className="font-display font-medium text-3xl sm:text-5xl uppercase tracking-tight text-white">
-            MAKE IT <span className="text-alkota-signal">YOURS</span>
+          <TechnicalAnnotation label="CAD WORKSTATION" value={liveBuildRef} variant="signal" />
+          <h2 className="font-display font-medium text-3xl sm:text-5xl uppercase tracking-tight text-white leading-none">
+            SPECIFICATION <span className="text-alkota-signal">ENGINE</span>
           </h2>
           <p className="font-sans text-sm text-alkota-snow/80 max-w-xl font-light">
-            Specify finish, size, and systems. Schematic viewer and panel are both fully keyboard operable.
+            Technical baseline configurator. Real-time projected 3D schematic and system parameter calculation.
           </p>
         </div>
-        <div className="font-mono text-xs text-alkota-slate uppercase text-right">
-          <div className="text-alkota-white font-bold">DEVELOPMENT CONFIGURATION</div>
-          <div>PRICING STATUS: TO BE CONFIRMED</div>
+        <div className="font-mono text-xs text-alkota-slate uppercase text-right space-y-1">
+          <div className="text-white font-bold tracking-wider">
+            BUILD REF: <span className="text-alkota-signal tabular-nums">{liveBuildRef}</span>
+          </div>
+          {totalWeightGrams && (
+            <div className="text-alkota-slate text-[11px]">
+              CALCULATED SPEC WEIGHT: <span className="text-white font-bold tabular-nums">{(totalWeightGrams / 1000).toFixed(2)} kg</span>
+            </div>
+          )}
+          <div className="text-[10px] text-alkota-slate/60">PRICING STATUS: TO BE CONFIRMED</div>
         </div>
       </div>
 
-      {/* Main Grid */}
+      {/* Main Co-Equal Workstation Grid (6 col / 6 col balance) */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Schematic 3D Viewer */}
-        <div className="lg:col-span-7 bg-alkota-black border border-white/10 shadow-2xl flex flex-col">
+        {/* Left: Schematic 3D Viewer Workstation Canvas */}
+        <div className="lg:col-span-6 bg-alkota-black border border-white/10 shadow-2xl flex flex-col">
           <div className="flex items-center justify-between border-b border-white/10 px-4 py-2 font-mono text-xs">
-            <span className="text-alkota-signal font-bold uppercase">
+            <span className="text-alkota-signal font-bold uppercase tracking-wider text-[11px]">
               PROJECT 01 — {config.finish === "GLACIER" ? "GLACIER WHITE" : "NAKED CARBON"} ({config.size})
             </span>
             <SpecificationStatus status="DEVELOPMENT_BASELINE" label="SCHEMATIC GEOMETRY" />
           </div>
-          <div className="h-[420px] sm:h-[500px] w-full">
+          <div className="h-[460px] sm:h-[540px] w-full">
             <SchematicViewerWrapper
               finish={config.finish}
               wheelFormat={config.wheelFormat}
@@ -178,14 +219,14 @@ export default function BuildStage({
             />
           </div>
           <div className="px-4 py-2 border-t border-white/10 font-mono text-[9px] text-[#647789] flex justify-between">
-            <span>CLICK GEOMETRY TO SELECT SYSTEM</span>
-            <span className="hidden sm:block">PANEL BELOW IS PRIMARY INTERFACE</span>
+            <span>CLICK GEOMETRY NODE TO SELECT SYSTEM</span>
+            <span className="hidden sm:block">ORTHOGRAPHIC SIDE ELEVATION</span>
           </div>
         </div>
 
-        {/* Right: Configuration Panel */}
-        <div className="lg:col-span-5 bg-alkota-black border border-white/10 p-6 md:p-8 space-y-6 shadow-2xl">
-          {/* System tabs — keyboard navigable with arrow keys */}
+        {/* Right: Technical Specification Panel */}
+        <div className="lg:col-span-6 bg-alkota-black border border-white/10 p-6 md:p-8 space-y-6 shadow-2xl">
+          {/* System tabs — sharp 1px borders, tabular numerals */}
           <div
             role="tablist"
             aria-label="Configuration systems"
