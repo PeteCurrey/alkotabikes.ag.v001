@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ADMIN_COOKIE } from "@/lib/auth/adminAuth";
+import { ADMIN_COOKIE, createAdminSessionToken } from "@/lib/auth/adminAuth";
 
 export async function POST(request: Request) {
   try {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const sessionValue = btoa(`alkota-admin:owner:${Date.now()}`);
+    const sessionValue = createAdminSessionToken("owner");
     const response = NextResponse.json({ success: true });
 
     response.cookies.set(ADMIN_COOKIE, sessionValue, {

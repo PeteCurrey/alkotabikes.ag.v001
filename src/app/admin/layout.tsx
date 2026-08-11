@@ -5,15 +5,14 @@ import { cookies } from "next/headers";
 import Logo from "@/components/brand/Logo";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { Users, FileText, Database, Shield, LogOut, BarChart3, Mail, Layers, Image as ImageIcon } from "lucide-react";
-import { ADMIN_COOKIE } from "@/lib/auth/adminAuth";
+import { ADMIN_COOKIE, verifyAdminAuth } from "@/lib/auth/adminAuth";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const reqCookies = await cookies();
-  const session = reqCookies.get(ADMIN_COOKIE)?.value;
+  const session = await verifyAdminAuth();
   const isLoginPage = (await headers()).get("x-invoke-path")?.includes("/admin/login");
 
   // Render children directly for login page or if session present

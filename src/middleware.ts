@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { isValidAdminToken } from "@/lib/auth/adminAuth";
+
 const STUDIO_COOKIE = "alkota-studio-session";
 const REGION_COOKIE = "alkota-region";
 
@@ -85,7 +87,7 @@ export function middleware(request: NextRequest) {
   // Handle Admin Auth Routes
   if (pathname.startsWith("/admin")) {
     const adminSession = request.cookies.get("alkota-admin-session");
-    const hasAdminSession = Boolean(adminSession?.value && adminSession.value.startsWith("alkota-admin:"));
+    const hasAdminSession = isValidAdminToken(adminSession?.value);
 
     if (pathname === "/admin/login") {
       if (hasAdminSession) {

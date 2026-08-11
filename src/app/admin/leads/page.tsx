@@ -2,10 +2,9 @@ import React from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/db/supabaseAdmin";
-import { ADMIN_COOKIE } from "@/lib/auth/adminAuth";
+import { verifyAdminAuth } from "@/lib/auth/adminAuth";
 import LeadsTable from "./LeadsTable";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { Users, CheckCircle, Clock, TrendingUp, Filter, AlertTriangle } from "lucide-react";
 
 export const revalidate = 0; // Dynamic route
 
@@ -14,10 +13,9 @@ export default async function AdminLeadsPage({
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  const reqCookies = await cookies();
-  const session = reqCookies.get(ADMIN_COOKIE)?.value;
+  const isAuthenticated = await verifyAdminAuth();
 
-  if (!session || !session.startsWith("alkota-admin:")) {
+  if (!isAuthenticated) {
     redirect("/admin/login");
   }
 
