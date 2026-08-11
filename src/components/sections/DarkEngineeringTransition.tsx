@@ -8,9 +8,9 @@ import { ENGINEERING_PILLARS } from "@/lib/data/engineeringData";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight } from "lucide-react";
 
-// Mapping pillars to their specific relevant Project 01 engineering background images
+// Mapping pillars: 1 card features Pete Currey in the development workshop, 3 feature Project 01 technical/engineering visuals
 const PILLAR_BACKGROUND_IMAGES: Record<string, string> = {
-  chassis: ALKOTA_STORY_MEDIA.chassisEngineeringReview.src,
+  chassis: ALKOTA_STORY_MEDIA.peteWorkshopLab.src,
   kinematics: ALKOTA_STORY_MEDIA.kinematicDynamicsAnalysis.src,
   materials: ALKOTA_STORY_MEDIA.carbonLayupDevelopment.src,
   testing: ALKOTA_STORY_MEDIA.laboratoryStressFatigue.src,
