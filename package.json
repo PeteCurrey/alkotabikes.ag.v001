@@ -7,11 +7,11 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "tsx scripts/check-canonical-host.ts && tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts && tsx scripts/verify-metadata.ts && tsx scripts/validate-prices.ts && tsx scripts/placeholder-report.ts",
+    "prebuild": "tsx scripts/check-canonical-host.ts && tsx scripts/check-admin-isolation.ts && tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts && tsx scripts/verify-metadata.ts && tsx scripts/validate-prices.ts && tsx scripts/placeholder-report.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "verify": "tsx scripts/check-canonical-host.ts && tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts && tsx scripts/verify-metadata.ts && tsx scripts/validate-prices.ts && tsx scripts/placeholder-report.ts"
+    "verify": "tsx scripts/check-canonical-host.ts && tsx scripts/check-admin-isolation.ts && tsx scripts/verify-claims.ts && tsx scripts/verify-assets.ts && tsx scripts/verify-metadata.ts && tsx scripts/validate-prices.ts && tsx scripts/placeholder-report.ts"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.6.0",

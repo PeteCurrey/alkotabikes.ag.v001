@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { cookies } from "next/headers";
 import Logo from "@/components/brand/Logo";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
-import { Users, FileText, Database, Shield, LogOut, BarChart3, Mail, Layers, Image as ImageIcon, Activity } from "lucide-react";
+import { Users, FileText, Database, Shield, LogOut, BarChart3, Mail, Layers, Image as ImageIcon, Activity, LayoutDashboard } from "lucide-react";
 import { ADMIN_COOKIE, verifyAdminAuth } from "@/lib/auth/adminAuth";
 import { SITE_URL } from "@/lib/env";
 
@@ -82,8 +82,21 @@ export default async function AdminLayout({
               </div>
               <nav className="space-y-1">
                 <Link
+                  href="/admin"
+                  className="flex items-center justify-between px-3 py-2.5 border border-white/10 hover:border-alkota-signal text-alkota-slate hover:text-alkota-signal text-xs font-bold uppercase tracking-wider transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <LayoutDashboard className="w-4 h-4 text-alkota-signal" />
+                    <span>OVERVIEW</span>
+                  </div>
+                  <span className="text-[10px] bg-alkota-signal/20 text-alkota-signal px-1.5 py-0.5 font-bold">
+                    DASHBOARD
+                  </span>
+                </Link>
+
+                <Link
                   href="/admin/leads"
-                  className="flex items-center justify-between px-3 py-2.5 bg-alkota-signal/10 border border-alkota-signal/40 hover:border-alkota-signal text-alkota-signal text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="flex items-center justify-between px-3 py-2.5 border border-white/10 hover:border-alkota-signal text-alkota-slate hover:text-alkota-signal text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   <div className="flex items-center gap-2.5">
                     <Users className="w-4 h-4" />
