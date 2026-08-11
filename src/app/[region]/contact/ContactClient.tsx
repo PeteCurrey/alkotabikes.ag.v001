@@ -7,6 +7,9 @@ import { ArrowRight, Check, Mail, MapPin, Shield } from "lucide-react";
 import { getCompany } from "@/lib/company";
 import { useRegion } from "@/components/region/RegionProvider";
 
+import { captureLead } from "@/lib/leads/capture";
+import type { LeadType } from "@/lib/leads/capture";
+
 export default function ContactClient() {
   const { regionCode } = useRegion();
   const company = getCompany(regionCode);
@@ -20,6 +23,13 @@ export default function ContactClient() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [hp, setHp] = useState("");
+  const [renderTime, setRenderTime] = useState<number>(0);
+
+  React.useEffect(() => {
+    setRenderTime(Date.now());
+  }, []);
 
   const CONTACT_CHANNELS = [
     {
@@ -113,6 +123,7 @@ export default function ContactClient() {
                   onClick={() => {
                     setSubmitted(false);
                     setForm({ name: "", email: "", category: "General Enquiry", message: "", consent: false });
+                    setError("");
                   }}
                   className="font-mono text-xs text-alkota-signal underline hover:text-white uppercase font-bold"
                 >
@@ -120,7 +131,57 @@ export default function ContactClient() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6 font-mono text-xs">
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!form.consent) {
+                    setError("You must acknowledge the privacy notice to send a message.");
+                    return;
+                  }
+                  setLoading(true);
+                  setError("");
+
+                  let leadType: LeadType = "general_contact";
+                  if (form.category === "Partner Network") leadType = "dealer_enquiry";
+                  else if (form.category === "Press & Media") leadType = "press";
+                  else if (form.category === "Warranty & Support") leadType = "warranty";
+
+                  const consentText = "I agree that Alkota Cycles may process my contact details to respond to this enquiry in accordance with the Privacy Policy.";
+
+                  const res = await captureLead({
+                    email: form.email,
+                    full_name: form.name,
+                    lead_type: leadType,
+                    message: form.message,
+                    marketing_consent: false, // Contact form is transactional enquiry
+                    consent_text: consentText,
+                    source_page: "/contact",
+                    locale: regionCode === "us" ? "en-US" : "en-GB",
+                    _hp: hp,
+                    _t: renderTime,
+                  });
+
+                  setLoading(false);
+                  if (res.success) {
+                    setSubmitted(true);
+                  } else {
+                    setError(res.error || "Failed to submit enquiry. Please try again.");
+                  }
+                }}
+                className="space-y-6 font-mono text-xs"
+              >
+                {/* Honeypot */}
+                <input
+                  type="text"
+                  name="website_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={hp}
+                  onChange={(e) => setHp(e.target.value)}
+                  className="sr-only"
+                  aria-hidden="true"
+                />
+
                 <div className="space-y-2">
                   <label htmlFor="contact-name" className="text-alkota-slate uppercase tracking-wider block">
                     YOUR NAME *
@@ -192,7 +253,7 @@ export default function ContactClient() {
                       required
                       checked={form.consent}
                       onChange={(e) => setForm({ ...form, consent: e.target.checked })}
-                      className="mt-1 accent-alkota-signal"
+                      className="mt-1 accent-alkota-signal cursor-pointer"
                     />
                     <span className="text-alkota-slate leading-relaxed">
                       I agree that Alkota Cycles may process my contact details to respond to this enquiry in accordance with the{" "}
@@ -203,6 +264,12 @@ export default function ContactClient() {
                     </span>
                   </label>
                 </div>
+
+                {error && (
+                  <div className="text-red-400 font-mono text-xs pt-1">
+                    {error}
+                  </div>
+                )}
 
                 <button
                   type="submit"

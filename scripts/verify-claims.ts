@@ -114,6 +114,8 @@ const SCAN_DIRS = [
 const EXCLUDE_FROM_SCAN = [
   path.join(ROOT, 'src', 'content', 'project01', 'claims.ts'),
   path.join(ROOT, 'src', 'lib', 'claims'),
+  path.join(ROOT, 'src', 'app', 'admin'),
+  path.join(ROOT, 'src', 'app', 'api', 'admin'),
   path.join(ROOT, 'scripts'),
 ];
 

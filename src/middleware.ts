@@ -82,6 +82,28 @@ export function middleware(request: NextRequest) {
     return res;
   }
 
+  // Handle Admin Auth Routes
+  if (pathname.startsWith("/admin")) {
+    if (pathname === "/admin/login" || pathname.startsWith("/api/admin/")) {
+      const res = NextResponse.next();
+      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return res;
+    }
+
+    const session = request.cookies.get("alkota-admin-session");
+    if (!session?.value || !session.value.startsWith("alkota-admin:")) {
+      const loginUrl = new URL("/admin/login", request.url);
+      loginUrl.searchParams.set("from", pathname);
+      const res = NextResponse.redirect(loginUrl);
+      if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return res;
+    }
+
+    const res = NextResponse.next();
+    if (!isProductionHost) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return res;
+  }
+
   // Handle Studio Auth Routes
   if (pathname.startsWith("/studio")) {
     if (pathname === "/studio/login" || pathname.startsWith("/api/studio/")) {

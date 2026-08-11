@@ -13,6 +13,7 @@ import {
   Upload,
   Wrench,
 } from "lucide-react";
+import { captureLead } from "@/lib/leads/capture";
 
 type FormState = "idle" | "submitting" | "sent" | "error";
 
@@ -187,8 +188,25 @@ export default function ApplicationForm() {
         });
       }
 
-      // Simulate slight network delay
-      await new Promise((r) => setTimeout(r, 1000));
+      // Also capture lead in public.leads via captureLead
+      await captureLead({
+        email: form.contactEmail,
+        full_name: form.contactName,
+        lead_type: "dealer_enquiry",
+        marketing_consent: false,
+        consent_text: "Partner application submitted on behalf of " + form.shopName,
+        source_page: "/partners",
+        locale: regionCode === "us" ? "en-US" : "en-GB",
+        country_code: form.country,
+        metadata: {
+          shopName: form.shopName,
+          location: form.location,
+          applicationRef: ref,
+          turnoverBand: form.turnoverBand,
+          technicianCount: form.technicianCount,
+        },
+      }).catch((err) => console.error("Partner lead mirror error:", err));
+
       setFormState("sent");
     } catch {
       // Fallback for preview / dev environments without live backend

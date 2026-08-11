@@ -11,6 +11,7 @@ import PublishingCadence from "@/components/editorial/PublishingCadence";
 import { brandAssets } from "@/lib/assets";
 import { useRegion } from "@/components/region/RegionProvider";
 import { toCanonicalHeightCm, toCanonicalWeightKg } from "@/lib/units";
+import { captureLead } from "@/lib/leads/capture";
 
 // Commercial Flag
 export const ENABLE_PROJECT01_RESERVATIONS = false;
@@ -236,6 +237,27 @@ export default function OrderClient() {
       if (!res.ok) {
         throw new Error(data.error || "Failed to process registration.");
       }
+
+      // Also capture lead in public.leads via captureLead
+      const consentText = "I would like to receive Project 01 development updates, engineering journal entries and production announcements.";
+      await captureLead({
+        email: form.email,
+        full_name: `${form.firstName} ${form.lastName}`.trim(),
+        phone: form.phone,
+        lead_type: "waitlist",
+        marketing_consent: form.marketingConsent,
+        consent_text: consentText,
+        source_page: "/order",
+        locale: regionCode === "us" ? "en-US" : "en-GB",
+        country_code: form.country,
+        metadata: {
+          terrain: form.terrain,
+          currentBike: form.currentBike,
+          expectedSize: form.expectedSize,
+          preferredFinish: form.preferredFinish,
+          productInterest: form.productInterest,
+        },
+      }).catch((err) => console.error("Lead mirror error:", err));
 
       setSuccessRef(data.reference);
       setFoundingNumber(data.foundingNumber || 42);

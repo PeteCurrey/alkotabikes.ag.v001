@@ -1,8 +1,25 @@
 import type { NextConfig } from "next";
 
+// Derive Supabase Storage hostname from env var (e.g. "abcdefg.supabase.co")
+const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : "*.supabase.co";
+
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: supabaseHostname,
+        pathname: "/storage/v1/object/sign/**",
+      },
+      // Fallback wildcard for build-time when env var is unset
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/sign/**",
+      },
+    ],
   },
   async headers() {
     return [

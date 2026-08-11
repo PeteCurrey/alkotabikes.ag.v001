@@ -9,17 +9,20 @@ import NextStepBanner from "@/components/layout/NextStepBanner";
 import DevelopmentStatusTicker from "@/components/ui/DevelopmentStatusTicker";
 import { ALKOTA_STORY_MEDIA } from "@/content/media/alkotaStoryMedia";
 import { ArrowRight, ChevronDown, Check, Flag, Settings, Wrench, Activity, Clock } from "lucide-react";
+import { captureLead } from "@/lib/leads/capture";
 
 export default function RacingClient() {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailInput, setEmailInput] = useState("");
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [hp, setHp] = useState("");
+  const [renderTime, setRenderTime] = useState<number>(0);
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInput.trim()) {
-      setEmailSubmitted(true);
-    }
-  };
+  React.useEffect(() => {
+    setRenderTime(Date.now());
+  }, []);
 
   return (
     <div className="w-full bg-alkota-carbon text-alkota-white pt-24 min-h-screen">
@@ -554,11 +557,51 @@ export default function RacingClient() {
             {emailSubmitted ? (
               <div className="p-4 bg-alkota-signal/10 border border-alkota-signal text-alkota-signal font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-3">
                 <Check className="w-5 h-5 flex-shrink-0" />
-                <span>YOU ARE REGISTERED FOR ALKOTA RACING 2027 UPDATES.</span>
+                <span>CONFIRMED. CHECK YOUR INBOX TO VERIFY YOUR RACING DISPATCH SUBSCRIPTION.</span>
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="space-y-3">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-alkota-slate block text-left">
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!marketingConsent) {
+                    setError("Marketing consent is required to subscribe.");
+                    return;
+                  }
+                  setLoading(true);
+                  setError("");
+                  const consentText = "I agree to receive Alkota Racing 2027 development dispatches and engineering notes.";
+                  const res = await captureLead({
+                    email: emailInput,
+                    lead_type: "newsletter",
+                    marketing_consent: marketingConsent,
+                    consent_text: consentText,
+                    source_page: "/racing",
+                    _hp: hp,
+                    _t: renderTime,
+                  });
+                  setLoading(false);
+                  if (res.success) {
+                    setEmailSubmitted(true);
+                    setEmailInput("");
+                  } else {
+                    setError(res.error || "Failed to register for dispatches.");
+                  }
+                }}
+                className="space-y-3 text-left"
+              >
+                {/* Honeypot */}
+                <input
+                  type="text"
+                  name="website_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={hp}
+                  onChange={(e) => setHp(e.target.value)}
+                  className="sr-only"
+                  aria-hidden="true"
+                />
+
+                <span className="font-mono text-[10px] uppercase tracking-widest text-alkota-slate block">
                   SUBSCRIBE TO RACE DEVELOPMENT DISPATCHES:
                 </span>
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -572,11 +615,32 @@ export default function RacingClient() {
                   />
                   <button
                     type="submit"
-                    className="px-8 py-3.5 bg-alkota-signal text-alkota-white font-mono text-xs font-bold uppercase hover:bg-white hover:text-alkota-black transition-colors whitespace-nowrap"
+                    disabled={loading}
+                    className="px-8 py-3.5 bg-alkota-signal text-alkota-black font-mono text-xs font-bold uppercase hover:bg-white transition-colors whitespace-nowrap disabled:opacity-50"
                   >
-                    FOLLOW ALKOTA RACING
+                    {loading ? "REGISTERING..." : "FOLLOW ALKOTA RACING"}
                   </button>
                 </div>
+
+                {/* Consent Checkbox */}
+                <div className="flex items-start gap-2 pt-1 text-[11px] font-sans text-alkota-slate">
+                  <input
+                    id="racing-newsletter-consent"
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                    className="mt-0.5 w-3.5 h-3.5 bg-black border-white/30 text-alkota-signal rounded-none cursor-pointer"
+                  />
+                  <label htmlFor="racing-newsletter-consent" className="cursor-pointer leading-tight">
+                    I agree to receive Alkota Racing 2027 development dispatches and engineering notes. (Optional)
+                  </label>
+                </div>
+
+                {error && (
+                  <div className="text-red-400 font-mono text-xs pt-1">
+                    {error}
+                  </div>
+                )}
               </form>
             )}
           </div>

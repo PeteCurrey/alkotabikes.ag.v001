@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/lib/store/cartContext";
 import { CookieConsentProvider } from "@/components/legal/CookieConsentManager";
 import OrganizationSchema from "@/components/schema/OrganizationSchema";
+import UtmCapture from "@/components/analytics/UtmCapture";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -59,6 +60,7 @@ export default function RootLayout({
         <OrganizationSchema />
         <CookieConsentProvider>
           <CartProvider>
+            <UtmCapture />
             <Header />
             <main id="main-content" className="flex-1 w-full">{children}</main>
             <Footer />
