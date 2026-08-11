@@ -98,7 +98,8 @@ async function runSeed() {
     let width: number | null = null;
     let height: number | null = null;
     let blurDataUrl: string | null = null;
-    let cleanBuffer = rawBuf;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let cleanBuffer: Buffer = rawBuf as any;
 
     if (mimeType !== "image/svg+xml") {
       try {
@@ -106,14 +107,14 @@ async function runSeed() {
         width = meta.width || null;
         height = meta.height || null;
 
-        cleanBuffer = await sharp(rawBuf).toBuffer();
+        cleanBuffer = (await sharp(rawBuf).toBuffer()) as unknown as Buffer;
 
-        const lqip = await sharp(rawBuf)
+        const lqipBuf = (await sharp(rawBuf)
           .resize(16, 16, { fit: "inside" })
           .blur(10)
           .toFormat("webp", { quality: 20 })
-          .toBuffer();
-        blurDataUrl = `data:image/webp;base64,${lqip.toString("base64")}`;
+          .toBuffer()) as unknown as Buffer;
+        blurDataUrl = `data:image/webp;base64,${lqipBuf.toString("base64")}`;
       } catch (err) {
         console.warn(`  ⚠️ Could not process image metadata for ${img.relPath}:`, err);
       }
