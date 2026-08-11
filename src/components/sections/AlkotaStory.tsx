@@ -55,17 +55,18 @@ export default function AlkotaStory() {
         </div>
 
         {/* Right Column — Powerful Founder + Project 01 Image */}
+        {/* Right Column — Powerful Project 01 System Presentation */}
         <div className="lg:col-span-6 space-y-3">
           <div className="relative w-full h-[400px] sm:h-[480px] bg-alkota-black border border-white/10 overflow-hidden shadow-2xl group">
             <Image
-              src={ALKOTA_STORY_MEDIA.peteGlacierWhite.src}
-              alt="Pete Currey with Glacier White Project 01"
+              src={ALKOTA_STORY_MEDIA.standaloneWhiteBike.src}
+              alt="Project 01 Glacier White flagship all-mountain chassis"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
+              className="object-contain p-6 object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
             />
             <div className="absolute bottom-4 left-4 font-mono text-[10px] bg-black/80 px-3 py-1.5 text-alkota-signal uppercase border border-white/10">
-              PETE CURREY · FOUNDER & PRINCIPAL ENGINEER
+              PROJECT 01 · GLACIER WHITE ALL-MOUNTAIN CHASSIS
             </div>
           </div>
           <div className="font-mono text-[10px] text-alkota-slate flex items-center justify-between uppercase">

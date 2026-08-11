@@ -669,9 +669,9 @@ export default function BuildProcessPage() {
               <StepLabel num="10" label="ITERATE" />
               <div className="space-y-12">
                 <Img
-                  src={ALKOTA_STORY_MEDIA.peteNakedCarbon.src}
-                  alt="Pete Currey with Project 01 — iterate"
-                  label="PETE CURREY · PROJECT 01 · DEVELOPMENT CONTINUES"
+                  src={ALKOTA_STORY_MEDIA.prototypeBuildValidation.src}
+                  alt="Project 01 prototype build validation — iterate"
+                  label="PROJECT 01 · PROTOTYPE BUILD VALIDATION · DEVELOPMENT CONTINUES"
                   height="h-[440px] sm:h-[520px]"
                 />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

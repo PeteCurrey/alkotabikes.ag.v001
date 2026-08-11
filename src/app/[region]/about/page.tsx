@@ -171,12 +171,12 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Founder Pete with Glacier White Project 01 image */}
+            {/* Project 01 Glacier White Chassis Presentation Image */}
             <div className="lg:col-span-6 space-y-3">
-              <div className="relative w-full h-[480px] sm:h-[560px] bg-alkota-snow border border-black/10 overflow-hidden shadow-2xl">
+              <div className="relative w-full h-[480px] sm:h-[560px] bg-alkota-black border border-black/10 overflow-hidden shadow-2xl">
                 <Image
-                  src={ALKOTA_STORY_MEDIA.peteGlacierWhite.src}
-                  alt={ALKOTA_STORY_MEDIA.peteGlacierWhite.alt}
+                  src="/images/project01-glacier-white-hero.jpg"
+                  alt="ALKOTA Project 01 Glacier White flagship all-mountain chassis"
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -184,8 +184,8 @@ export default function AboutPage() {
                 />
               </div>
               <div className="font-mono text-[10px] text-alkota-slate flex items-center justify-between uppercase">
-                <span>PETE CURREY • GLACIER WHITE PROJECT 01</span>
-                <span>ALPINE ARCHITECTURE R&D</span>
+                <span>PROJECT 01 · GLACIER WHITE SYSTEM</span>
+                <span>ALPINE PRECISION R&D</span>
               </div>
             </div>
           </div>

@@ -127,12 +127,12 @@ export default function OurStoryPage() {
               </div>
             </div>
 
-            {/* Hero image — Pete + Project 01 */}
+            {/* Hero image — Alpine R&D Field Testing */}
             <div className="lg:col-span-7 space-y-2">
               <div className="relative w-full h-[460px] sm:h-[560px] overflow-hidden border border-black/10 shadow-2xl bg-alkota-snow">
                 <Image
-                  src={ALKOTA_STORY_MEDIA.peteGlacierWhite.src}
-                  alt="Pete Currey with Project 01 Glacier White"
+                  src={ALKOTA_STORY_MEDIA.hauteSavoieAlpineTest.src}
+                  alt="Alkota Racing & R&D Alpine Field Test"
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 60vw"
@@ -140,8 +140,8 @@ export default function OurStoryPage() {
                 />
               </div>
               <p className="font-mono text-[10px] text-alkota-slate uppercase flex justify-between">
-                <span>PETE CURREY · FOUNDER · ALKOTA PERFORMANCE ENGINEERING</span>
-                <span>PROJECT 01 · GLACIER WHITE</span>
+                <span>ALKOTA R&D · HAUTE-SAVOIE ALPINE FIELD TEST</span>
+                <span>PROJECT 01 · 2,400M VALIDATION</span>
               </p>
             </div>
           </div>
