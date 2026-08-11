@@ -2,9 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import TechnicalAnnotation from "@/components/ui/TechnicalAnnotation";
 import { ARTICLES } from "@/lib/data/journalData";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function JournalPreviewSection() {
   return (
@@ -32,26 +33,41 @@ export default function JournalPreviewSection() {
             <Link
               key={article.slug}
               href={`/journal/${article.slug}`}
-              className="group p-6 bg-alkota-snow border border-black/10 hover:border-alkota-black hover:bg-white transition-all space-y-4 flex flex-col justify-between"
+              className="group p-6 bg-alkota-black text-alkota-white border border-black/10 hover:border-alkota-signal transition-all duration-500 flex flex-col justify-between space-y-6 relative overflow-hidden shadow-lg min-h-[300px]"
             >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between font-mono text-[10px] text-alkota-slate">
+              {/* Reveal-on-hover Background Image */}
+              {article.image && (
+                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                  <Image
+                    src={article.image}
+                    alt={`ALKOTA Dispatch — ${article.title}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-center opacity-20 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700 ease-out"
+                  />
+                  {/* Gradient Overlay for Contrast & Text Legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-alkota-black via-alkota-black/80 to-alkota-black/50 group-hover:via-alkota-black/70 group-hover:to-alkota-black/30 transition-colors duration-700" />
+                </div>
+              )}
+
+              <div className="space-y-3 relative z-10">
+                <div className="flex items-center justify-between font-mono text-[10px] text-alkota-signal font-bold tracking-wider uppercase">
                   <span>{article.category}</span>
-                  <span>{article.readTime}</span>
+                  <span className="text-alkota-slate">{article.readTime}</span>
                 </div>
 
-                <h3 className="font-display text-xl font-bold text-alkota-black group-hover:text-alkota-graphite transition-colors uppercase tracking-tight">
+                <h3 className="font-display text-xl font-bold text-alkota-white group-hover:text-alkota-signal transition-colors uppercase tracking-tight">
                   {article.title}
                 </h3>
 
-                <p className="font-sans text-xs text-alkota-graphite leading-relaxed font-light">
+                <p className="font-sans text-xs text-alkota-slate group-hover:text-alkota-snow transition-colors leading-relaxed font-light">
                   {article.excerpt}
                 </p>
               </div>
 
-              <div className="border-t border-black/10 pt-3 flex items-center justify-between font-mono text-[10px] text-alkota-slate">
+              <div className="border-t border-white/10 pt-3 flex items-center justify-between font-mono text-[10px] text-alkota-slate relative z-10">
                 <span>{article.date}</span>
-                <ArrowRight className="w-3.5 h-3.5 text-alkota-black group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-alkota-slate group-hover:text-alkota-signal group-hover:translate-x-1 transition-all" />
               </div>
             </Link>
           ))}

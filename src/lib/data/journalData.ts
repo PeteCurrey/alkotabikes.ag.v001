@@ -8,6 +8,7 @@ export interface Article {
   content: string[];
   author: string;
   status: "PUBLISHED" | "EDITORIAL PLAN";
+  image?: string;
   relatedSystemId?: string;
   primarySources?: { title: string; url: string }[];
 }
@@ -22,6 +23,7 @@ export const ARTICLES: Article[] = [
     excerpt: "Why we started with one single flagship platform rather than a full product range, and what we demanded from its geometry.",
     author: "ENGINEERING TEAM",
     status: "PUBLISHED",
+    image: "/images/story/engineering-design-meeting.jpg",
     relatedSystemId: "chassis-monocoque",
     primarySources: [
       { title: "ALKOTA Project 01 Chassis Development", url: "https://alkota.com/engineering" }
@@ -41,6 +43,7 @@ export const ARTICLES: Article[] = [
     excerpt: "Understanding the physics behind mixed-wheel (MX) setups: rollover momentum at the front versus chainstay agility and butt-clearance at the rear.",
     author: "KINEMATICS LAB",
     status: "PUBLISHED",
+    image: "/images/story/haute-savoie-alpine-field-test.jpg",
     relatedSystemId: "dt-swiss-exc-1200-rear",
     primarySources: [
       { title: "DT Swiss EXC 1200 Technology", url: "https://www.dtswiss.com/en/wheels/wheels-mtb/enduro/exc-1200" }
@@ -60,6 +63,7 @@ export const ARTICLES: Article[] = [
     excerpt: "Why matching front and rear brake calipers is a flaw in mountain bike engineering, and how asymmetric piston sizing optimizes weight shift dynamics.",
     author: "HARDWARE DEPT",
     status: "PUBLISHED",
+    image: "/images/story/component-development-bench.jpg",
     relatedSystemId: "hope-evo-v6ti",
     primarySources: [
       { title: "Hope Technology Brake Engineering", url: "https://www.hopetech.com/products/brakes/" }
@@ -79,6 +83,7 @@ export const ARTICLES: Article[] = [
     excerpt: "Matching the stiffness of a 38mm stanchion fork with a high-volume trunnion air shock for consistent spring curves under heavy G-loads.",
     author: "SUSPENSION TEAM",
     status: "PUBLISHED",
+    image: "/images/story/complete-machine-integration.jpg",
     relatedSystemId: "fox-38-factory",
     primarySources: [
       { title: "FOX Factory 38 Specification", url: "https://www.ridefox.com/family.php?m=bike&family=38" }
@@ -98,6 +103,7 @@ export const ARTICLES: Article[] = [
     excerpt: "Why ultra-stiff carbon rims cause fatigue, and how DT Swiss tuned radial compliance to absorb trail vibration while preserving cornering tracking.",
     author: "COMPOSITES LAB",
     status: "PUBLISHED",
+    image: "/images/story/alpine-trail-testing-action.jpg",
     relatedSystemId: "dt-swiss-exc-1200-front",
     primarySources: [
       { title: "DT Swiss EXC 1200 Classic Carbon", url: "https://www.dtswiss.com/en/wheels/wheels-mtb/enduro/exc-1200" }
@@ -117,6 +123,7 @@ export const ARTICLES: Article[] = [
     excerpt: "Why mechanics hate modern internal cable routing, and how we solved clean cable packaging without needing headset entry ports.",
     author: "HARDWARE DEPT",
     status: "PUBLISHED",
+    image: "/images/story/workshop-chassis-assembly.jpg",
     relatedSystemId: "chassis-monocoque",
     primarySources: [
       { title: "ALKOTA Project Workspace", url: "https://alkota.com/support/technical" }
